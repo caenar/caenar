@@ -1,0 +1,28 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './components/partials/header/header.component';
+import { FooterComponent } from './components/partials/footer/footer.component';
+import { HomeComponent } from './components/pages/home/home.component';
+import { WorkComponent } from './components/pages/work/work.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    HomeComponent,
+    WorkComponent
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
