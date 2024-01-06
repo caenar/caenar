@@ -9,6 +9,8 @@ import anime from 'animejs';
 })
 export class HomeComponent implements OnInit {
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    
+  }
 
 }

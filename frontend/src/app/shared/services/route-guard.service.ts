@@ -21,7 +21,6 @@ export const routeGuard: CanActivateFn = (
   | Observable<boolean | UrlTree>
   | Promise<boolean | UrlTree> => {
   return new Promise((resolve) => {
-    const router = document.querySelector('app-root') as HTMLElement;
     const content = document.querySelector('.open-wrap')! as HTMLElement;
     const contentElement = document.querySelectorAll('.open-wrap > div')!;
 
@@ -34,18 +33,38 @@ export const routeGuard: CanActivateFn = (
       }
     });
 
-    setTimeout(() => {
-      resolve(true);
-      contentElement.forEach((element, index) => {
-        if (element instanceof HTMLElement) {
-          setTimeout(() => {
-            element.style.top = '-100%';
-          }, index * 200);
-        }
-      });
+    if (document.readyState === 'complete') {
       setTimeout(() => {
-        content.style.display = 'none';
-      }, 2000);
-    }, 1200);
+        resolve(true);
+        contentElement.forEach((element, index) => {
+          if (element instanceof HTMLElement) {
+            setTimeout(() => {
+              element.style.top = '-100%';
+            }, index * 200);
+          }
+        });
+        setTimeout(() => {
+          content.style.display = 'none';
+        }, 1400);
+      }, 1400);
+      
+    } else {
+      window.addEventListener('DOMContentLoaded', () => {
+        // setTimeout(() => {
+          resolve(true);
+          contentElement.forEach((element, index) => {
+            if (element instanceof HTMLElement) {
+              setTimeout(() => {
+                element.style.top = '-100%';
+              }, index * 200);
+            }
+          });
+          setTimeout(() => {
+            content.style.display = 'none';
+          }, 1400);
+        // }, 1400);
+      });
+    }
+
   });
 };

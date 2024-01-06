@@ -1,13 +1,22 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import splt from 'spltjs';
-import anime from 'animejs';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import {
   trigger,
   state,
   style,
   animate,
   transition,
+  AnimationEvent,
+  AnimationPlayer,
+  AnimationBuilder,
 } from '@angular/animations';
+import splt from 'spltjs';
+import anime from 'animejs';
 
 @Component({
   selector: 'app-header',
@@ -39,33 +48,84 @@ export class HeaderComponent implements OnInit {
 
   constructor(private el: ElementRef) {}
 
-  openMenu() {
-    this.menuState = this.isMenuOpen ? 'closed' : 'opened';
-    this.isMenuOpen = !this.isMenuOpen;
-    
-    const menuSpan = document.getElementById('menuSpan')! as HTMLElement;
-    const navContent = document.querySelector('nav');
+  ngOnInit(): void {
+    splt({reveal:true})
+    document.addEventListener('click', this.userClickOut.bind(this));
+  }
 
-    if (this.menuState == 'opened') {
-      menuSpan.innerText = '[CLOSE]';
-      document.addEventListener('click', this.userClickOut.bind(this));
-    } else {
-      menuSpan.innerText = '[MENU]';
-      document.removeEventListener('click', this.userClickOut.bind(this));
+  openMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+    this.menuState = this.isMenuOpen ? 'opened' : 'closed';
+    const menuSpan = document.getElementById('menuSpan')! as HTMLElement;
+    menuSpan.innerText = this.isMenuOpen ? '[CLOSE]' : '[MENU]';
+  }
+
+  onAnimationStart(event: AnimationEvent) {
+
+    const commonProps = {
+      duration: 550,
+      easing: 'cubicBezier(.34,0,.33,1)',
+      autoplay: false
+    }
+    var itemAnimationsIn = anime({
+      targets: '.nav-items #r',
+      delay: function(el, i){
+        return i * 30;
+      },
+      translateY: [80,0],
+      rotate: [50, 0],
+      ...commonProps,
+    });
+    var itemAnimationsOut = anime({
+      targets: '.nav-items #r',
+      translateY: [0,80],
+      rotate: [0, 50],
+      ...commonProps,
+    });
+    var linkAnimationsIn = anime({
+      targets: '.nav-links a',
+      delay: function(el, i){
+        return i * 50;
+      },
+      rotate: [10, 0],
+      translateY: [50,0],
+      ...commonProps,
+    });
+    var linkAnimationsOut = anime({
+      targets: '.nav-links a',
+      rotate: [0, 10],
+      translateY: [0,50],
+      ...commonProps,
+    });
+
+    if (event.fromState === 'closed' && event.toState === 'opened') {
+      itemAnimationsIn.play();
+      linkAnimationsIn.play();
+      console.log("open to closed")
+    } else if (event.fromState === 'opened' && event.toState === 'closed') {
+      itemAnimationsOut.play();
+      linkAnimationsOut.play();
+      console.log("closed to open")
     }
   }
   
+  onAnimationDone(event: AnimationEvent) {
+    if (event.fromState === 'closed' && event.toState === 'opened') {
+
+      console.log("1 closed to open")
+    } else if (event.fromState === 'opened' && event.toState === 'closed') {
+
+      console.log("1 open to close")
+    }
+  }
+
   @HostListener('document:click', ['$event'])
   userClickOut(event: Event) {
     const menuSpan = document.getElementById('menuSpan')! as HTMLElement;
     if (!this.el.nativeElement.contains(event.target)) {
-      this.isMenuOpen = false;
-      this.menuState = 'closed';
       menuSpan.innerText = '[MENU]';
-      document.removeEventListener('click', this.userClickOut.bind(this));
+      this.menuState = 'closed';
+      this.isMenuOpen = false;
     }
-  }
-
-  ngOnInit(): void {
   }
 }

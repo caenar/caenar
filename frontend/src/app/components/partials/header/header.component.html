@@ -27,18 +27,27 @@
   </div>
 </header>
 
-<nav
-  [@menuAnim]="menuState"
+<nav 
+[@menuAnim]="menuState" 
+(@menuAnim.start)="onAnimationStart($event)"
+(@menuAnim.done)="onAnimationDone($event)"
 >
   <div class="flex-col nav-items">
-    <a routerLink="/">Home</a>
-    <a routerLink="/work">Work</a>
-    <a>About</a>
-    <a>Contact</a>
+    <a class="splt" routerLink="/">Home</a>
+    <a class="splt" routerLink="/work">Work</a>
+    <a class="splt">About</a>
+    <a class="splt">Contact</a>
   </div>
   <div class="nav-links">
-    <a>[Facebook]</a>
-    <a>[Behance]</a>
-    <a>[LinkedIn]</a>
+    <a class="splt">[Facebook]</a>
+    <a class="splt">[Behance]</a>
+    <a class="splt">[LinkedIn]</a>
   </div>
 </nav>
+
+rotate: [30,0],
+      translateY: [80,0],
+      duration: 500,
+      delay: anime.stagger(90),
+      easing: 'cubicBezier(.34,0,.33,1)',
+      autoplay: false,
