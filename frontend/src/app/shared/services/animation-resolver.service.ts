@@ -2,8 +2,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import splt from 'spltjs';
-import anime from 'animejs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +16,6 @@ export class AnimationResolver implements Resolve<boolean> {
         }, index * 200);
       }
     });
-    
     return true;
   }
 }

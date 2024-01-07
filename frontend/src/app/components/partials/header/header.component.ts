@@ -3,7 +3,6 @@ import {
   ElementRef,
   HostListener,
   OnInit,
-  Renderer2,
 } from '@angular/core';
 import {
   trigger,
@@ -12,10 +11,7 @@ import {
   animate,
   transition,
   AnimationEvent,
-  AnimationPlayer,
-  AnimationBuilder,
 } from '@angular/animations';
-import splt from 'spltjs';
 import anime from 'animejs';
 
 @Component({
@@ -49,17 +45,16 @@ export class HeaderComponent implements OnInit {
   constructor(private el: ElementRef) {}
 
   ngOnInit(): void {
-    splt({reveal:true})
     document.addEventListener('click', this.userClickOut.bind(this));
   }
-
+  
   openMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.menuState = this.isMenuOpen ? 'opened' : 'closed';
     const menuSpan = document.getElementById('menuSpan')! as HTMLElement;
     menuSpan.innerText = this.isMenuOpen ? '[CLOSE]' : '[MENU]';
   }
-
+  
   onAnimationStart(event: AnimationEvent) {
 
     const commonProps = {
@@ -85,7 +80,7 @@ export class HeaderComponent implements OnInit {
     var linkAnimationsIn = anime({
       targets: '.nav-links a',
       delay: function(el, i){
-        return i * 50;
+        return i * 60;
       },
       rotate: [10, 0],
       translateY: [50,0],
@@ -106,16 +101,6 @@ export class HeaderComponent implements OnInit {
       itemAnimationsOut.play();
       linkAnimationsOut.play();
       console.log("closed to open")
-    }
-  }
-  
-  onAnimationDone(event: AnimationEvent) {
-    if (event.fromState === 'closed' && event.toState === 'opened') {
-
-      console.log("1 closed to open")
-    } else if (event.fromState === 'opened' && event.toState === 'closed') {
-
-      console.log("1 open to close")
     }
   }
 

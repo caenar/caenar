@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import splt from 'spltjs';
 import {
   CanActivateFn,
   ActivatedRouteSnapshot,
@@ -21,6 +22,7 @@ export const routeGuard: CanActivateFn = (
   | Observable<boolean | UrlTree>
   | Promise<boolean | UrlTree> => {
   return new Promise((resolve) => {
+    
     const content = document.querySelector('.open-wrap')! as HTMLElement;
     const contentElement = document.querySelectorAll('.open-wrap > div')!;
 
@@ -65,6 +67,7 @@ export const routeGuard: CanActivateFn = (
         // }, 1400);
       });
     }
-
   });
+  
 };
+

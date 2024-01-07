@@ -10,6 +10,7 @@ header {
   }
 
   svg {
+    cursor: pointer;
     width: 60px;
 
     .cls-1 {
@@ -21,7 +22,6 @@ header {
     flex-direction: column;
     gap: 10px;
     height: 60px;
-    width: 35px;
 
     span {
       user-select: none;
@@ -45,7 +45,7 @@ nav {
   width: 23em;
   height: 26em;
   color: white;
-  background-color: black;
+  background-color: $secondary-color;
   clip-path: circle(0 at 100% 0);
   transition: 500ms ease;
 

@@ -29,8 +29,25 @@
   font-style: normal;
 }
 
+:root {
+  --primary-font: "Familjen-Grotesk";
+  --heading-font: "Anton";
+  --text-size-s: 20px;
+  --primary-color: #f8f8f8;
+  --secondary-color: #2c0d49;
+  --accent-color: #350a58;
+  --hl-color: #a510eb;
+}
+
+$primary-font: var(--primary-font);
+$heading-font: var(--heading-font);
+$text-size-s: var(--text-size-s);
+$primary-color: var(--primary-color);
+$secondary-color: var(--secondary-color);
+$accent-color: var(--accent-color);
+$hl-color: var(--hl-color);
+
 .open-wrap {
-  // display: none;
   position: fixed;
   display: grid;
   grid-template-rows: 1 auto;
@@ -41,24 +58,11 @@
 
   div {
     position: relative;
-    background-color: red;
-  }
-  
-  .wrap-1, .wrap-2, .wrap-3, .wrap-4 {
+    background-color: $accent-color;
     top: 0;
-    transition: 850ms top cubic-bezier(.34,0,.33,1);
+    transition: 800ms cubic-bezier(0.34, 0, 0.33, 1);
   }
 }
-
-:root {
-  --primary-font: "Familjen-Grotesk";
-  --heading-font: "Anton";
-  --text-size-s: 20px;
-}
-
-$primary-font: var(--primary-font);
-$heading-font: var(--heading-font);
-$text-size-s: var(--text-size-s);
 
 * {
   font-family: $primary-font, sans-serif;
