@@ -1,9 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-} from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import {
   trigger,
   state,
@@ -12,29 +7,37 @@ import {
   transition,
   AnimationEvent,
 } from '@angular/animations';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { RouteGuardService } from '../../../shared/services/route-guard.service';
+
 import anime from 'animejs';
+import 'splitting/dist/splitting.css';
+import Splitting from 'splitting';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrl: './header.component.scss',
   animations: [
     trigger('menuAnim', [
       state(
         'closed',
         style({
           visibility: 'hidden',
-          clipPath: 'circle(0 at 100% 0)',
+          transform: 'translateY(-100%)',
         })
       ),
       state(
         'opened',
         style({
           visibility: 'visible',
-          clipPath: 'circle(141.2% at 100% 0)',
+          transform: 'translateY(0)',
         })
       ),
-      transition('closed <=> opened', animate('500ms ease')),
+      transition(
+        'closed <=> opened',
+        animate('900ms cubic-bezier(.66,-0.01,.07,1)')
+      ),
     ]),
   ],
 })
@@ -42,75 +45,79 @@ export class HeaderComponent implements OnInit {
   private isMenuOpen = false;
   public menuState = 'closed';
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, private router: Router, public routeGS: RouteGuardService) {}
 
   ngOnInit(): void {
-    document.addEventListener('click', this.userClickOut.bind(this));
+    this.router.events.subscribe((event) => {
+      if(event instanceof NavigationStart) {
+        this.closeMenu();
+      }
+    })
+
+    Splitting();
   }
-  
+
   openMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.menuState = this.isMenuOpen ? 'opened' : 'closed';
-    const menuSpan = document.getElementById('menuSpan')! as HTMLElement;
+
+    const menuSpan = document.querySelector(
+      'header .container .menu-button span'
+    ) as HTMLElement;
     menuSpan.innerText = this.isMenuOpen ? '[CLOSE]' : '[MENU]';
   }
-  
-  onAnimationStart(event: AnimationEvent) {
 
-    const commonProps = {
-      duration: 550,
-      easing: 'cubicBezier(.34,0,.33,1)',
-      autoplay: false
-    }
+  closeMenu() {
+    this.isMenuOpen = false;
+    this.menuState = 'closed';
+
+    const menuSpan = document.querySelector(
+      'header .container .menu-button span'
+    ) as HTMLElement;
+    menuSpan.innerText = '[MENU]';
+  }
+
+  onAnimationStart(event: AnimationEvent) {
+    var CommonProps = {
+      duration: 800,
+      easing: 'cubicBezier(.66,-0.01,.07,1)',
+      autoplay: false,
+    };
+
     var itemAnimationsIn = anime({
-      targets: '.nav-items #r',
-      delay: function(el, i){
-        return i * 30;
+      targets: '.nav-list .nav-item .word .char',
+      translateY: [400, 0],
+      delay: function (el, i) {
+        return i * 20;
       },
-      translateY: [80,0],
-      rotate: [50, 0],
-      ...commonProps,
+      ...CommonProps,
     });
     var itemAnimationsOut = anime({
-      targets: '.nav-items #r',
-      translateY: [0,80],
-      rotate: [0, 50],
-      ...commonProps,
+      targets: '.nav-list .nav-item .word .char',
+      translateY: [0, -800],
+      ...CommonProps,
     });
+
     var linkAnimationsIn = anime({
-      targets: '.nav-links a',
-      delay: function(el, i){
-        return i * 60;
+      targets: '.nav-links .nav-item .word',
+      opacity: [0, 1],
+      delay: function (el, i) {
+        return 20 * 20;
       },
-      rotate: [10, 0],
-      translateY: [50,0],
-      ...commonProps,
+      ...CommonProps,
     });
     var linkAnimationsOut = anime({
-      targets: '.nav-links a',
-      rotate: [0, 10],
-      translateY: [0,50],
-      ...commonProps,
+      targets: '.nav-links .nav-item .word',
+      opacity: [1, 0],
+      ...CommonProps,
     });
 
     if (event.fromState === 'closed' && event.toState === 'opened') {
       itemAnimationsIn.play();
       linkAnimationsIn.play();
-      console.log("open to closed")
     } else if (event.fromState === 'opened' && event.toState === 'closed') {
       itemAnimationsOut.play();
       linkAnimationsOut.play();
-      console.log("closed to open")
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  userClickOut(event: Event) {
-    const menuSpan = document.getElementById('menuSpan')! as HTMLElement;
-    if (!this.el.nativeElement.contains(event.target)) {
-      menuSpan.innerText = '[MENU]';
-      this.menuState = 'closed';
-      this.isMenuOpen = false;
     }
   }
 }

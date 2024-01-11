@@ -1,104 +1,142 @@
-@font-face {
-  font-family: "Familjen-Grotesk";
-  src: url(./assets/fonts/FamiljenGrotesk-Regular.woff2);
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Familjen-Grotesk Medium";
-  src: url(./assets/fonts/FamiljenGrotesk-Medium.woff2);
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Familjen-Grotesk SemiBold";
-  src: url(./assets/fonts/FamiljenGrotesk-SemiBold.woff2);
-  font-weight: 600;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Familjen-Grotesk Bold";
-  src: url(./assets/fonts/FamiljenGrotesk-Bold.woff2);
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Anton";
-  src: url(./assets/fonts/Anton-Regular.woff2);
-  font-weight: 800;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-font: "Familjen-Grotesk";
-  --heading-font: "Anton";
-  --text-size-s: 20px;
-  --primary-color: #f8f8f8;
-  --secondary-color: #2c0d49;
-  --accent-color: #350a58;
-  --hl-color: #a510eb;
+  // colors
+  --clr-purple: #8a29e6;
+  --clr-purple-dark: #231c2f;
+  --clr-white: #f9f5fc;
+  --clr-pink: #e94bd4;
+  --clr-green: #4de212;
 }
 
-$primary-font: var(--primary-font);
-$heading-font: var(--heading-font);
-$text-size-s: var(--text-size-s);
-$primary-color: var(--primary-color);
-$secondary-color: var(--secondary-color);
-$accent-color: var(--accent-color);
-$hl-color: var(--hl-color);
+$clr-purple: var(--clr-purple);
+$clr-purple-dark: var(--clr-purple-dark);
+$clr-white: var(--clr-white);
+$clr-pink: var(--clr-pink);
+$clr-green: var(--clr-green);
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Instrument Sans', sans-serif;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ul, ol {
+  list-style-type: none;
+}
+
+
+// layout
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.between-center {
+  justify-content: space-between;
+  align-items: center;
+}
+.end-start {
+  justify-content: end;
+  align-items: start;
+}
+.place-center {
+  place-content: center center;
+}
+.start {
+  align-items: start;
+}
+.end {
+  align-items: end;
+}
+.w-full {
+  width: 100%;
+}
+.hidden {
+  overflow: hidden;
+}
+
+
+// padding, margin, and spacing
+
+// fixed
+.lr-padding {
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+// flexible
+.tb-padding-xs {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.tb-padding-s {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.tb-padding-md {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.tb-padding-lg {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.row-gap-xs {
+  row-gap: 1rem;
+}
+.row-gap-s {
+  row-gap: 2rem;
+}
+.row-gap-md {
+  row-gap: 3rem;
+}
+.row-gap-lg {
+  row-gap: 4rem;
+}
+.row-gap-xl {
+  row-gap: 5rem;
+}
+.col-gap-xs {
+  column-gap: 1rem;
+}
+.col-gap-s {
+  column-gap: 2rem;
+}
+
+
+// typography
+.text-bold {
+  font-weight: 700;
+}
+
+
+// decorations
+.line {
+  height: 1.2px;
+  width: 100%;
+  background-color: $clr-purple-dark;
+}
+
 
 .open-wrap {
   position: fixed;
   display: grid;
-  grid-template-rows: 1 auto;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   height: 100vh;
   z-index: 100;
 
   div {
+    display: block;
     position: relative;
-    background-color: $accent-color;
+    background-color: $clr-purple;
     top: 0;
-    transition: 800ms cubic-bezier(0.34, 0, 0.33, 1);
+    transition: 800ms cubic-bezier(.41,0,.09,1);
   }
-}
-
-* {
-  font-family: $primary-font, sans-serif;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  margin: 0;
-}
-
-.flex-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.spacing-s {
-  margin-bottom: 20px;
 }

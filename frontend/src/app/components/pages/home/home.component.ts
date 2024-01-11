@@ -1,6 +1,9 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { SpltService } from '../../../shared/services/splt.service';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import anime from 'animejs';
+import 'splitting/dist/splitting.css';
+import Splitting from 'splitting';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 @Component({
   selector: 'app-home',
@@ -8,17 +11,41 @@ import anime from 'animejs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  constructor(private el: ElementRef) {}
 
-  constructor(private spltService: SpltService, private el: ElementRef) {}
   ngOnInit(): void {
-    this.spltService.initializeSplt();
+    Splitting();
+    gsap.registerPlugin(ScrollTrigger);
 
-    anime({
-      targets: '#i8 #r',
-      translateY: [80,0],
-      duration: 700,
-      easing: 'cubicBezier(.34,0,.33,1)',
-      delay: anime.stagger(50)
+    var introCommonProps = {
+      trigger: '.intro-inner',
+      start: 'center center',
+      end: 'bottom center',
+      scrub: 1,
+    }
+
+    gsap.to('.intro-head', {
+      translateY: 700,
+      scrollTrigger: {
+        ...introCommonProps
+      },
     });
+    
+    gsap.to('.intro-banner', {
+      clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)',
+      scrollTrigger: {
+        ...introCommonProps
+      },
+    });
+
+    gsap.to('.intro-text p', {
+      opacity: 0,
+      scrollTrigger: {
+        trigger: '.intro-inner',
+        start: 'center center',
+        end: '70% center',
+        scrub: 1,
+      },
+    })
   }
 }

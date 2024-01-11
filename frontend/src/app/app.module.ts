@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgIconsModule } from '@ng-icons/core';
+import { ionArrowForward } from '@ng-icons/ionicons';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,7 +23,10 @@ import { WorkComponent } from './components/pages/work/work.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgIconsModule.withIcons({
+      ionArrowForward
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

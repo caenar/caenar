@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import splt from 'spltjs';
 import {
   CanActivateFn,
   ActivatedRouteSnapshot,
@@ -7,11 +6,18 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RouteGuardService {}
+export class RouteGuardService {
+  constructor(private router: Router) {}
+
+  isCurrentRoute(route: string): boolean {
+    return this.router.url === route;
+  }
+}
 
 export const routeGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -27,6 +33,7 @@ export const routeGuard: CanActivateFn = (
     const contentElement = document.querySelectorAll('.open-wrap > div')!;
 
     content.style.display = 'grid';
+
     contentElement.forEach((element, index) => {
       if (element instanceof HTMLElement) {
         setTimeout(() => {
@@ -52,7 +59,6 @@ export const routeGuard: CanActivateFn = (
       
     } else {
       window.addEventListener('DOMContentLoaded', () => {
-        // setTimeout(() => {
           resolve(true);
           contentElement.forEach((element, index) => {
             if (element instanceof HTMLElement) {
@@ -64,9 +70,9 @@ export const routeGuard: CanActivateFn = (
           setTimeout(() => {
             content.style.display = 'none';
           }, 1400);
-        // }, 1400);
       });
     }
+
   });
   
 };

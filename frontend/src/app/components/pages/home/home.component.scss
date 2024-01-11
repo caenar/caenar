@@ -1,31 +1,43 @@
 @import '../../../../styles.scss';
 
-.intro {
-  display: grid;
-  justify-content: flex-start;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  column-gap: 2em;
-  background-color: $primary-color;
+.intro-inner {
   height: 100vh;
-  padding: 100px 5em;
+  background-color: $clr-white;
 
-  h1 {
-    justify-self: flex-end;
-    align-self: flex-end;
-    text-align: right;
-    text-transform: uppercase;
-    font-weight: 900;
-    font-size: 5rem;
-    color: $secondary-color;
-    line-height: 90px;
-    width: 500px;
+  .intro-head {
+    background-color: $clr-white;
+    z-index: 1;
+
+    h1 {
+      font-size: 9.5rem;
+      text-transform: uppercase;
+    }
   }
 
-  p {
-    font-size: 1.2rem;
-    grid-row-start: 2;
-    grid-column-start: 2;
-    width: 400px;
+  .intro-banner {
+    height: 480px;
+    width: 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+
+    video {
+      display: block;
+      border-radius: .5rem;
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
   }
+
+  .intro-text {
+    font-size: 1.5rem;
+    p {
+      max-width: 35ch;
+      text-wrap: balance;
+    }
+  }
+}
+
+.e {
+  height: 100vh;
+  background-color: aliceblue;
 }

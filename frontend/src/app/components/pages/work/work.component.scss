@@ -1,4 +1,6 @@
+@import '../../../../styles.scss';
+
 .intro {
-  background-color: blueviolet;
+  background-color: $clr-white;
   height: 100vh;
 }
