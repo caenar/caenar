@@ -42,6 +42,23 @@
       text-wrap: balance;
     }
   }
+  .container {
+    a {
+      font-size: 3.5rem;
+
+      sup {
+        align-self: start;
+        font-size: 1.5rem;
+
+        &::before {
+          content: '[';
+        }
+        &::after {
+          content: ']';
+        }
+      }
+    }
+  }
 }
 
 .featured-item {
