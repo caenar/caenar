@@ -21,6 +21,9 @@ $clr-green: var(--clr-green);
   padding: 0;
   font-family: 'Instrument Sans', sans-serif;
 }
+body {
+  font-size: 18px;
+}
 a {
   text-decoration: none;
   color: inherit;
@@ -29,8 +32,53 @@ ul, ol {
   list-style-type: none;
 }
 
+// componenets
+.header-inner {
+  padding-left: 5rem;
+  padding-right: 15rem;
+}
+.cta {
+  max-width: max-content;
+  padding-bottom: 3px;
+  border-bottom: 1px solid $clr-purple-dark;
+  
+  a {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: .2rem;
+    
+    &:hover ng-icon {
+      rotate: 0deg;
+    }
+    
+    ng-icon {
+      transition: 300ms ease;
+      rotate: -45deg;
+    }
+  }
+}
+
 
 // layout
+.grid {
+  display: grid;
+}
+.grid-col-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid-col-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-row-2 {
+  grid-template-rows: repeat(2, auto);
+}
+.col-span-2 {
+  grid-column-start: span 2;
+}
+.row-span-2 {
+  grid-row-start: span 2;
+}
 .flex {
   display: flex;
 }
@@ -48,14 +96,25 @@ ul, ol {
 .place-center {
   place-content: center center;
 }
+.between-start {
+  justify-content: space-between;
+  align-items: start;
+}
 .start {
   align-items: start;
+}
+.between-end {
+  justify-content: space-between;
+  align-items: end;
 }
 .end {
   align-items: end;
 }
 .w-full {
   width: 100%;
+}
+.h-full {
+  height: 100vh;
 }
 .hidden {
   overflow: hidden;
@@ -68,6 +127,10 @@ ul, ol {
 .lr-padding {
   padding-left: 5rem;
   padding-right: 5rem;
+}
+.tb-padding {
+  padding-top: 15rem;
+  padding-bottom: 10rem;
 }
 
 // flexible
@@ -100,6 +163,12 @@ ul, ol {
   row-gap: 4rem;
 }
 .row-gap-xl {
+  row-gap: 8rem;
+}
+.row-gap-xxl {
+  row-gap: 10rem;
+}
+.row-gap-xl {
   row-gap: 5rem;
 }
 .col-gap-xs {
@@ -108,9 +177,30 @@ ul, ol {
 .col-gap-s {
   column-gap: 2rem;
 }
+.col-gap-lg {
+  column-gap: 4rem;
+}
+.col-gap-xxl {
+  column-gap: 10rem;
+}
+.p-right-lg {
+  padding-right: 4rem;
+}
+.spacing-md {
+  margin-bottom: 3rem;
+}
 
 
 // typography
+.header {
+  h1 {
+    font-size: 6rem;
+    font-weight: 500;
+  }
+}
+.label {
+  font-weight: 500;
+}
 .text-bold {
   font-weight: 700;
 }
@@ -122,6 +212,18 @@ ul, ol {
   width: 100%;
   background-color: $clr-purple-dark;
 }
+.clr-white {
+  background-color: $clr-white;
+}
+.clr-purple {
+  background-color: $clr-purple;
+}
+.clr-purple-dark {
+  background-color: $clr-purple-dark;
+}
+.clr-pink {
+  background-color: $clr-pink;
+}
 
 
 .open-wrap {
@@ -130,7 +232,7 @@ ul, ol {
   grid-template-columns: repeat(4, 1fr);
   width: 100%;
   height: 100vh;
-  z-index: 100;
+  z-index: 169;
 
   div {
     display: block;

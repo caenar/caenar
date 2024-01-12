@@ -1,28 +1,90 @@
 <main>
   <section
-    class="intro-inner flex flex-col between-center lr-padding tb-padding-lg"
+    class="intro-inner flex flex-col between-center lr-padding tb-padding-lg clr-white"
   >
-    <div class="intro-head">
-      <h1>Multimedia Designer</h1>
+    <div class="intro-head clr-white">
+      <h1 data-splitting class="hidden">Multimedia Designer</h1>
       <div class="line"></div>
     </div>
     <div class="intro-banner">
-      <video src="../../../../assets/videos/showcase.mp4" autoplay loop></video>
+      <video class="hidden" src="../../../../assets/videos/showcase.mp4" autoplay loop></video>
     </div>
     <div class="intro-text flex between-center end w-full">
-      <p>
+      <p data-splitting="words" class="hidden">
         Always thinking out of the box, been through many trial and errors, it's my one and only goal to achieve my fullest potential.
       </p>
-      <p>[Scroll]</p>
+      <p data-splitting="words" class="hidden">[Scroll]</p>
     </div>
   </section>
-  <section class="e">
-    <div class="header">
+  <section class="header-inner grid grid-col-3 grid-row-2 tb-padding clr-white">
+    <div class="header-label row-span-2">
+      <p data-splitting="words" class="hidden label">[ABOUT]</p>
+    </div>
+    <div class="container grid grid-row-2 col-span-2 row-span-2 row-gap-xl">
+      <div class="header">
+        <h1 data-splitting class="hidden">I still have no idea what to put here</h1>
+      </div>
+      <div class="hidden body grid grid-col-2 row-gap-lg">
+        <p class="label">What you can expect</p>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo laboriosam iure est cumque optio quia iusto voluptatibus a natus tempora harum quaerat eveniet omnis libero, nisi eaque fugit similique esse?</p>
+        <p class="label">My approach to design</p>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo laboriosam iure est cumque optio quia iusto voluptatibus a natus tempora harum quaerat eveniet omnis libero, nisi eaque fugit similique esse?</p>
+        <div></div>
+        <div class="cta">
+          <a href="">Get to know me<ng-icon name="ionArrowForward"></ng-icon></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="featured lr-padding tb-padding clr-white">
+
+    <div class="header flex between-end spacing-md">
+      <h1 style="line-height: 80px;">WORK</h1>
+      <div class="body">
+        <p>You know what they say, practice makes perfect. I agree honestly.</p>
+      </div>
+      <div class="cta">
+        <a href="">View Projects <ng-icon name="ionArrowForward"></ng-icon></a>
+      </div>
+    </div>
+
+    <div class="featured-wrapper grid grid-col-2 col-gap-xs">
+
+      <div class="featured-item">
+        <div class="item-img-container">
+          <div class="item-img" style="background-image: url('../../../../assets/images/projects/sparklabs/mobile.png');"></div>
+          <div class="item-overlay" style="background-image: url('../../../../assets/images/projects/sparklabs/logocover.png');"></div>
+        </div>
+        <div class="item-text">
+          <div>
+            <h1>Spark Labs</h1>
+            <p>Coding solutions</p>
+          </div>
+          <div class="tags-container">
+            <p class="tag">Branding</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-item">
+        <div class="item-img-container">
+          <div class="item-img" style="background-image: url('../../../../assets/images/projects/pixelperfect/stationery.png');"></div>
+          <div class="item-overlay" style="background-image: url('../../../../assets/images/projects/pixelperfect/logocover.png');"></div>
+        </div>
+        
+        <div class="item-text">
+          <div>
+            <h1>Pixel Perfect</h1>
+            <p>Photography Studio</p>
+          </div>
+          <div class="tags-container">
+            <p class="tag">Branding</p>
+          </div>
+        </div>
+      </div>
 
     </div>
-    <div class="body">
 
-    </div>
   </section>
 </main>
 

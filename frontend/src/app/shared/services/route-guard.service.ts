@@ -56,7 +56,6 @@ export const routeGuard: CanActivateFn = (
           content.style.display = 'none';
         }, 1400);
       }, 1400);
-      
     } else {
       window.addEventListener('DOMContentLoaded', () => {
           resolve(true);

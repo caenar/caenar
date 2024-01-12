@@ -53,7 +53,6 @@ export class HeaderComponent implements OnInit {
         this.closeMenu();
       }
     })
-
     Splitting();
   }
 

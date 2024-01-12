@@ -26,6 +26,16 @@ nav {
   text-transform: uppercase;
   z-index: 99;
 
+  a[aria-current="page"]{
+    &::before {
+      content: '[';
+
+    }
+    &::after {
+      content: ']';
+    }
+  }
+
   .nav-list, .nav-links {
     color: $clr-white;
   }

@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class AnimationResolver implements Resolve<boolean> {
   resolve(): Observable<boolean> | Promise<boolean> | boolean {
+
+    // to alternate the direction
     const contentElement = document.querySelectorAll('.open-wrap > div');
     contentElement.forEach((element, index) => {
       if (element instanceof HTMLElement) {
@@ -16,6 +18,7 @@ export class AnimationResolver implements Resolve<boolean> {
         }, index * 200);
       }
     });
+    // resolve
     return true;
   }
 }
