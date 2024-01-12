@@ -114,6 +114,7 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         header_label.seek(header_label.duration * self.progress);
       },
+      scrub: 1
     });
 
     var header_title = anime({
@@ -133,6 +134,7 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         header_title.seek(header_title.duration * self.progress);
       },
+      scrub: 1
     });
 
     var header_body = anime({
@@ -152,10 +154,71 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         header_body.seek(header_body.duration * self.progress);
       },
+      scrub: 1
     });
   }
 
   featuredAnimations() {
+    var featured_header = anime({
+      targets: '.featured .header h1 .word .char',
+      translateY: [100,0],
+      opacity: [0, 1],
+      duration: 1000,
+      delay: anime.stagger(20),
+      easing: 'cubicBezier(.24,0,.09,1)',
+      autoplay: false,
+    })
+
+    ScrollTrigger.create({
+      trigger: '.featured',
+      start: 'top center',
+      end: '35% center',
+      onUpdate: (self) => {
+        featured_header.seek(featured_header.duration * self.progress);
+      },
+      scrub: 1
+    })
+
+    var featured_body = anime({
+      targets: ['.featured .body p .word', '.featured .header .cta'],
+      translateY: [100,0],
+      opacity: [0, 1],
+      duration: 1000,
+      delay: anime.stagger(20),
+      easing: 'cubicBezier(.24,0,.09,1)',
+      autoplay: false,
+    })
+
+    ScrollTrigger.create({
+      trigger: '.featured',
+      start: '5% center',
+      end: '35% center',
+      onUpdate: (self) => {
+        featured_body.seek(featured_body.duration * self.progress);
+      },
+      scrub: 1
+    })
+
+    var featured_item = anime({
+      targets: '.featured-item',
+      translateY: [200,0],
+      opacity: [0, 1],
+      duration: 1000,
+      delay: anime.stagger(30),
+      easing: 'cubicBezier(.24,0,.09,1)',
+      autoplay: false,
+    })
+
+    ScrollTrigger.create({
+      trigger: '.featured',
+      start: '10% center',
+      end: '50% center',
+      onUpdate: (self) => {
+        featured_item.seek(featured_item.duration * self.progress);
+      },
+      scrub: 1
+    })
+
     var itemContainer = document.querySelectorAll('.featured-item .item-img-container');
 
     itemContainer.forEach((item) => {
