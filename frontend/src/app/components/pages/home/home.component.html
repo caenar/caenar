@@ -22,6 +22,7 @@
       <p data-splitting="words" class="hidden">[Scroll]</p>
     </div>
   </section>
+
   <section class="header-inner grid grid-col-3 grid-row-2 tb-padding clr-white">
     <div class="header-label row-span-2">
       <p data-splitting="words" class="hidden label">[ABOUT]</p>
@@ -47,8 +48,7 @@
           tempora harum quaerat eveniet omnis libero, nisi eaque fugit similique
           esse?
         </p>
-        <div></div>
-        <div class="cta">
+        <div class="cta" style="grid-column-start: 2">
           <a href=""
             >Get to know me<ng-icon name="ionArrowForward"></ng-icon
           ></a>
@@ -56,11 +56,14 @@
       </div>
     </div>
   </section>
+
   <section class="featured lr-padding tb-padding clr-white">
     <div class="header flex between-end spacing-md">
       <h1 data-splitting class="hidden" style="line-height: 80px">WORK</h1>
       <div class="body">
-        <p data-splitting="words" class="hidden">You know what they say, practice makes perfect. I agree honestly.</p>
+        <p data-splitting="words" class="hidden">
+          You know what they say, practice makes perfect. I agree honestly.
+        </p>
       </div>
       <div class="hidden cta">
         <a href="">View Projects <ng-icon name="ionArrowForward"></ng-icon></a>
@@ -120,8 +123,47 @@
       </div>
     </div>
     <div class="container grid grid-col-2 col-gap-xs spacing-t-xxl">
-      <div class="cta" style="grid-column-start: 2;">
-        <a href=""><ng-icon name="ionArrowForward"></ng-icon> See all projects<sup>10</sup></a>
+      <div class="cta" style="grid-column-start: 2">
+        <a href=""
+          ><ng-icon name="ionArrowForward"></ng-icon> See all projects<sup
+            >10</sup
+          ></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="services header-inner grid grid-col-3 grid-row-2 tb-padding clr-white"
+  >
+    <div class="header-label row-span-2">
+      <p data-splitting="words" class="hidden label">[SERVICES]</p>
+    </div>
+    <div class="container grid grid-row-2 col-span-2 row-span-2 row-gap-xl">
+      <div class="header">
+        <h1 data-splitting class="hidden">What I can do</h1>
+      </div>
+      
+      <div class="hidden body grid grid-col-2 row-gap-s col-gap-s">
+        <div class="overlay-container row-span-6">
+          <div *ngFor="let item of items; let i = index"
+          [style.z-index]="i"
+          class="service-overlay">
+            <div
+              class="service-img"
+              [style.background-image]="'url(' + item.imagePath + ')'"
+            ></div>
+          </div>
+          <div class="service-video">
+            <video></video>
+          </div>
+        </div>
+        <p class="service-item" style="grid-column-start: 2">Branding</p>
+        <p class="service-item" style="grid-column-start: 2">Packaging</p>
+        <p class="service-item" style="grid-column-start: 2">Visual Identity</p>
+        <p class="service-item" style="grid-column-start: 2">Social Media Ads</p>
+        <p class="service-item" style="grid-column-start: 2">Web Design</p>
+        <p class="service-item" style="grid-column-start: 2">Motion Graphics</p>
       </div>
     </div>
   </section>

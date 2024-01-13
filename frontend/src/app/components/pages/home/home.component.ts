@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { serviceImage } from '../../../shared/models/serviceimage.model';
 import anime from 'animejs';
 import 'splitting/dist/splitting.css';
 import Splitting from 'splitting';
@@ -21,6 +22,7 @@ export class HomeComponent implements AfterViewInit {
       this.introAnimations();
       this.aboutAnimations();
       this.featuredAnimations();
+      this.servicesAnimations();
     }, 0);
   }
 
@@ -114,7 +116,7 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         header_label.seek(header_label.duration * self.progress);
       },
-      scrub: 1
+      scrub: 1,
     });
 
     var header_title = anime({
@@ -134,7 +136,7 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         header_title.seek(header_title.duration * self.progress);
       },
-      scrub: 1
+      scrub: 1,
     });
 
     var header_body = anime({
@@ -154,20 +156,20 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         header_body.seek(header_body.duration * self.progress);
       },
-      scrub: 1
+      scrub: 1,
     });
   }
 
   featuredAnimations() {
     var featured_header = anime({
       targets: '.featured .header h1 .word .char',
-      translateY: [100,0],
+      translateY: [100, 0],
       opacity: [0, 1],
       duration: 1000,
       delay: anime.stagger(20),
       easing: 'cubicBezier(.24,0,.09,1)',
       autoplay: false,
-    })
+    });
 
     ScrollTrigger.create({
       trigger: '.featured',
@@ -176,18 +178,18 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         featured_header.seek(featured_header.duration * self.progress);
       },
-      scrub: 1
-    })
+      scrub: 1,
+    });
 
     var featured_body = anime({
       targets: ['.featured .body p .word', '.featured .header .cta'],
-      translateY: [100,0],
+      translateY: [100, 0],
       opacity: [0, 1],
       duration: 1000,
       delay: anime.stagger(20),
       easing: 'cubicBezier(.24,0,.09,1)',
       autoplay: false,
-    })
+    });
 
     ScrollTrigger.create({
       trigger: '.featured',
@@ -196,18 +198,18 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         featured_body.seek(featured_body.duration * self.progress);
       },
-      scrub: 1
-    })
+      scrub: 1,
+    });
 
     var featured_item = anime({
       targets: '.featured-item',
-      translateY: [200,0],
+      translateY: [200, 0],
       opacity: [0, 1],
       duration: 1000,
       delay: anime.stagger(30),
       easing: 'cubicBezier(.24,0,.09,1)',
       autoplay: false,
-    })
+    });
 
     ScrollTrigger.create({
       trigger: '.featured',
@@ -216,10 +218,12 @@ export class HomeComponent implements AfterViewInit {
       onUpdate: (self) => {
         featured_item.seek(featured_item.duration * self.progress);
       },
-      scrub: 1
-    })
+      scrub: 1,
+    });
 
-    var itemContainer = document.querySelectorAll('.featured-item .item-img-container');
+    var itemContainer = document.querySelectorAll(
+      '.featured-item .item-img-container'
+    );
 
     itemContainer.forEach((item) => {
       const itemImg = item.querySelector('.item-img') as HTMLElement;
@@ -232,7 +236,7 @@ export class HomeComponent implements AfterViewInit {
         itemOverlay.style.setProperty('opacity', '1');
         itemOverlay.style.setProperty('visibility', 'visible');
       });
-      
+
       item.addEventListener('mouseleave', () => {
         itemImg.style.transform = 'scale(1)';
         itemImg.style.filter = 'blur(0px)';
@@ -241,5 +245,46 @@ export class HomeComponent implements AfterViewInit {
         itemOverlay.style.setProperty('visibility', 'hidden');
       });
     });
+  }
+
+  public items: serviceImage[] = [
+    { imagePath: '../../../../assets/images/branding.png' },
+    { imagePath: '../../../../assets/images/packaging.png' },
+    { imagePath: '../../../../assets/images/visualidentity.png' },
+    { imagePath: '../../../../assets/images/socmed.png' },
+    { imagePath: '../../../../assets/images/webdesign.png' },
+  ];
+
+  servicesAnimations() {
+    const videoPath = '../../../../assets/videos/cynovid.mp4';
+
+    const overlay_container = document.querySelector('.overlay-container')!;
+    const service_item = document.querySelectorAll('.service-item')!;
+    const service_overlay = document.querySelectorAll('.service-overlay')!;
+    const service_video = overlay_container.querySelector('video')!;
+
+    var overlayItem: Array<HTMLElement> =  [];
+    service_overlay.forEach((el, i) => {
+      overlayItem.push(el as HTMLElement);
+    });
+
+    overlayItem[0].style.visibility = 'visible';
+    service_item.forEach((element,index) => {
+      element.addEventListener('mouseenter', () => {
+        if(index === 5){
+          overlayItem[index].style.visibility = 'visible';
+          service_video.setAttribute('src', `${videoPath}`);
+        } else {
+          overlayItem[index].style.visibility = 'visible';
+        }
+      });
+      element.addEventListener('mouseleave', () => {
+        if(index !== 0){
+          setTimeout(() => {
+            overlayItem[index].style.visibility = 'hidden';
+          }, 120);
+        }
+      });
+    })
   }
 }

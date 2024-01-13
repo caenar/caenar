@@ -3,10 +3,10 @@
 :root {
   // colors
   --clr-purple: #8a29e6;
-  --clr-purple-dark: #231c2f;
+  --clr-purple-dark: #170b2e;
   --clr-white: #f9f5fc;
   --clr-pink: #e94bd4;
-  --clr-green: #4de212;
+  --clr-green: #85f15a;
 }
 
 $clr-purple: var(--clr-purple);
@@ -79,6 +79,9 @@ ul, ol {
 .row-span-2 {
   grid-row-start: span 2;
 }
+.row-span-6 {
+  grid-row-start: span 6;
+}
 .flex {
   display: flex;
 }
@@ -130,7 +133,7 @@ ul, ol {
 }
 .tb-padding {
   padding-top: 15rem;
-  padding-bottom: 10rem;
+  padding-bottom: 7rem;
 }
 
 // flexible
@@ -188,6 +191,12 @@ ul, ol {
 }
 .spacing-md {
   margin-bottom: 3rem;
+}
+.spacing-t-lg {
+  margin-top: 4rem;
+}
+.spacing-t-xl {
+  margin-top: 7rem;
 }
 .spacing-t-xxl {
   margin-top: 10rem;
