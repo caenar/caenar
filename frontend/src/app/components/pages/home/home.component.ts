@@ -274,19 +274,21 @@ export class HomeComponent implements AfterViewInit {
     });
 
     var previousItem: HTMLElement;
+    var previousItemText: any;
     var hasHovered: boolean = false;
     var hasHoveredFirst: boolean = false;
     var hoveredVid: boolean = false;
     var isSameElement: boolean = false;
 
     var commonProps = {
-      duration: 200,
-      delay: anime.stagger(40),
-      easing: 'cubicBezier(.2,0,.39,1)',
+      duration: 500,
+      easing: 'cubicBezier(0,-0.01,.14,1)',
     };
-
+    
     overlayItem[0].style.visibility = 'visible';
+    service_item[0].classList.add('hovered-elem');
 
+    
     service_item.forEach((element, index) => {
       element.addEventListener('mouseenter', () => {
         if (hasHovered && previousItem !== overlayItem[index]) {
@@ -297,10 +299,13 @@ export class HomeComponent implements AfterViewInit {
           if (hasHoveredFirst) {
             overlayItem[0].style.visibility = 'hidden';
           }
+          previousItemText.classList.remove('hovered-elem');
           anime({
             targets: previousItem,
             opacity: [1, 0],
-            ...commonProps,
+            scale: [1, 0.97],
+            duration: 400,
+            easing: 'cubicBezier(.33,0,.46,1)',
           });
           if (index !== 5 && previousItem !== overlayItem[5]) {
             hoveredVid = false;
@@ -320,6 +325,8 @@ export class HomeComponent implements AfterViewInit {
         if (!hasHovered) {
           hasHovered = true;
           previousItem = overlayItem[index];
+          previousItemText = element;
+          service_item[0].classList.remove('hovered-elem');
         }
         if (index < 5) {
           if (!isSameElement) {
@@ -327,6 +334,7 @@ export class HomeComponent implements AfterViewInit {
               anime({
                 targets: previousItem,
                 opacity: [0, 1],
+                scale: [0.97, 1],
                 ...commonProps,
               });
             }
@@ -334,21 +342,25 @@ export class HomeComponent implements AfterViewInit {
               anime({
                 targets: previousItem,
                 opacity: [0, 1],
+                scale: [0.97, 1],
                 ...commonProps,
               });
             }
           }
           overlayItem[index].style.visibility = 'visible';
+          service_item[index].classList.add('hovered-elem');
         } else {
           if (!isSameElement) {
             anime({
               targets: service_vidContainer,
               opacity: [0, 1],
+              scale: [0.97, 1],
               ...commonProps,
             });
           }
           service_video.play();
           service_vidContainer.style.visibility = 'visible';
+          service_item[index].classList.add('hovered-elem');
         }
       });
     });

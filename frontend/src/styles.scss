@@ -254,3 +254,17 @@ ul, ol {
     transition: 800ms cubic-bezier(.41,0,.09,1);
   }
 }
+
+.hovered-elem {
+  font-weight: 500;
+  color: black !important;
+  transition:  1000ms all cubic-bezier(0,-0.01,.19,1.01);
+
+  &::before {
+    content: '[';
+  }
+  &::after {
+    content: ']';
+
+  }
+}
