@@ -130,30 +130,41 @@
   border-radius: 1rem;
   height: 550px;
   width: 500px;
-}
 
-.service-overlay {
-  visibility: hidden;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 1rem;
-  
-  .service-img {
-    height: 100%;
-    width: 100%;
-    background-position: center;
-    background-size: cover;
-    border-radius: 1rem;
-  }
-  
-  .service-video {
+  .service-overlay {
+    visibility: hidden;
+    position: absolute;
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 1rem;
-    z-index: 99;
+
+    .service-img {
+      height: 100%;
+      width: 100%;
+      background-position: center;
+      background-size: cover;
+      border-radius: 1rem;
+    }
+  }
+
+  .service-video {
+    visibility: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    z-index: 2;
+    
+    video {
+      display: block;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 1rem;
+      z-index: 99;
+    }
   }
 }
 

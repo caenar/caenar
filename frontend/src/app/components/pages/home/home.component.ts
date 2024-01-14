@@ -261,30 +261,96 @@ export class HomeComponent implements AfterViewInit {
     const overlay_container = document.querySelector('.overlay-container')!;
     const service_item = document.querySelectorAll('.service-item')!;
     const service_overlay = document.querySelectorAll('.service-overlay')!;
-    const service_video = overlay_container.querySelector('video')!;
+    const service_vidContainer = overlay_container.querySelector(
+      '.service-video'
+    )! as HTMLElement;
 
-    var overlayItem: Array<HTMLElement> =  [];
+    const service_video = overlay_container.querySelector('video')!;
+    service_video.setAttribute('src', `${videoPath}`);
+
+    var overlayItem: Array<HTMLElement> = [];
     service_overlay.forEach((el, i) => {
       overlayItem.push(el as HTMLElement);
     });
 
+    var previousItem: HTMLElement;
+    var hasHovered: boolean = false;
+    var hasHoveredFirst: boolean = false;
+    var hoveredVid: boolean = false;
+    var isSameElement: boolean = false;
+
+    var commonProps = {
+      duration: 200,
+      delay: anime.stagger(40),
+      easing: 'cubicBezier(.2,0,.39,1)',
+    };
+
     overlayItem[0].style.visibility = 'visible';
-    service_item.forEach((element,index) => {
+
+    service_item.forEach((element, index) => {
       element.addEventListener('mouseenter', () => {
-        if(index === 5){
-          overlayItem[index].style.visibility = 'visible';
-          service_video.setAttribute('src', `${videoPath}`);
-        } else {
-          overlayItem[index].style.visibility = 'visible';
-        }
-      });
-      element.addEventListener('mouseleave', () => {
-        if(index !== 0){
-          setTimeout(() => {
+        if (hasHovered && previousItem !== overlayItem[index]) {
+          hasHovered = false;
+          hasHoveredFirst = true;
+          isSameElement = false;
+          service_video.pause();
+          if (hasHoveredFirst) {
+            overlayItem[0].style.visibility = 'hidden';
+          }
+          anime({
+            targets: previousItem,
+            opacity: [1, 0],
+            ...commonProps,
+          });
+          if (index !== 5 && previousItem !== overlayItem[5]) {
+            hoveredVid = false;
+            previousItem.style.visibility = 'hidden';
             overlayItem[index].style.visibility = 'hidden';
-          }, 120);
+          } else {
+            if (!hoveredVid) {
+              previousItem.style.visibility = 'hidden';
+              hoveredVid = true;
+            }
+            service_vidContainer.style.visibility = 'hidden';
+          }
+        }
+        if (previousItem === overlayItem[index]) {
+          isSameElement = true;
+        }
+        if (!hasHovered) {
+          hasHovered = true;
+          previousItem = overlayItem[index];
+        }
+        if (index < 5) {
+          if (!isSameElement) {
+            if (index !== 0) {
+              anime({
+                targets: previousItem,
+                opacity: [0, 1],
+                ...commonProps,
+              });
+            }
+            if (hasHoveredFirst) {
+              anime({
+                targets: previousItem,
+                opacity: [0, 1],
+                ...commonProps,
+              });
+            }
+          }
+          overlayItem[index].style.visibility = 'visible';
+        } else {
+          if (!isSameElement) {
+            anime({
+              targets: service_vidContainer,
+              opacity: [0, 1],
+              ...commonProps,
+            });
+          }
+          service_video.play();
+          service_vidContainer.style.visibility = 'visible';
         }
       });
-    })
+    });
   }
 }
