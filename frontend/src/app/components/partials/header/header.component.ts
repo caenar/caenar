@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   trigger,
   state,
@@ -7,7 +7,7 @@ import {
   transition,
   AnimationEvent,
 } from '@angular/animations';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { RouteGuardService } from '../../../shared/services/route-guard.service';
 
 import anime from 'animejs';
@@ -44,16 +44,40 @@ import Splitting from 'splitting';
 export class HeaderComponent implements OnInit {
   private isMenuOpen = false;
   public menuState = 'closed';
+  private startHidingListener!: () => void;
 
-  constructor(private el: ElementRef, private router: Router, public routeGS: RouteGuardService) {}
+  constructor(private router: Router, public routeGS: RouteGuardService) {}
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
-      if(event instanceof NavigationStart) {
+      if (event instanceof NavigationStart) {
         this.closeMenu();
       }
-    })
+    });
     Splitting();
+
+    this.startHidingListener = this.hideHeader();
+    this.startHidingListener();
+  }
+
+  hideHeader() {
+    var prevScrollPos = window.scrollY;
+    var headerSafeZone = 100;
+
+    const startHiding = () => {
+      const currentScrollPos = window.scrollY;
+      if (currentScrollPos > headerSafeZone) {
+        document.querySelector('header')!.style.top = '-10%';
+      } else {
+        document.querySelector('header')!.style.top = '0';
+      }
+      if (prevScrollPos > currentScrollPos && prevScrollPos > headerSafeZone) {
+        document.querySelector('header')!.style.top = '0';
+      }
+      prevScrollPos = currentScrollPos;
+    };
+    window.addEventListener('scroll', startHiding);
+    return startHiding;
   }
 
   openMenu() {
@@ -64,6 +88,12 @@ export class HeaderComponent implements OnInit {
       'header .container .menu-button span'
     ) as HTMLElement;
     menuSpan.innerText = this.isMenuOpen ? '[CLOSE]' : '[MENU]';
+
+    if(this.isMenuOpen){
+      window.removeEventListener('scroll', this.startHidingListener);
+    } else {
+      window.addEventListener('scroll', this.startHidingListener);
+    }
   }
 
   closeMenu() {

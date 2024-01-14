@@ -5,6 +5,7 @@ header {
   mix-blend-mode: difference;
   width: 100%;
   z-index: 100;
+  transition: 1000ms cubic-bezier(0,-0.01,.19,1.01);
   
   .container {
     h1, span {

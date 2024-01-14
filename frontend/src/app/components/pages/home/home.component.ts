@@ -161,20 +161,24 @@ export class HomeComponent implements AfterViewInit {
   }
 
   featuredAnimations() {
-    var featured_header = anime({
-      targets: '.featured .header h1 .word .char',
+    var commonProps = {
       translateY: [100, 0],
       opacity: [0, 1],
-      duration: 1000,
+      duration: 1500,
       delay: anime.stagger(20),
       easing: 'cubicBezier(.24,0,.09,1)',
       autoplay: false,
+    }
+
+    var featured_header = anime({
+      targets: '.featured .header h1 .word .char',
+      ...commonProps
     });
 
     ScrollTrigger.create({
       trigger: '.featured',
       start: 'top center',
-      end: '35% center',
+      end: '50% center',
       onUpdate: (self) => {
         featured_header.seek(featured_header.duration * self.progress);
       },
@@ -193,8 +197,8 @@ export class HomeComponent implements AfterViewInit {
 
     ScrollTrigger.create({
       trigger: '.featured',
-      start: '5% center',
-      end: '35% center',
+      start: 'top center',
+      end: '50% center',
       onUpdate: (self) => {
         featured_body.seek(featured_body.duration * self.progress);
       },
@@ -203,17 +207,12 @@ export class HomeComponent implements AfterViewInit {
 
     var featured_item = anime({
       targets: '.featured-item',
-      translateY: [200, 0],
-      opacity: [0, 1],
-      duration: 1000,
-      delay: anime.stagger(30),
-      easing: 'cubicBezier(.24,0,.09,1)',
-      autoplay: false,
+      ...commonProps
     });
 
     ScrollTrigger.create({
       trigger: '.featured',
-      start: '10% center',
+      start: 'top center',
       end: '50% center',
       onUpdate: (self) => {
         featured_item.seek(featured_item.duration * self.progress);
