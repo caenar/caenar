@@ -268,7 +268,7 @@ export class HomeComponent implements AfterViewInit {
     service_video.setAttribute('src', `${videoPath}`);
 
     var overlayItem: Array<HTMLElement> = [];
-    service_overlay.forEach((el, i) => {
+    service_overlay.forEach((el) => {
       overlayItem.push(el as HTMLElement);
     });
 

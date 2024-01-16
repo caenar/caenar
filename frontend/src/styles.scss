@@ -98,6 +98,7 @@ ul, ol {
 }
 .place-center {
   place-content: center center;
+  place-items: center center;
 }
 .between-start {
   justify-content: space-between;
@@ -171,9 +172,6 @@ ul, ol {
 .row-gap-xxl {
   row-gap: 10rem;
 }
-.row-gap-xl {
-  row-gap: 5rem;
-}
 .col-gap-xs {
   column-gap: 1rem;
 }
@@ -189,6 +187,12 @@ ul, ol {
 .p-right-lg {
   padding-right: 4rem;
 }
+.spacing-xs {
+  margin-bottom: 1rem;
+}
+.spacing-s {
+  margin-bottom: 2rem;
+}
 .spacing-md {
   margin-bottom: 3rem;
 }
@@ -200,6 +204,9 @@ ul, ol {
 }
 .spacing-t-xxl {
   margin-top: 10rem;
+}
+.padding-top {
+  padding-top: 17rem;
 }
 
 
@@ -268,3 +275,14 @@ ul, ol {
 
   }
 }
+
+// .activeRoute {
+//   &::before {
+//     content: '[';
+//     position: relative;
+//   }
+//   &::after {
+//     content: ']';
+//     position: relative;
+//   }
+// }

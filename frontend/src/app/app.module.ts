@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgIconsModule } from '@ng-icons/core';
-import { ionArrowForward } from '@ng-icons/ionicons';
+import { ionArrowForward, ionArrowUp } from '@ng-icons/ionicons';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,7 +25,8 @@ import { WorkComponent } from './components/pages/work/work.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     NgIconsModule.withIcons({
-      ionArrowForward
+      ionArrowForward,
+      ionArrowUp
     })
   ],
   providers: [],

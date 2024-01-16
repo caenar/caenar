@@ -6,17 +6,12 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RouteGuardService {
-  constructor(private router: Router) {}
 
-  isCurrentRoute(route: string): boolean {
-    return this.router.url === route;
-  }
 }
 
 export const routeGuard: CanActivateFn = (
@@ -28,7 +23,6 @@ export const routeGuard: CanActivateFn = (
   | Observable<boolean | UrlTree>
   | Promise<boolean | UrlTree> => {
   return new Promise((resolve) => {
-    
     const content = document.querySelector('.open-wrap')! as HTMLElement;
     const contentElement = document.querySelectorAll('.open-wrap > div')!;
 
@@ -58,21 +52,18 @@ export const routeGuard: CanActivateFn = (
       }, 1400);
     } else {
       window.addEventListener('DOMContentLoaded', () => {
-          resolve(true);
-          contentElement.forEach((element, index) => {
-            if (element instanceof HTMLElement) {
-              setTimeout(() => {
-                element.style.top = '-100%';
-              }, index * 200);
-            }
-          });
-          setTimeout(() => {
-            content.style.display = 'none';
-          }, 1400);
+        resolve(true);
+        contentElement.forEach((element, index) => {
+          if (element instanceof HTMLElement) {
+            setTimeout(() => {
+              element.style.top = '-100%';
+            }, index * 200);
+          }
+        });
+        setTimeout(() => {
+          content.style.display = 'none';
+        }, 1400);
       });
     }
-
   });
-  
 };
-

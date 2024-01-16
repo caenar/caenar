@@ -1,0 +1,32 @@
+@import '../../../../styles.scss';
+
+.top {
+  .text-desc {
+    font-weight: 400;
+    max-width: 20ch;
+  }
+
+}
+
+.line {
+  background-color: rgba(128, 128, 128, 0.301);
+}
+
+
+.bottom {
+  .cta {
+    a {
+      ng-icon {
+        rotate: unset;
+      }
+    }
+  }
+  svg {
+    align-self: end;
+    max-width: 15rem;
+  }
+}
+
+.grid-col-3 {
+  grid-template-columns: 50% 30% 20%;
+}

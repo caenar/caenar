@@ -4,46 +4,44 @@
       <h1>CAENAR</h1>
     </div>
     <div class="menu-button">
-      <span (click)="openMenu()">[MENU]</span>
+      <span (click)="openMenu()">MENU</span>
     </div>
   </div>
 </header>
-
 <nav
   [@menuAnim]="menuState"
   (@menuAnim.start)="onAnimationStart($event)"
+  (@menuAnim.done)="getItemInfo($event)"
   class="flex flex-col end-start row-gap-xl lr-padding tb-padding-md"
 >
   <ul class="nav-list text-bold">
+    <p class="selector-left text-bold">[</p>
+    <p class="selector-right text-bold">]</p>
     <li class="hidden">
-      <a class="nav-item"
+      <a #navItems class="nav-item"
         data-splitting
         routerLink="/"
-        [ariaCurrent]="routeGS.isCurrentRoute('/') ? 'page' : null"
         >Home</a
       >
     </li>
     <li class="hidden">
-      <a class="nav-item"
+      <a #navItems class="nav-item"
         data-splitting
         routerLink="/work"
-        [ariaCurrent]="routeGS.isCurrentRoute('/work') ? 'page' : null"
         >Work</a
       >
     </li>
     <li class="hidden">
-      <a class="nav-item"
+      <a #navItems class="nav-item"
         data-splitting
-        routerLink="/about"
-        [ariaCurrent]="routeGS.isCurrentRoute('/about') ? 'page' : null"
+        routerLink="/about"       
         >About</a
       >
     </li>
     <li class="hidden">
-      <a class="nav-item"
+      <a #navItems class="nav-item"
         data-splitting
-        routerLink="/contact"
-        [ariaCurrent]="routeGS.isCurrentRoute('/contact') ? 'page' : null"
+        routerLink="/contact"        
         >Contact</a
       >
     </li>
