@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { serviceImage } from '../../../shared/models/serviceimage.model';
+
 import anime from 'animejs';
 import 'splitting/dist/splitting.css';
 import Splitting from 'splitting';
@@ -14,9 +15,13 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 export class HomeComponent implements AfterViewInit {
   constructor(private el: ElementRef) {}
 
+  isMobile: boolean = false;
+
   ngAfterViewInit(): void {
     Splitting();
     gsap.registerPlugin(ScrollTrigger);
+
+    console.log(this.isMobile)
 
     setTimeout(() => {
       this.introAnimations();

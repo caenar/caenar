@@ -143,11 +143,10 @@
       <div class="header">
         <h1 data-splitting class="hidden">What I can do</h1>
       </div>
-      
+
       <div class="hidden body grid grid-col-2 row-gap-s col-gap-s">
         <div class="overlay-container row-span-6">
-          <div *ngFor="let item of items"
-          class="service-overlay">
+          <div *ngFor="let item of items" class="service-overlay">
             <div
               class="service-img"
               [style.background-image]="'url(' + item.imagePath + ')'"
@@ -160,7 +159,9 @@
         <p class="service-item" style="grid-column-start: 2">Branding</p>
         <p class="service-item" style="grid-column-start: 2">Packaging</p>
         <p class="service-item" style="grid-column-start: 2">Visual Identity</p>
-        <p class="service-item" style="grid-column-start: 2">Social Media Ads</p>
+        <p class="service-item" style="grid-column-start: 2">
+          Social Media Ads
+        </p>
         <p class="service-item" style="grid-column-start: 2">Web Design</p>
         <p class="service-item" style="grid-column-start: 2">Motion Graphics</p>
       </div>

@@ -1,34 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap");
 
 :root {
   // colors
-  --clr-purple: #8a29e6;
-  --clr-purple-dark: #170b2e;
-  --clr-white: #f9f5fc;
-  --clr-pink: #e94bd4;
-  --clr-green: #85f15a;
+  --clr-text: #eae9f2;
+  --clr-background: #150920;
+  --clr-primary: #7e17e5;
+  --clr-secondary: #492576;
+  --clr-accent: #ea14e7;
+
+  // padding
+  --lr-padding-md: 6rem;
+  --lr-padding-s: 4rem;
+  --lr-padding: 2rem;
+  
+  --tb-padding-md: 6rem;
+  --tb-padding-s: 3rem;
+  --tb-padding: 1.5rem;
+  
+  --top-strech-padding: 6rem 5rem 3rem 5rem;
+  --bot-strech-padding: 3rem 6rem 5rem 5rem;
+  --small-padding: 1rem 5rem;
+  --section-padding: 3rem 3rem;
+  --mobile-padding: 1rem 1.5rem;
 }
 
-$clr-purple: var(--clr-purple);
-$clr-purple-dark: var(--clr-purple-dark);
-$clr-white: var(--clr-white);
-$clr-pink: var(--clr-pink);
-$clr-green: var(--clr-green);
+// colors
+$clr-text: var(--clr-text);
+$clr-background: var(--clr-background);
+$clr-primary: var(--clr-primary);
+$clr-secondary: var(--clr-secondary);
+$clr-accent: var(--clr-accent);
 
+// padding
+$lr-padding-md: var(--lr-padding-md);
+$lr-padding-s: var(--lr-padding-s);
+$lr-padding: var(--lr-padding);
+
+$tb-padding-md: var(--tb-padding-md);
+$tb-padding-s: var(--tb-padding-s);
+$tb-padding: var(--tb-padding);
+
+$top-stretch-padding: var(--top-strech-padding);
+$bottom-stretch-padding: var(--bot-strech-padding);
+$mobile-padding: var(--mobile-padding);
+$small-padding: var(--small-padding);
+$section-padding: var(--section-padding);
+
+// reset css
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: "Instrument Sans", sans-serif;
 }
 body {
-  font-size: 18px;
+  font-size: 20px;
+  color: $clr-text;
 }
 a {
   text-decoration: none;
   color: inherit;
 }
-ul, ol {
+ul,
+ol {
   list-style-type: none;
 }
 
@@ -40,25 +74,25 @@ ul, ol {
 .cta {
   max-width: max-content;
   padding-bottom: 3px;
-  border-bottom: 1px solid $clr-purple-dark;
-  
+  border-bottom: 1px solid $clr-text;
+
   a {
     display: flex;
     align-items: center;
     font-weight: 500;
-    gap: .2rem;
-    
+    cursor: pointer;
+    gap: 0.2rem;
+
     &:hover ng-icon {
       rotate: 0deg;
     }
-    
+
     ng-icon {
       transition: 300ms ease;
       rotate: -45deg;
     }
   }
 }
-
 
 // layout
 .grid {
@@ -124,7 +158,6 @@ ul, ol {
   overflow: hidden;
 }
 
-
 // padding, margin, and spacing
 
 // fixed
@@ -153,6 +186,9 @@ ul, ol {
 .tb-padding-lg {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+.row-gap-xxs {
+  row-gap: 0.5rem;
 }
 .row-gap-xs {
   row-gap: 1rem;
@@ -209,7 +245,6 @@ ul, ol {
   padding-top: 17rem;
 }
 
-
 // typography
 .header {
   h1 {
@@ -224,26 +259,18 @@ ul, ol {
   font-weight: 700;
 }
 
-
 // decorations
 .line {
   height: 1.2px;
   width: 100%;
-  background-color: $clr-purple-dark;
+  background-color: $clr-text;
 }
 .clr-white {
-  background-color: $clr-white;
+  background-color: $clr-text;
 }
-.clr-purple {
-  background-color: $clr-purple;
+.has-hover {
+  cursor: pointer;
 }
-.clr-purple-dark {
-  background-color: $clr-purple-dark;
-}
-.clr-pink {
-  background-color: $clr-pink;
-}
-
 
 .open-wrap {
   position: fixed;
@@ -254,35 +281,33 @@ ul, ol {
   z-index: 169;
 
   div {
+    top: 0;
     display: block;
     position: relative;
-    background-color: $clr-purple;
-    top: 0;
-    transition: 800ms cubic-bezier(.41,0,.09,1);
+    background-color: $clr-primary;
+    transition: 800ms cubic-bezier(0.41, 0, 0.09, 1);
   }
 }
 
 .hovered-elem {
   font-weight: 500;
   color: black !important;
-  transition:  1000ms all cubic-bezier(0,-0.01,.19,1.01);
+  transition: 1000ms all cubic-bezier(0, -0.01, 0.19, 1.01);
 
   &::before {
-    content: '[';
+    content: "[";
   }
   &::after {
-    content: ']';
-
+    content: "]";
   }
 }
 
-// .activeRoute {
-//   &::before {
-//     content: '[';
-//     position: relative;
-//   }
-//   &::after {
-//     content: ']';
-//     position: relative;
-//   }
-// }
+@media screen and (max-width: 767px) {
+  :root {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-size: 18px;
+  }
+}

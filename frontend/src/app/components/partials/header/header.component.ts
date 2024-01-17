@@ -45,7 +45,6 @@ import Splitting from 'splitting';
 export class HeaderComponent implements OnInit {
   private isMenuOpen = false;
   public menuState = 'closed';
-
   private startHidingListener!: () => void;
 
   constructor(
@@ -104,7 +103,7 @@ export class HeaderComponent implements OnInit {
     this.menuState = this.isMenuOpen ? 'opened' : 'closed';
 
     const menuSpan = document.querySelector(
-      'header .container .menu-button span'
+      'header .header-container .menu-button span'
     ) as HTMLElement;
     menuSpan.innerText = this.isMenuOpen ? '[CLOSE]' : '[MENU]';
 
@@ -119,92 +118,91 @@ export class HeaderComponent implements OnInit {
     this.isMenuOpen = false;
     this.menuState = 'closed';
     const menuSpan = document.querySelector(
-      'header .container .menu-button span'
+      'header .header-container .menu-button span'
     ) as HTMLElement;
     menuSpan.innerText = '[MENU]';
   }
 
-    onAnimationStart(event: AnimationEvent) {
-      var CommonProps = {
-        duration: 700,
-        easing: 'cubicBezier(.39,0,.16,1.01)',
-        autoplay: false,
-      };
+  onAnimationStart(event: AnimationEvent) {
+    var CommonProps = {
+      duration: 700,
+      easing: 'cubicBezier(.39,0,.16,1.01)',
+      autoplay: false,
+    };
 
-      var itemAnimationsIn = anime({
-        targets: '.nav-list .nav-item .word .char',
-        translateY: [500, 0],
-        delay: function (el, i) {
-          return i * 20;
-        },
-        ...CommonProps,
-      });
-      var itemAnimationsOut = anime({
-        targets: '.nav-list .nav-item .word .char',
-        translateY: [0, -500],
-        ...CommonProps,
-      });
+    var itemAnimationsIn = anime({
+      targets: '.nav-list .nav-item .word .char',
+      translateY: [500, 0],
+      delay: function (el, i) {
+        return i * 20;
+      },
+      ...CommonProps,
+    });
+    var itemAnimationsOut = anime({
+      targets: '.nav-list .nav-item .word .char',
+      translateY: [0, -500],
+      ...CommonProps,
+    });
 
-      var linkAnimationsIn = anime({
-        targets: '.nav-links .nav-item .word',
-        opacity: [0, 1],
-        delay: function (el, i) {
-          return 20 * 20;
-        },
-        ...CommonProps,
-      });
-      var linkAnimationsOut = anime({
-        targets: '.nav-links .nav-item .word',
-        opacity: [1, 0],
-        ...CommonProps,
-      });
-      
-      var selectorLeftIn = anime({
-        targets: '.nav-list .selector-left',
-        translateX: [-50,0],
-        opacity: 1,
-        ...CommonProps,
-      });
-      var selectorLeftOut = anime({
-        targets: '.nav-list .selector-left',
-        translateX: [0,-50],
-        opacity: 0,
-        duration: 500,
-        easing: 'cubicBezier(.73,0,0,.99)',
-        autoplay: false,
-      })
-      var selectorRightIn = anime({
-        targets: '.nav-list .selector-right',
-        translateX: [50,0],
-        opacity: 1,
-        ...CommonProps,
-      });
-      var selectorRightOut = anime({
-        targets: '.nav-list .selector-right',
-        translateX: [0,50],
-        opacity: 0,
-        duration: 500,
-        easing: 'cubicBezier(.73,0,0,.99)',
-        autoplay: false,
-      })
+    var linkAnimationsIn = anime({
+      targets: '.nav-links .nav-item .word',
+      opacity: [0, 1],
+      delay: function (el, i) {
+        return 25 * 25;
+      },
+      ...CommonProps,
+    });
+    var linkAnimationsOut = anime({
+      targets: '.nav-links .nav-item .word',
+      opacity: [1, 0],
+      ...CommonProps,
+    });
 
-      if (event.fromState === 'closed' && event.toState === 'opened') {
-        setTimeout(() => {
-          itemAnimationsIn.play();
-        }, 150);
-        setTimeout(() => {
-          selectorLeftIn.play();
-          selectorRightIn.play();
-          // selectorsAnimIn.play();
-        }, 500);
-        linkAnimationsIn.play();
-      } else if (event.fromState === 'opened' && event.toState === 'closed') {
-        itemAnimationsOut.play();
-        linkAnimationsOut.play();
-        selectorLeftOut.play();
-        selectorRightOut.play();
-      }
+    var selectorLeftIn = anime({
+      targets: '.nav-list .selector-left',
+      translateX: [-50, 0],
+      opacity: 1,
+      ...CommonProps,
+    });
+    var selectorLeftOut = anime({
+      targets: '.nav-list .selector-left',
+      translateX: [0, -50],
+      opacity: 0,
+      duration: 500,
+      easing: 'cubicBezier(.73,0,0,.99)',
+      autoplay: false,
+    });
+    var selectorRightIn = anime({
+      targets: '.nav-list .selector-right',
+      translateX: [50, 0],
+      opacity: 1,
+      ...CommonProps,
+    });
+    var selectorRightOut = anime({
+      targets: '.nav-list .selector-right',
+      translateX: [0, 50],
+      opacity: 0,
+      duration: 500,
+      easing: 'cubicBezier(.73,0,0,.99)',
+      autoplay: false,
+    });
+
+    if (event.fromState === 'closed' && event.toState === 'opened') {
+      setTimeout(() => {
+        itemAnimationsIn.play();
+      }, 150);
+      setTimeout(() => {
+        selectorLeftIn.play();
+        selectorRightIn.play();
+      }, 500);
+      linkAnimationsIn.play();
+    } else if (event.fromState === 'opened' && event.toState === 'closed') {
+      itemAnimationsOut.play();
+      linkAnimationsOut.play();
+      selectorLeftOut.play();
+      selectorRightOut.play();
     }
+  }
 
   itemsTop: number[] = [];
   itemsRight: number[] = [];
@@ -214,29 +212,20 @@ export class HeaderComponent implements OnInit {
     if (event.toState === 'opened') {
       if (this.getItemInfoCounter !== 1) {
         ++this.getItemInfoCounter;
+        
         var navItems = document.querySelectorAll('.nav-list .nav-item')!;
-
         var navLinks: string[] = [];
 
         navItems.forEach((element, index) => {
           navLinks.push(element.getAttribute('routerLink')!);
-          console.log(navLinks[index]);
-
           if (navLinks[index] === this.currentRouterLink) {
             this.currentLink = navItems[index];
-            console.log(this.currentLink);
           }
-
           if (this.itemsTop.length !== 4) {
             this.itemsTop.push(element.getBoundingClientRect().top);
             this.itemsRight.push(element.getBoundingClientRect().right);
-            console.log(this.itemsTop[index]);
-            console.log(this.itemsRight[index]);
-          } else {
-            console.log('could not get item top position');
           }
         });
-
         this.setActiveLink();
       }
     }
@@ -252,10 +241,10 @@ export class HeaderComponent implements OnInit {
     )! as HTMLElement;
     var navItems = document.querySelectorAll('.nav-list .nav-item')!;
 
-    const SELECTOR_OFFSET = 65;
+    const SELECTOR_OFFSET = 45;
     navItems.forEach((element, index) => {
       const topDifference = this.itemsTop[index] - this.itemsTop[0];
-      
+
       element.addEventListener('mouseenter', () => {
         navItems.forEach((item) => item.classList.add('unhovered-item'));
 

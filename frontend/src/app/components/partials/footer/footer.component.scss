@@ -1,32 +1,82 @@
-@import '../../../../styles.scss';
+@import "../../../../styles.scss";
 
-.top {
-  .text-desc {
-    font-weight: 400;
-    max-width: 20ch;
+footer {
+  background-color: $clr-text;
+  color: $clr-background;
+  padding: $tb-padding-s 0;
+
+  .line {
+    background-color: $clr-background;
+    opacity: 0.05;
   }
 
-}
+  .footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: $top-stretch-padding;
+    gap: 3rem;
 
-.line {
-  background-color: rgba(128, 128, 128, 0.301);
-}
+    @media screen and (max-width: 767px) {
+      padding: $mobile-padding;
+    }
 
+    .label {
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+    }
+    .desc {
+      max-width: 20ch;
+      margin-bottom: 2.5rem;
 
-.bottom {
-  .cta {
-    a {
-      ng-icon {
-        rotate: unset;
+      @media screen and (max-width: 767px) {
+        margin-bottom: 1.7rem;
+      }
+    }
+
+    .top-wrapper,
+    .bottom-wrapper {
+      display: grid;
+      grid-template-columns: 40% 30% 30%;
+
+      @media screen and (max-width: 767px) {
+        display: flex;
+        flex-direction: column;
+
+        &.top-wrapper {
+          gap: 3rem;
+        }
+      }
+
+      .contact {
+        gap: 2rem;
+        grid-column-start: 2;
+      }
+    }
+
+    .bottom-wrapper {
+      align-items: end;
+
+      @media screen and (max-width: 767px) {
+        align-items: center;
+        gap: .3rem;
+
+        svg {
+          margin: 1rem 0;
+          order: 2;
+        }
+        .copyright {
+          order: 3;
+        }
+      }
+
+      svg {
+        max-width: 15rem;
+
+        path {
+          fill: $clr-background;
+        }
       }
     }
   }
-  svg {
-    align-self: end;
-    max-width: 15rem;
-  }
-}
-
-.grid-col-3 {
-  grid-template-columns: 50% 30% 20%;
 }

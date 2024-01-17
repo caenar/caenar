@@ -69,6 +69,9 @@
 
   .item-img-container {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 50rem;
     border-radius: 1rem;
@@ -93,8 +96,6 @@
       width: 550px;
       height: 400px;
       z-index: 2;
-      top: 25%;
-      left: 17%;
       opacity: 0;
       transform: scale(0.9);
       transition: 1s cubic-bezier(0.38, 0, 0.13, 1);
@@ -156,7 +157,7 @@
     object-fit: cover;
     border-radius: 1rem;
     z-index: 2;
-    
+
     video {
       display: block;
       height: 100%;
@@ -173,4 +174,132 @@
   width: max-content;
   color: gray;
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .lr-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .tb-padding {
+    padding-top: 7rem !important;
+    padding-bottom: 7rem !important;
+  }
+
+  .intro-inner {
+    gap: 20px;
+
+    .intro-head {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h1 {
+        font-size: 4rem;
+        line-height: 3.5rem;
+      }
+    }
+
+    .intro-banner {
+      height: 100%;
+      video {
+        height: 100% !important;
+      }
+    }
+
+    .intro-text {
+      font-size: 1rem;
+      p {
+        max-width: 30ch;
+        text-wrap: balance;
+      }
+    }
+  }
+
+  .header-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+
+      .header {
+        h1 {
+          font-size: 4rem;
+          line-height: 3.7rem;
+          text-wrap: balance;
+        }
+      }
+
+    }
+  }
+
+  .featured {
+    .header {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 5rem;
+      gap: 1rem;
+
+      h1 {
+        font-size: 5rem;
+      }
+    }
+
+    .body {
+      p {
+        text-align: center;
+      }
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 5rem;
+
+      a {
+        font-size: 3rem;
+      }
+    }
+  }
+
+  .featured-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .featured-item {
+    .item-img-container {
+      .item-overlay {
+        width: 350px;
+        height: 300px;
+        z-index: 2;
+      }
+    }
+  }
+
+  .services {
+    .body {
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+
+      .service-item {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .overlay-container {
+    margin-bottom: 2rem;
+    height: 400px;
+    width: 100%;
+  }
 }
