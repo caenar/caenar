@@ -1,17 +1,16 @@
 @import "../../../../styles.scss";
 
-:host {
-  --easeTrans: 500ms left cubic-bezier(0.71, 0, 0.19, 1.01),
-    500ms top cubic-bezier(0.71, 0, 0.19, 1.01),
-    500ms color cubic-bezier(0.71, 0, 0.19, 1.01);
-}
+$easeTrans: 500ms left cubic-bezier(0.71, 0, 0.19, 1.01),
+            500ms top cubic-bezier(0.71, 0, 0.19, 1.01),
+            500ms color cubic-bezier(0.71, 0, 0.19, 1.01);
+$opacityTrans: 500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
 
 header {
   position: fixed;
   width: 100%;
   z-index: 100;
   mix-blend-mode: difference;
-  transition: var(--easeTrans);
+  transition: $easeTrans;
 
   .header-container {
     display: flex;
@@ -19,7 +18,7 @@ header {
     justify-content: space-between;
     padding: $small-padding;
 
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: 500px) {
       padding: $mobile-padding;
     }
 
@@ -49,7 +48,7 @@ nav {
   justify-content: center;
   align-items: start;
   padding: 0 $lr-padding-s;
-  background-color: $clr-secondary;
+  background-color: $clr-primary;
   text-transform: uppercase;
   height: 100vh;
   width: 100%;
@@ -60,7 +59,7 @@ nav {
   .selector-right {
     position: absolute;
     user-select: none;
-    transition: var(--easeTrans);
+    transition: $easeTrans;
     top: 0rem;
     left: 0rem;
     opacity: 0;
@@ -73,7 +72,7 @@ nav {
   .nav-list,
   .nav-links {
     position: relative;
-    color: $clr-text;
+    color: $clr-background;
   }
 
   .nav-list {
@@ -90,8 +89,7 @@ nav {
       margin-right: 4rem;
       position: relative;
       width: max-content;
-      transition: var(--easeTrans),
-        500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
+      transition: $easeTrans, $opacityTrans;
     }
   }
 
@@ -99,17 +97,17 @@ nav {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.2rem;
     padding: 0 $lr-padding-s;
 
     a {
       opacity: 0.5;
-      transition: 500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
+      transition: $opacityTrans;
 
       &:hover {
         opacity: 1;
-        transition: 500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
+        transition: $opacityTrans;
       }
     }
 
@@ -122,12 +120,12 @@ nav {
 
 .unhovered-item {
   opacity: 0.2;
-  transition: var(--easeTrans), 500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
+  transition: $easeTrans, $opacityTrans;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 500px) {
   nav {
-    padding: 0 $lr-padding;
+    padding: $mobile-padding;
 
     .nav-list {
       font-size: 4rem;

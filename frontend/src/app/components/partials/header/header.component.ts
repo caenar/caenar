@@ -60,9 +60,11 @@ export class HeaderComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.closeMenu();
+        this.currentLinkIndex = '';
       }
       if (event instanceof NavigationEnd) {
         this.routerLink = this.router.url;
+        this.currentRouterLink = this.routerLink;
       }
     });
     Splitting();
@@ -97,8 +99,6 @@ export class HeaderComponent implements OnInit {
   currentRouterLink: any;
   cursorMoveCounter: number = 1;
   openMenu() {
-    this.currentRouterLink = this.routerLink;
-
     this.isMenuOpen = !this.isMenuOpen;
     this.menuState = this.isMenuOpen ? 'opened' : 'closed';
 
@@ -207,27 +207,27 @@ export class HeaderComponent implements OnInit {
   itemsTop: number[] = [];
   itemsRight: number[] = [];
   currentLink: any;
+  currentLinkIndex: any;
   getItemInfoCounter: number = 0;
   getItemInfo(event: AnimationEvent) {
     if (event.toState === 'opened') {
-      if (this.getItemInfoCounter !== 1) {
-        ++this.getItemInfoCounter;
-        
-        var navItems = document.querySelectorAll('.nav-list .nav-item')!;
-        var navLinks: string[] = [];
+      ++this.getItemInfoCounter;
 
-        navItems.forEach((element, index) => {
-          navLinks.push(element.getAttribute('routerLink')!);
-          if (navLinks[index] === this.currentRouterLink) {
-            this.currentLink = navItems[index];
-          }
-          if (this.itemsTop.length !== 4) {
-            this.itemsTop.push(element.getBoundingClientRect().top);
-            this.itemsRight.push(element.getBoundingClientRect().right);
-          }
-        });
-        this.setActiveLink();
-      }
+      var navItems = document.querySelectorAll('.nav-list .nav-item')!;
+      var navLinks: string[] = [];
+
+      navItems.forEach((element, index) => {
+        navLinks.push(element.getAttribute('routerLink')!);
+        if (navLinks[index] === this.currentRouterLink) {
+          this.currentLink = navItems[index];
+          this.currentLinkIndex = index;
+        }
+        if (this.itemsTop.length !== 4) {
+          this.itemsTop.push(element.getBoundingClientRect().top);
+          this.itemsRight.push(element.getBoundingClientRect().right);
+        }
+      });
+      this.setActiveLink();
     }
   }
 
@@ -244,12 +244,11 @@ export class HeaderComponent implements OnInit {
     const SELECTOR_OFFSET = 45;
     navItems.forEach((element, index) => {
       const topDifference = this.itemsTop[index] - this.itemsTop[0];
+      console.log(this.itemsTop[index] - this.itemsTop[0])
 
       element.addEventListener('mouseenter', () => {
         navItems.forEach((item) => item.classList.add('unhovered-item'));
-
         element.classList.remove('unhovered-item');
-
         this.hasHovered = false;
         if (element === navItems[0]) {
           firstSelector.style.top = '0px';
@@ -270,10 +269,14 @@ export class HeaderComponent implements OnInit {
 
         this.hasHovered = true;
         if (this.hasHovered) {
-          firstSelector.style.top = `0px`;
-          secondSelector.style.top = `0px`;
+          firstSelector.style.top = `${
+            this.itemsTop[this.currentLinkIndex] - this.itemsTop[0]
+          }px`;
+          secondSelector.style.top = `${
+            this.itemsTop[this.currentLinkIndex] - this.itemsTop[0]
+          }px`;
           secondSelector.style.left = `${
-            this.itemsRight[0] - SELECTOR_OFFSET
+            this.itemsRight[this.currentLinkIndex] - SELECTOR_OFFSET
           }px`;
         }
       });

@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef } from '@angular/core';
-import { serviceImage } from '../../../shared/models/serviceimage.model';
+import { AfterViewInit, Component, ElementRef, Renderer2 } from '@angular/core';
 
 import anime from 'animejs';
 import 'splitting/dist/splitting.css';
 import Splitting from 'splitting';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,359 +13,125 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements AfterViewInit {
-  constructor(private el: ElementRef) {}
-
-  isMobile: boolean = false;
+  constructor(
+    private router: Router,
+  ) {}
 
   ngAfterViewInit(): void {
     Splitting();
     gsap.registerPlugin(ScrollTrigger);
 
-    console.log(this.isMobile)
-
     setTimeout(() => {
       this.introAnimations();
-      this.aboutAnimations();
-      this.featuredAnimations();
-      this.servicesAnimations();
     }, 0);
+
+    let projectLinks = ['/work', '/work', '/work', '/work'];
+
+    const cursor = document.getElementById('curs')!;
+    const container = document.querySelectorAll(
+      '.featured .container .item .img-container .img'
+    );
+
+    let event: MouseEvent;
+    document.addEventListener('mousemove', (e) => {
+      event = e;
+      moveCursor();
+    });
+    document.addEventListener('scroll', () => {
+      moveCursor();
+    });
+    
+    container.forEach((element) => {
+      element.addEventListener('mouseenter', () => {
+        cursor.style.visibility = 'visible';
+        cursorIn.play();
+      });
+      element.addEventListener('mouseleave', () => {
+        cursorOut.play();
+      });
+      element.addEventListener('click', () => {
+        this.router.navigateByUrl('/work');
+      });
+    }); 
+    
+    let commonProps = {
+      duration: 500,
+      easing: 'cubicBezier(.39,0,.16,1.01)',
+      autoplay: false,
+    };
+
+    let cursorIn = anime({
+      targets: cursor,
+      opacity: [0,1],
+      scale: [1.2, 1],
+      ...commonProps,
+    });
+    let cursorOut = anime({
+      targets: cursor,
+      opacity: [1, 0],
+      scale: [1, 1.2],
+      ...commonProps,
+    });
+
+    function moveCursor() {
+      cursor.style.left = event.clientX + window.pageXOffset + 'px';
+      cursor.style.top = event.clientY + window.pageYOffset + 'px';
+    }
   }
 
   introAnimations() {
-    const introLine = document.querySelector('.intro-head .line')!;
-    var lineWidth = getComputedStyle(introLine).width;
+    let mm = gsap.matchMedia();
 
-    anime({
-      targets: '.intro-head .line',
-      width: [0, lineWidth],
-      duration: 1500,
-      delay: function (el, i) {
-        return 20 * 20;
-      },
-      easing: 'cubicBezier(.24,0,.09,1)',
+    gsap.set('.intro-inner .video-container', {
+      position: 'absolute',
+      top: 0,
+      padding: 0,
+      height: '100vh',
+      width: '100%',
+      opacity: 0.3,
     });
 
-    anime({
-      targets: '.intro-head h1 .word .char',
-      translateY: [500, 0],
-      duration: 1300,
-      delay: anime.stagger(40),
-      easing: 'cubicBezier(.24,0,.09,1)',
+    gsap.set('.intro-inner', {
+      backgroundColor: '#111111',
     });
-
-    anime({
-      targets: '.intro-banner video',
-      height: [0, 480],
-      duration: 1300,
-      delay: function (el, li) {
-        return 5 * 5;
-      },
-      easing: 'cubicBezier(.38,0,.13,1)',
-    });
-
-    anime({
-      targets: '.intro-text p .word',
-      translateY: [-300, 0],
-      duration: 1500,
-      delay: anime.stagger(20),
-      easing: 'cubicBezier(.24,0,.09,1)',
-    });
-
-    var intro_gsapCommon = {
-      trigger: '.intro-inner',
-      start: 'center center',
-      end: 'bottom center',
-      scrub: 1,
-    };
-
-    gsap.to('.intro-head', {
-      translateY: 700,
-      scrollTrigger: {
-        ...intro_gsapCommon,
-      },
-    });
-
-    gsap.to('.intro-banner', {
-      clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)',
-      scrollTrigger: {
-        ...intro_gsapCommon,
-      },
-    });
-
-    gsap.to('.intro-text p', {
-      opacity: 0,
-      scrollTrigger: {
-        trigger: '.intro-inner',
-        start: 'center center',
-        end: '70% center',
-        scrub: 1,
-      },
-    });
-  }
-
-  aboutAnimations() {
-    var header_label = anime({
-      targets: '.header-inner .label .word',
-      translateY: [100, 0],
-      opacity: [0, 1],
-      duration: 1000,
-      delay: anime.stagger(20),
-      easing: 'cubicBezier(.24,0,.09,1)',
-      autoplay: false,
-    });
-
-    ScrollTrigger.create({
-      trigger: '.header-inner',
-      start: 'top center',
-      end: '40% center',
-      onUpdate: (self) => {
-        header_label.seek(header_label.duration * self.progress);
-      },
-      scrub: 1,
-    });
-
-    var header_title = anime({
-      targets: '.header-inner .header h1 .word',
-      translateY: [100, 0],
-      opacity: [0, 1],
-      duration: 1000,
-      delay: anime.stagger(50),
-      easing: 'cubicBezier(.24,0,.09,1)',
-      autoplay: false,
-    });
-
-    ScrollTrigger.create({
-      trigger: '.header-inner',
-      start: 'top center',
-      end: '50% center',
-      onUpdate: (self) => {
-        header_title.seek(header_title.duration * self.progress);
-      },
-      scrub: 1,
-    });
-
-    var header_body = anime({
-      targets: '.header-inner .container .body',
-      translateY: [100, 0],
-      opacity: [0, 1],
-      duration: 1000,
-      delay: anime.stagger(20),
-      easing: 'cubicBezier(.24,0,.09,1)',
-      autoplay: false,
-    });
-
-    ScrollTrigger.create({
-      trigger: '.header-inner',
-      start: '30% center',
-      end: '70% center',
-      onUpdate: (self) => {
-        header_body.seek(header_body.duration * self.progress);
-      },
-      scrub: 1,
-    });
-  }
-
-  featuredAnimations() {
-    var commonProps = {
-      translateY: [100, 0],
-      opacity: [0, 1],
-      duration: 1500,
-      delay: anime.stagger(20),
-      easing: 'cubicBezier(.24,0,.09,1)',
-      autoplay: false,
-    }
-
-    var featured_header = anime({
-      targets: '.featured .header h1 .word .char',
-      ...commonProps
-    });
-
-    ScrollTrigger.create({
-      trigger: '.featured',
-      start: 'top center',
-      end: '50% center',
-      onUpdate: (self) => {
-        featured_header.seek(featured_header.duration * self.progress);
-      },
-      scrub: 1,
-    });
-
-    var featured_body = anime({
-      targets: ['.featured .body p .word', '.featured .header .cta'],
-      translateY: [100, 0],
-      opacity: [0, 1],
-      duration: 1000,
-      delay: anime.stagger(20),
-      easing: 'cubicBezier(.24,0,.09,1)',
-      autoplay: false,
-    });
-
-    ScrollTrigger.create({
-      trigger: '.featured',
-      start: 'top center',
-      end: '50% center',
-      onUpdate: (self) => {
-        featured_body.seek(featured_body.duration * self.progress);
-      },
-      scrub: 1,
-    });
-
-    var featured_item = anime({
-      targets: '.featured-item',
-      ...commonProps
-    });
-
-    ScrollTrigger.create({
-      trigger: '.featured',
-      start: 'top center',
-      end: '50% center',
-      onUpdate: (self) => {
-        featured_item.seek(featured_item.duration * self.progress);
-      },
-      scrub: 1,
-    });
-
-    var itemContainer = document.querySelectorAll(
-      '.featured-item .item-img-container'
-    );
-
-    itemContainer.forEach((item) => {
-      const itemImg = item.querySelector('.item-img') as HTMLElement;
-      const itemOverlay = item.querySelector('.item-overlay') as HTMLElement;
-
-      item.addEventListener('mouseenter', () => {
-        itemImg.style.filter = 'blur(20px)';
-        itemImg.style.transform = 'scale(1.050)';
-        itemOverlay.style.transform = 'scale(1)';
-        itemOverlay.style.setProperty('opacity', '1');
-        itemOverlay.style.setProperty('visibility', 'visible');
-      });
-
-      item.addEventListener('mouseleave', () => {
-        itemImg.style.transform = 'scale(1)';
-        itemImg.style.filter = 'blur(0px)';
-        itemOverlay.style.setProperty('opacity', '0');
-        itemOverlay.style.transform = 'scale(0.95)';
-        itemOverlay.style.setProperty('visibility', 'hidden');
+    mm.add('(min-width: 1200px)', () => {
+      gsap.to('.intro-inner', {
+        backgroundColor: '#fff5dc',
+        scrollTrigger: {
+          trigger: '.intro-inner',
+          start: '30% center',
+          end: '60% center',
+          scrub: 1,
+        },
       });
     });
-  }
 
-  public items: serviceImage[] = [
-    { imagePath: '../../../../assets/images/branding.png' },
-    { imagePath: '../../../../assets/images/packaging.png' },
-    { imagePath: '../../../../assets/images/visualidentity.png' },
-    { imagePath: '../../../../assets/images/socmed.png' },
-    { imagePath: '../../../../assets/images/webdesign.png' },
-  ];
-
-  servicesAnimations() {
-    const videoPath = '../../../../assets/videos/cynovid.mp4';
-
-    const overlay_container = document.querySelector('.overlay-container')!;
-    const service_item = document.querySelectorAll('.service-item')!;
-    const service_overlay = document.querySelectorAll('.service-overlay')!;
-    const service_vidContainer = overlay_container.querySelector(
-      '.service-video'
-    )! as HTMLElement;
-
-    const service_video = overlay_container.querySelector('video')!;
-    service_video.setAttribute('src', `${videoPath}`);
-
-    var overlayItem: Array<HTMLElement> = [];
-    service_overlay.forEach((el) => {
-      overlayItem.push(el as HTMLElement);
+    mm.add('(min-width: 1200px)', () => {
+      gsap.to('.intro-inner .video-container', {
+        top: '50%',
+        padding: '2rem 5rem 2rem 5rem',
+        opacity: 1,
+        scrollTrigger: {
+          trigger: '.intro-inner',
+          start: '30% center',
+          end: '60% center',
+          scrub: 1,
+        },
+      });
     });
 
-    var previousItem: HTMLElement;
-    var previousItemText: any;
-    var hasHovered: boolean = false;
-    var hasHoveredFirst: boolean = false;
-    var hoveredVid: boolean = false;
-    var isSameElement: boolean = false;
-
-    var commonProps = {
-      duration: 500,
-      easing: 'cubicBezier(0,-0.01,.14,1)',
-    };
-    
-    overlayItem[0].style.visibility = 'visible';
-    service_item[0].classList.add('hovered-elem');
-
-    
-    service_item.forEach((element, index) => {
-      element.addEventListener('mouseenter', () => {
-        if (hasHovered && previousItem !== overlayItem[index]) {
-          hasHovered = false;
-          hasHoveredFirst = true;
-          isSameElement = false;
-          service_video.pause();
-          if (hasHoveredFirst) {
-            overlayItem[0].style.visibility = 'hidden';
-          }
-          previousItemText.classList.remove('hovered-elem');
-          anime({
-            targets: previousItem,
-            opacity: [1, 0],
-            scale: [1, 0.97],
-            duration: 400,
-            easing: 'cubicBezier(.33,0,.46,1)',
-          });
-          if (index !== 5 && previousItem !== overlayItem[5]) {
-            hoveredVid = false;
-            previousItem.style.visibility = 'hidden';
-            overlayItem[index].style.visibility = 'hidden';
-          } else {
-            if (!hoveredVid) {
-              previousItem.style.visibility = 'hidden';
-              hoveredVid = true;
-            }
-            service_vidContainer.style.visibility = 'hidden';
-          }
-        }
-        if (previousItem === overlayItem[index]) {
-          isSameElement = true;
-        }
-        if (!hasHovered) {
-          hasHovered = true;
-          previousItem = overlayItem[index];
-          previousItemText = element;
-          service_item[0].classList.remove('hovered-elem');
-        }
-        if (index < 5) {
-          if (!isSameElement) {
-            if (index !== 0) {
-              anime({
-                targets: previousItem,
-                opacity: [0, 1],
-                scale: [0.97, 1],
-                ...commonProps,
-              });
-            }
-            if (hasHoveredFirst) {
-              anime({
-                targets: previousItem,
-                opacity: [0, 1],
-                scale: [0.97, 1],
-                ...commonProps,
-              });
-            }
-          }
-          overlayItem[index].style.visibility = 'visible';
-          service_item[index].classList.add('hovered-elem');
-        } else {
-          if (!isSameElement) {
-            anime({
-              targets: service_vidContainer,
-              opacity: [0, 1],
-              scale: [0.97, 1],
-              ...commonProps,
-            });
-          }
-          service_video.play();
-          service_vidContainer.style.visibility = 'visible';
-          service_item[index].classList.add('hovered-elem');
-        }
+    gsap.set(['.intro-inner .title', '.intro-inner .text-wrapper p'], {
+      color: '#fefbff',
+    });
+    mm.add('(min-width: 1200px)', () => {
+      gsap.to(['.intro-inner .title', '.intro-inner .text-wrapper p'], {
+        color: '#111111',
+        scrollTrigger: {
+          trigger: '.intro-inner',
+          start: '30% center',
+          end: '60% center',
+          scrub: 1,
+        },
       });
     });
   }
