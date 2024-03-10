@@ -60,22 +60,23 @@ export class HeaderComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.closeMenu();
+        
         this.currentLinkIndex = '';
       }
-      if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationEnd) { 
         this.routerLink = this.router.url;
         this.currentRouterLink = this.routerLink;
       }
     });
     Splitting();
-
+    
     const selector = '.nav-list .nav-item';
     this.itemWidth = this.computedStyle.getWidth(selector);
-
+    
     this.startHidingListener = this.hideHeader();
     this.startHidingListener();
   }
-
+  
   hideHeader() {
     var prevScrollPos = window.scrollY;
     var headerSafeZone = 100;
@@ -95,13 +96,13 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('scroll', startHiding);
     return startHiding;
   }
-
+  
   currentRouterLink: any;
   cursorMoveCounter: number = 1;
   openMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.menuState = this.isMenuOpen ? 'opened' : 'closed';
-
+    
     const menuSpan = document.querySelector(
       'header .header-container .menu-button span'
     ) as HTMLElement;
@@ -122,14 +123,14 @@ export class HeaderComponent implements OnInit {
     ) as HTMLElement;
     menuSpan.innerText = '[MENU]';
   }
-
+  
   onAnimationStart(event: AnimationEvent) {
     var CommonProps = {
       duration: 700,
       easing: 'cubicBezier(.39,0,.16,1.01)',
       autoplay: false,
     };
-
+    
     var itemAnimationsIn = anime({
       targets: '.nav-list .nav-item .word .char',
       translateY: [500, 0],
@@ -212,15 +213,17 @@ export class HeaderComponent implements OnInit {
   getItemInfo(event: AnimationEvent) {
     if (event.toState === 'opened') {
       ++this.getItemInfoCounter;
-
+      
       var navItems = document.querySelectorAll('.nav-list .nav-item')!;
+      console.log(navItems);
       var navLinks: string[] = [];
-
+      
       navItems.forEach((element, index) => {
         navLinks.push(element.getAttribute('routerLink')!);
         if (navLinks[index] === this.currentRouterLink) {
           this.currentLink = navItems[index];
           this.currentLinkIndex = index;
+          console.log(this.currentLinkIndex);
         }
         if (this.itemsTop.length !== 4) {
           this.itemsTop.push(element.getBoundingClientRect().top);
@@ -241,10 +244,21 @@ export class HeaderComponent implements OnInit {
     )! as HTMLElement;
     var navItems = document.querySelectorAll('.nav-list .nav-item')!;
 
+
+
     const SELECTOR_OFFSET = 45;
+    firstSelector.style.top = `${
+      this.itemsTop[this.currentLinkIndex] - this.itemsTop[0]
+    }px`;
+    secondSelector.style.top = `${
+      this.itemsTop[this.currentLinkIndex] - this.itemsTop[0]
+    }px`;
+    secondSelector.style.left = `${
+      this.itemsRight[this.currentLinkIndex] - SELECTOR_OFFSET
+    }px`;
+
     navItems.forEach((element, index) => {
       const topDifference = this.itemsTop[index] - this.itemsTop[0];
-      console.log(this.itemsTop[index] - this.itemsTop[0])
 
       element.addEventListener('mouseenter', () => {
         navItems.forEach((item) => item.classList.add('unhovered-item'));

@@ -1,6 +1,25 @@
 @import '../../../../styles.scss';
 
-.intro {
-  background-color: $clr-text;
-  height: 100vh;
+.intro-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-direction: column;
+  background-color: $clr-background;
+  padding: $tb-padding-s $lr-padding;
+  height: 40vh;
+
+  h1 {
+    font-size: 8rem;
+    text-transform: uppercase;
+  }
+
+  .filter {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+    }
+  }
 }
