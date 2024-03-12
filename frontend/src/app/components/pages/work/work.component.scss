@@ -17,9 +17,35 @@
   .filter {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 
     div {
       display: flex;
+      gap: 0.5rem;
+    }
+
+    .is-active {
+      background-color: $clr-accent;
+      color: $clr-background;
+      border: 1px solid transparent;
+    }
+  }
+}
+
+.work-container {
+  padding: $tb-padding-md $lr-padding;
+  height: 100vh;
+
+  .layout {
+
+    .item {
+      .cover-img {
+        width: 500px;
+        height: 500px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 1rem;
+      }
     }
   }
 }

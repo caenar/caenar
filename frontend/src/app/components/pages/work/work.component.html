@@ -2,7 +2,7 @@
   <h1>Works</h1>
   <div class="filter">
     <div class="items">
-      <div class="cta">
+      <div class="cta is-active">
         <a >All</a>
       </div>
       <div class="cta">
@@ -23,5 +23,10 @@
   </div>
 </section>
 <section class="work-container">
-  
+  <div class="layout">
+    <div class="item" *ngFor="let item of workItems">
+      <div class="cover-img"
+      style="background-image: url({{item.coverImage}})"></div>
+    </div>
+  </div>
 </section>
