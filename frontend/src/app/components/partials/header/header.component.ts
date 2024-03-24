@@ -244,8 +244,6 @@ export class HeaderComponent implements OnInit {
     )! as HTMLElement;
     var navItems = document.querySelectorAll('.nav-list .nav-item')!;
 
-
-
     const SELECTOR_OFFSET = 45;
     firstSelector.style.top = `${
       this.itemsTop[this.currentLinkIndex] - this.itemsTop[0]
