@@ -1,0 +1,45 @@
+<section class="container">
+  <div>
+    <h1 class="title">
+      All Projects <span>({{ projects.length }})</span>
+    </h1>
+    <div class="item-container">
+      <div class="item" *ngFor="let project of projects">
+        <h1>{{ project.name }}</h1>
+        <p>{{ project.description }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="form">
+    <div class="form-container">
+      <h1 class="title">Create a project</h1>
+      <input type="text" [(ngModel)]="projectName" placeholder="Project Name" />
+      <input
+        type="text"
+        [(ngModel)]="projectDesc"
+        placeholder="Project Description"
+      />
+      <input
+        type="text"
+        [(ngModel)]="projectTag"
+        placeholder="Project Tag (seperate by comma)"
+      />
+      <button (click)="addProject()">Add project</button>
+    </div>
+    <div class="form-container">
+      <h1 class="title">Delete a project</h1>
+      <input
+        type="text"
+        [(ngModel)]="projectNameToDelete"
+        placeholder="Project Name"
+      />
+      <button (click)="deleteProject()">Delete project</button>
+    </div>
+  </div>
+
+  <app-popup
+    *ngIf="true"
+    style="position: fixed;"
+    [message]="message"
+  ></app-popup>
+</section>

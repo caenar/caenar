@@ -1,32 +1,22 @@
 <section class="intro-inner">
-  <h1>Works</h1>
-  <div class="filter">
-    <div class="items">
-      <div class="cta is-active">
-        <a >All</a>
-      </div>
-      <div class="cta">
-        <a >Design</a>
-      </div>
-      <div class="cta">
-        <a >Development</a>
-      </div>
-    </div>
-    <div class="view">
-      <div class="cta">
-        <a href="">List</a>
-      </div>
-      <div class="cta">
-        <a href="">Grid</a>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="work-container">
-  <div class="layout">
-    <div class="item" *ngFor="let item of workItems">
-      <div class="cover-img"
-      style="background-image: url({{item.coverImage}})"></div>
-    </div>
-  </div>
+  <h1>Projects</h1>
+  <ul>
+    <li *ngFor="let project of projects">
+      {{project.name}} - {{project.description}}
+    </li>
+    <br>
+    <h1>Tags</h1>
+    <ul>
+      <li *ngFor="let tag of tags">
+        {{tag.id}} - {{tag.name}}
+      </li>
+    </ul>
+    <br>
+    <h1>Project Tag</h1>
+    <ul>
+      <li *ngFor="let projectTag of projectTags">
+        {{projectTag.projectId}} - {{projectTag.tagId}}
+      </li>
+    </ul>
+  </ul>
 </section>
