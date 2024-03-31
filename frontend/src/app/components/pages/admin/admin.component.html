@@ -13,16 +13,21 @@
   <div class="form">
     <div class="form-container">
       <h1 class="title">Create a project</h1>
-      <input type="text" [(ngModel)]="projectName" placeholder="Project Name" />
+      <input type="text" [(ngModel)]="projectName" placeholder="Name of the project" />
       <input
         type="text"
         [(ngModel)]="projectDesc"
-        placeholder="Project Description"
+        placeholder="Short description of the project"
       />
+      <textarea
+        type="text"
+        [(ngModel)]="projectBg"
+        placeholder="Brief background of the project">
+      </textarea>
       <input
         type="text"
         [(ngModel)]="projectTag"
-        placeholder="Project Tag (seperate by comma)"
+        placeholder="Tags related to the project (seperate by comma)"
       />
       <button (click)="addProject()">Add project</button>
     </div>
@@ -31,7 +36,7 @@
       <input
         type="text"
         [(ngModel)]="projectNameToDelete"
-        placeholder="Project Name"
+        placeholder="Enter name of the project"
       />
       <button (click)="deleteProject()">Delete project</button>
     </div>

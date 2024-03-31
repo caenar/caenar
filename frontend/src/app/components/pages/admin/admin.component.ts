@@ -17,6 +17,7 @@ export class AdminComponent {
   projectName = '';
   projectDesc = '';
   projectTag = '';
+  projectBg = '';
   projectNameToDelete = '';
 
   showPopup = false;
@@ -74,6 +75,7 @@ export class AdminComponent {
     const projectData = {
       name: this.projectName,
       description: this.projectDesc,
+      background: this.projectBg,
       tags: tagsArray,
     };
 
@@ -89,6 +91,7 @@ export class AdminComponent {
 
         this.projectName = '';
         this.projectDesc = '';
+        this.projectBg = '';
         this.projectTag = '';
       },
       error: (err) => {

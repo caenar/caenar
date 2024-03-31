@@ -23,7 +23,7 @@
       width: 300px;
       height: 250px;
       border-radius: 0.5rem;
-      background-color: $clr-primary;
+      background-color: $clr-secondary;
       color: $clr-background;
 
       p {
@@ -43,10 +43,19 @@
       flex-direction: column;
       width: 600px;
 
-      input, button {
+      input, button, textarea {
         outline: none;
         padding: 15px;
         margin: 10px;
+        transition: 500ms ease;
+
+        &:focus{
+          border-bottom: 1px solid $clr-accent;
+        }
+        &:hover {
+          border-bottom: 1px solid $clr-accent;
+          transition: 500ms ease;
+        }
       }
 
       input {
@@ -55,6 +64,16 @@
         border: 1px solid transparent;
         border-bottom: 1px solid #00000018;
         background: transparent;
+      }
+      
+      textarea {
+        font-size: 16px;
+        border-radius: .5rem;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #00000018;
+        background: transparent;
+        height: 100px;
+        resize: none;
       }
 
       button {

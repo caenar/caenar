@@ -1,4 +1,6 @@
 const express = require("express");
+const { readdirSync } = require("fs");
+const path = require("path");
 const authController = require("../controllers/authController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 
@@ -22,7 +24,7 @@ router.get("/protected", verifyToken, (req, res) => {
 router.get("/", async (req, res) => {
    try {
       const project = await Projects.findAll({
-         attributes: ["id", "name", "description"],
+         attributes: ["id", "name", "description", "background"],
       });
 
       res.json({ project });
@@ -47,11 +49,30 @@ router.get("/login", async (req, res) => {
 
 router.get("/projects", async (req, res) => {
    try {
-      const project = await Projects.findAll({
-         attributes: ["id", "name", "description"],
+      const proj = await Projects.findAll({
+         attributes: ["name"],
       });
 
-      res.json({ project });
+      const dirPath = "./assets/projects/casestudies";
+
+      let projectPath = [];
+      for (const project of proj) {
+         const name = project.name.toLowerCase().replace(/\s/g, "");
+         const newPath = path.join(dirPath, name);
+         projectPath.push(newPath);
+      }
+
+      let projectFiles = [];
+      for (const dir of projectPath) {
+         projectFiles.push(readdirSync(dir));
+      }
+
+      let caseStudies = {};
+      for (let i = 0; i < projectPath.length; i++) {
+         caseStudies = { name: projectPath, files: projectFiles };
+      }
+
+      res.json({caseStudies});
    } catch (error) {
       console.error("Failed to fetch data: ", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -125,11 +146,12 @@ router.delete("/:projectId", async (req, res) => {
 
 router.post("/", async (req, res) => {
    try {
-      const { name, description, tags } = req.body;
+      const { name, description, background, tags } = req.body;
 
       const newProject = await Projects.create({
          name,
          description,
+         background,
       });
 
       await Promise.all(

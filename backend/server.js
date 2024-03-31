@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-require("./api/data/db");
 const bodyParser = require("body-parser");
 const projectRouter = require("./api/data/routes/routes");
-
+require("./api/data/db");
 require('dotenv').config();
+
 const { Pool } = require("pg");
 
 const app = express();
