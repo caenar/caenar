@@ -1,27 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { workItem } from '../../../shared/models/workItem.model';
-import { HttpClient } from '@angular/common/http';
+import { ProjectService } from '../../../shared/services/project.service';
 
 @Component({
   selector: 'app-work',
   templateUrl: './work.component.html',
-  styleUrl: './work.component.scss'
+  styleUrl: './work.component.scss',
 })
 export class WorkComponent implements OnInit {
-  workItems!: workItem[];
+  projects!: any[];
+  projectTags!: any[];
+  tags!: any[];
 
-  constructor(private http: HttpClient){}
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit(): void {
-      this.fetchWorkItems();
-      
-    }
-    
-    fetchWorkItems(){
-      this.http.get<workItem[]>(`http://localhost:3000/api/data`)
-      .subscribe(data => {
-        this.workItems = data;
-        console.log(this.workItems);
+    this.projectService.getProjects().subscribe({
+      next: (data: any) => {
+        this.projects = data.project;
+        console.log(this.projects);
+      },
+      error: (error) => console.error(error),
+    });
+    this.projectService.getProjectTags().subscribe({
+      next: (data: any) => {
+        this.projectTags = data.projectTags;
+        console.log(this.projectTags);
+      },
+      error: (error) => console.error(error),
+    });
+    this.projectService.getTags().subscribe({
+      next: (data: any) => {
+        this.tags = data.tags;
+        console.log(this.tags);
+      },
+      error: (error) => console.error(error),
     });
   }
 }

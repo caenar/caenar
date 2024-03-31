@@ -1,0 +1,12 @@
+<div class="popup-overlay" #overlay *ngIf="showPopup"></div>
+
+<div class="popup-box" #popupBox *ngIf="showPopup">
+  <div #popup class="popup">
+    <h1>YOOO!</h1>
+    <ng-container *ngIf="message">
+    <p>{{message}}</p>
+    </ng-container>
+    <div class="line"></div>
+    <button (click)="closePopup()">Okay</button>
+  </div>
+</div>

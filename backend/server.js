@@ -1,26 +1,38 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const cors = require('cors');
-const app = express();
+const express = require("express");
+const cors = require("cors");
+require("./api/data/db");
+const bodyParser = require("body-parser");
+const projectRouter = require("./api/data/routes/routes");
 
+require('dotenv').config();
+const { Pool } = require("pg");
+
+const app = express();
+app.use(express.json());
 app.use(cors());
 
-app.get('/api/data', (req, res) => {
-  const filePath = path.join(`${__dirname}/api/data`, 'work-item.json');
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if(err){
-      console.error('Error reading file: ', err);
-      res.status(500).json({ error: 'Internal Server Error'});
-      return;
-    }
-    const jsonData = JSON.parse(data);
-    res.json(jsonData);
-    console.log(jsonData);
-  });
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
-const PORT = process.env.PORT || 3000;
+pool.query("SELECT NOW()", (err, res) => {
+   if (err) {
+      console.error("Error executing query:", err);
+   } else {
+      console.log("Connected to PostgreSQL database");
+      console.log("Current date from database:", res.rows[0].now);
+   }
+   pool.end();
+});
+
+app.use(bodyParser.json());
+app.use("/api/", projectRouter);
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+   console.log(`\nServer running at http://localhost:${PORT}`);
 });

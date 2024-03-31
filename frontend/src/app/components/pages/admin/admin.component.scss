@@ -1,0 +1,73 @@
+@import '../../../../styles.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  padding: 200px;
+  gap: 150px;
+
+  .title {
+    font-size: 52px;
+    margin-bottom: 20px;
+  }
+
+  .item-container {
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+    gap: 15px;
+
+    .item {
+      padding: 10px 15px;
+      width: 300px;
+      height: 250px;
+      border-radius: 0.5rem;
+      background-color: $clr-primary;
+      color: $clr-background;
+
+      p {
+        font-size: 17px;
+      }
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 100px;
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      width: 600px;
+
+      input, button {
+        outline: none;
+        padding: 15px;
+        margin: 10px;
+      }
+
+      input {
+        font-size: 16px;
+        border-radius: .5rem;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #00000018;
+        background: transparent;
+      }
+
+      button {
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        color: $clr-background;
+        background-color: $clr-accent;
+        border: 1px solid transparent;
+        border-radius: .5rem;
+        width: 160px;
+      }
+    }
+  }
+}
