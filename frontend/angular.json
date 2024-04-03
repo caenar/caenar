@@ -39,7 +39,8 @@
                 "output": "/"
               },
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "_redirects"
             ],
             "styles": [
               "src/styles.scss"
