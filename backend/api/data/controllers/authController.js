@@ -8,7 +8,6 @@ exports.login = async (req, res) => {
    try {
       const user = await User.findOne({ where: { username } });
       if (!user) {
-         console.log("User not found");
          return res
             .status(401)
             .json({ message: "User does not exist" });
@@ -20,7 +19,6 @@ exports.login = async (req, res) => {
       );
 
       if (!isValidPassword) {
-         console.log("Invalid password");
          return res
             .status(401)
             .json({ message: "Invalid username or password" });
@@ -29,6 +27,7 @@ exports.login = async (req, res) => {
       const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
          expiresIn: "30min",
       });
+      
       console.log("Authentication successful");
       res.json({ token });
    } catch (error) {
