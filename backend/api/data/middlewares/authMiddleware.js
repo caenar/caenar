@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 exports.verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -7,7 +8,7 @@ exports.verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  jwt.verify(token, 'Angelou<3', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: 'Unauthorized' });
     }

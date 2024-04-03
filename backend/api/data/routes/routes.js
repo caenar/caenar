@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
 router.get("/login", async (req, res) => {
    try {
       const user = await Users.findAll({
-         attributes: ["id", "username", "password"],
+         attributes: ["id", "username"],
       });
 
       res.json({ user });
