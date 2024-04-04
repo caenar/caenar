@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const projectRouter = require("./api/data/routes/routes");
-require("./api/data/db");
+const sequelize = require("./api/data/db");
 require('dotenv').config();
 
 const { Pool } = require("pg");
@@ -31,6 +31,14 @@ pool.query("SELECT NOW()", (err, res) => {
 
 app.use(bodyParser.json());
 app.use("/api/", projectRouter);
+
+sequelize.sync()
+   .then(()=> {
+      console.log("Synced");
+   })
+   .catch((err)=> {
+      console.error(err);
+   })
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
