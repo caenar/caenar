@@ -1,11 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
-import anime from 'animejs';
-import 'splitting/dist/splitting.css';
-import Splitting from 'splitting';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { Router } from '@angular/router';
+import Splitting from 'splitting';
+import anime from 'animejs';
 
 @Component({
   selector: 'app-home',
@@ -13,19 +12,23 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements AfterViewInit {
-  constructor(
-    private router: Router,
-  ) {}
+  constructor(private router: Router) {}
+
+  @ViewChild('videoElement') videoElement!: ElementRef; 
 
   ngAfterViewInit(): void {
     Splitting();
     gsap.registerPlugin(ScrollTrigger);
 
+    const video = this.videoElement.nativeElement as HTMLVideoElement;
+    if (video) {
+      video.muted = true;
+      video.play();
+    }
+
     setTimeout(() => {
       this.introAnimations();
     }, 0);
-
-    let projectLinks = ['/work', '/work', '/work', '/work'];
 
     const cursor = document.getElementById('curs')!;
     const container = document.querySelectorAll(
@@ -40,7 +43,7 @@ export class HomeComponent implements AfterViewInit {
     document.addEventListener('scroll', () => {
       moveCursor();
     });
-    
+
     container.forEach((element) => {
       element.addEventListener('mouseenter', () => {
         cursor.style.visibility = 'visible';
@@ -52,8 +55,8 @@ export class HomeComponent implements AfterViewInit {
       element.addEventListener('click', () => {
         this.router.navigateByUrl('/work');
       });
-    }); 
-    
+    });
+
     let commonProps = {
       duration: 500,
       easing: 'cubicBezier(.39,0,.16,1.01)',
@@ -62,7 +65,7 @@ export class HomeComponent implements AfterViewInit {
 
     let cursorIn = anime({
       targets: cursor,
-      opacity: [0,1],
+      opacity: [0, 1],
       scale: [1.2, 1],
       ...commonProps,
     });
@@ -90,10 +93,10 @@ export class HomeComponent implements AfterViewInit {
       width: '100%',
       opacity: 0.3,
     });
-
-    gsap.set('.intro-inner', {
-      backgroundColor: '#111111',
+    gsap.set(['.intro-inner .title', '.intro-inner .text-wrapper p'], {
+      color: '#fff5dc',
     });
+    
     mm.add('(min-width: 1200px)', () => {
       gsap.to('.intro-inner', {
         backgroundColor: '#fff5dc',
@@ -103,10 +106,16 @@ export class HomeComponent implements AfterViewInit {
           end: '60% center',
           scrub: 1,
         },
-      });
-    });
-
-    mm.add('(min-width: 1200px)', () => {
+      }),
+      gsap.to('.intro-inner .video-container video', {
+        borderRadius: '1rem',
+        scrollTrigger: {
+          trigger: '.intro-inner',
+          start: '30% center',
+          end: '60% center',
+          scrub: 1,
+        },
+      })
       gsap.to('.intro-inner .video-container', {
         top: '50%',
         padding: '2rem 5rem 2rem 5rem',
@@ -118,12 +127,6 @@ export class HomeComponent implements AfterViewInit {
           scrub: 1,
         },
       });
-    });
-
-    gsap.set(['.intro-inner .title', '.intro-inner .text-wrapper p'], {
-      color: '#fefbff',
-    });
-    mm.add('(min-width: 1200px)', () => {
       gsap.to(['.intro-inner .title', '.intro-inner .text-wrapper p'], {
         color: '#111111',
         scrollTrigger: {

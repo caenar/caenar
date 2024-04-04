@@ -2,8 +2,7 @@
 
 .intro-inner {
   position: relative;
-  height: auto;
-  background-color: $clr-background;
+  background-color: #111;
 
   .container {
     position: relative;
@@ -46,7 +45,7 @@
       text-transform: uppercase;
       font-size: 10.89vw;
       text-align: center;
-
+      
       @media screen and (max-width: 500px) {
         font-size: 21vw;
         line-height: 19vw;
@@ -186,6 +185,7 @@
     align-items: center;
     width: max-content;
     padding: 1rem;
+    color: $clr-background;
     background-color: $clr-accent;
     border-radius: 5rem;
     z-index: 5;
@@ -195,11 +195,10 @@
     opacity: 0;
 
     h3 {
-      
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.2rem;
       font-size: 1.2rem;
     }
   }
@@ -362,12 +361,3 @@
     gap: 1rem;
   }
 }
-
-// <div
-//         class="float-img"
-//         style="background-image: url(../../../../assets/images/myself.jpg)"
-//       ></div>
-// <p>Hello, my name is Caenar!<br>That's pronounced as "kay-nar".</p>
-//         <p>I'm a 19 year old college student from Bicol, Philippines and I'm currently taking Information Technology specializing in Web Development.</p>
-//         <p>My four years of experience as a creative designer covers a wide variety of project scopes that includes branding, social media ads, video editing and more.</p>
-//         <p>I like to consider myself as an ambitious and curious individual with a never-ending hunger to seek new knowledge. With this mind set, I have propelled myself to become better from each project, learning from mistakes and taking the risks more.</p>

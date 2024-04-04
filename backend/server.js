@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const projectRouter = require("./api/data/routes/routes");
-const sequelize = require("./api/data/db");
-require('dotenv').config();
+const projectRouter = require("./api/routes/routes");
+const sequelize = require("./api/db");
+require("dotenv").config();
 
 const { Pool } = require("pg");
 
@@ -12,11 +12,11 @@ app.use(express.json());
 app.use(cors());
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+   user: process.env.DB_USER,
+   host: process.env.DB_HOST,
+   database: process.env.DB_NAME,
+   password: process.env.DB_PASSWORD,
+   port: process.env.DB_PORT,
 });
 
 pool.query("SELECT NOW()", (err, res) => {
@@ -31,14 +31,17 @@ pool.query("SELECT NOW()", (err, res) => {
 
 app.use(bodyParser.json());
 app.use("/api/", projectRouter);
+app.use("/casestudies", express.static(__dirname + '/assets/projects/casestudies'));
+app.use("/miscellaneous", express.static(__dirname + '/assets/projects/miscellaneous/'));
+app.use("/videos", express.static(__dirname + '/assets/projects/videos/'));
 
-sequelize.sync()
-   .then(()=> {
-      console.log("Synced");
-   })
-   .catch((err)=> {
-      console.error(err);
-   })
+// sequelize.sync()
+// .then(()=> {
+//    console.log("Synced");
+// })
+// .catch((err)=> {
+//    console.error(err);
+// })
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

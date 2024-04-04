@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticateService } from './shared/services/authenticate.service';
-import { routeGuard } from './shared/services/route-guard.service';
 import { AnimationResolver } from './shared/services/animation-resolver.service';
 
 import { HomeComponent } from './components/pages/home/home.component';
@@ -11,6 +9,7 @@ import { ContactComponent } from './components/pages/contact/contact.component';
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { LoginComponent } from './shared/constants/login/login.component';
 import { authGuard } from './shared/guards/auth.guard';
+import { routeGuard } from './shared/guards/route.guard';
 
 const routes: Routes = [
   {

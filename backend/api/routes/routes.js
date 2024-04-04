@@ -1,8 +1,8 @@
 const express = require("express");
 const { readdirSync } = require("fs");
 const path = require("path");
-const authController = require("../controllers/authController");
 const { verifyToken } = require("../middlewares/authMiddleware");
+const authController = require("../controllers/authController");
 
 const Projects = require("../models/Project");
 const Tags = require("../models/Tag");
@@ -15,12 +15,6 @@ const router = express.Router();
 const app = express();
 app.use(cors());
 
-router.post("/login", authController.login);
-
-router.get("/protected", verifyToken, (req, res) => {
-   res.json({ message: "Protected route", userId: req.userId });
-});
-
 router.get("/", async (req, res) => {
    try {
       const project = await Projects.findAll({
@@ -32,6 +26,10 @@ router.get("/", async (req, res) => {
       console.error("Failed to fetch data: ", error);
       res.status(500).json({ error: "Internal Server Error" });
    }
+});
+
+router.get("/protected", verifyToken, (req, res) => {
+   res.json({ message: "Protected route", userId: req.userId });
 });
 
 router.get("/login", async (req, res) => {
@@ -47,37 +45,11 @@ router.get("/login", async (req, res) => {
    }
 });
 
-router.get("/projects", async (req, res) => {
-   try {
-      const proj = await Projects.findAll({
-         attributes: ["name"],
-      });
+router.post("/login", authController.login);
 
-      const dirPath = "./assets/projects/casestudies";
-
-      let projectPath = [];
-      for (const project of proj) {
-         const name = project.name.toLowerCase().replace(/\s/g, "");
-         const newPath = path.join(dirPath, name);
-         projectPath.push(newPath);
-      }
-
-      let projectFiles = [];
-      for (const dir of projectPath) {
-         projectFiles.push(readdirSync(dir));
-      }
-
-      let caseStudies = {};
-      for (let i = 0; i < projectPath.length; i++) {
-         caseStudies = { name: projectPath, files: projectFiles };
-      }
-
-      res.json({caseStudies});
-   } catch (error) {
-      console.error("Failed to fetch data: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
-   }
-});
+app.get('/assets', function (req, res, next) {
+   res.render('home.ejs');
+})
 
 router.get("/project_tags", async (req, res) => {
    try {

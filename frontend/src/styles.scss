@@ -44,6 +44,12 @@ ol {
   list-style-type: none;
 }
 
+::selection,
+::-moz-selection {
+  color: $clr-background;
+  background-color: $clr-accent;
+}
+
 // componenets
 .header-inner {
   display: flex;
@@ -95,6 +101,7 @@ ol {
   border: 1px solid $clr-text;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: 500ms all cubic-bezier(0,-0.03,.35,.99);
 
   a {
     font-size: 1rem;
@@ -106,6 +113,7 @@ ol {
     border: 1px solid transparent;
     background-color: $clr-accent;
     color: $clr-background;
+    transition: 500ms all cubic-bezier(0,-0.03,.35,.99);
   }
 }
 

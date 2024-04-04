@@ -8,7 +8,6 @@ import {
   AnimationEvent,
 } from '@angular/animations';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { RouteGuardService } from '../../../shared/services/route-guard.service';
 import { ComputeStyleService } from '../../../shared/services/compute-style.service';
 
 import anime from 'animejs';
@@ -48,7 +47,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public routeGS: RouteGuardService,
     private computedStyle: ComputeStyleService
   ) {}
 
@@ -59,23 +57,27 @@ export class HeaderComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.closeMenu();
-        
+
         this.currentLinkIndex = '';
       }
-      if (event instanceof NavigationEnd) { 
+      if (event instanceof NavigationEnd) {
         this.routerLink = this.router.url;
         this.currentRouterLink = this.routerLink;
       }
     });
     Splitting();
-    
+
     const selector = '.nav-list .nav-item';
     this.itemWidth = this.computedStyle.getWidth(selector);
-    
+
     this.startHidingListener = this.hideHeader();
     this.startHidingListener();
   }
-  
+
+  backHome(){
+    this.router.navigate(['/']);
+  }
+
   hideHeader() {
     var prevScrollPos = window.scrollY;
     var headerSafeZone = 100;
@@ -95,13 +97,13 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('scroll', startHiding);
     return startHiding;
   }
-  
+
   currentRouterLink: any;
   cursorMoveCounter: number = 1;
   openMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.menuState = this.isMenuOpen ? 'opened' : 'closed';
-    
+
     const menuSpan = document.querySelector(
       'header .header-container .menu-button span'
     ) as HTMLElement;
@@ -122,86 +124,39 @@ export class HeaderComponent implements OnInit {
     ) as HTMLElement;
     menuSpan.innerText = '[MENU]';
   }
-  
-  onAnimationStart(event: AnimationEvent) {
-    var CommonProps = {
+
+  onAnimationStart() {
+    anime({
+      targets: '.nav-list .nav-item .word .char',
+      translateY: this.isMenuOpen ? [500, 0] : [0, -500],
+      delay: (el, i) => i * 20,
       duration: 700,
       easing: 'cubicBezier(.39,0,.16,1.01)',
-      autoplay: false,
-    };
-    
-    var itemAnimationsIn = anime({
-      targets: '.nav-list .nav-item .word .char',
-      translateY: [500, 0],
-      delay: function (el, i) {
-        return i * 20;
-      },
-      ...CommonProps,
-    });
-    var itemAnimationsOut = anime({
-      targets: '.nav-list .nav-item .word .char',
-      translateY: [0, -500],
-      ...CommonProps,
     });
 
-    var linkAnimationsIn = anime({
+    anime({
       targets: '.nav-links .nav-item .word',
-      opacity: [0, 1],
-      delay: function (el, i) {
-        return 25 * 25;
-      },
-      ...CommonProps,
-    });
-    var linkAnimationsOut = anime({
-      targets: '.nav-links .nav-item .word',
-      opacity: [1, 0],
-      ...CommonProps,
+      opacity: this.isMenuOpen ? [0, 1] : [1, 0],
+      delay: (el, i) => 25 * 25,
+      duration: 700,
+      easing: 'cubicBezier(.39,0,.16,1.01)',
     });
 
-    var selectorLeftIn = anime({
+    anime({
       targets: '.nav-list .selector-left',
-      translateX: [-50, 0],
-      opacity: 1,
-      ...CommonProps,
-    });
-    var selectorLeftOut = anime({
-      targets: '.nav-list .selector-left',
-      translateX: [0, -50],
-      opacity: 0,
-      duration: 500,
-      easing: 'cubicBezier(.73,0,0,.99)',
-      autoplay: false,
-    });
-    var selectorRightIn = anime({
-      targets: '.nav-list .selector-right',
-      translateX: [50, 0],
-      opacity: 1,
-      ...CommonProps,
-    });
-    var selectorRightOut = anime({
-      targets: '.nav-list .selector-right',
-      translateX: [0, 50],
-      opacity: 0,
-      duration: 500,
-      easing: 'cubicBezier(.73,0,0,.99)',
-      autoplay: false,
+      translateX: this.isMenuOpen ? [-50, 0] : [0, -50],
+      opacity: this.isMenuOpen ? 1 : 0,
+      duration: 700,
+      easing: 'cubicBezier(.39,0,.16,1.01)',
     });
 
-    if (event.fromState === 'closed' && event.toState === 'opened') {
-      setTimeout(() => {
-        itemAnimationsIn.play();
-      }, 150);
-      setTimeout(() => {
-        selectorLeftIn.play();
-        selectorRightIn.play();
-      }, 500);
-      linkAnimationsIn.play();
-    } else if (event.fromState === 'opened' && event.toState === 'closed') {
-      itemAnimationsOut.play();
-      linkAnimationsOut.play();
-      selectorLeftOut.play();
-      selectorRightOut.play();
-    }
+    anime({
+      targets: '.nav-list .selector-right',
+      translateX: this.isMenuOpen ? [50, 0] : [0, 50],
+      opacity: this.isMenuOpen ? 1 : 0,
+      duration: 700,
+      easing: 'cubicBezier(.39,0,.16,1.01)',
+    });
   }
 
   itemsTop: number[] = [];
@@ -212,11 +167,11 @@ export class HeaderComponent implements OnInit {
   getItemInfo(event: AnimationEvent) {
     if (event.toState === 'opened') {
       ++this.getItemInfoCounter;
-      
+
       var navItems = document.querySelectorAll('.nav-list .nav-item')!;
       console.log(navItems);
       var navLinks: string[] = [];
-      
+
       navItems.forEach((element, index) => {
         navLinks.push(element.getAttribute('routerLink')!);
         if (navLinks[index] === this.currentRouterLink) {
