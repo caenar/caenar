@@ -12,7 +12,6 @@ import { RouteGuardService } from '../../../shared/services/route-guard.service'
 import { ComputeStyleService } from '../../../shared/services/compute-style.service';
 
 import anime from 'animejs';
-import 'splitting/dist/splitting.css';
 import Splitting from 'splitting';
 
 @Component({
