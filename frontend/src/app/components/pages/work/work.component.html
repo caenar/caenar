@@ -1,22 +1,35 @@
 <section class="intro-inner">
-  <h1>Projects</h1>
-  <ul>
-    <li *ngFor="let project of projects">
-      {{project.name}} - {{project.description}}
-    </li>
-    <br>
-    <h1>Tags</h1>
-    <ul>
-      <li *ngFor="let tag of tags">
-        {{tag.id}} - {{tag.name}}
-      </li>
-    </ul>
-    <br>
-    <h1>Project Tag</h1>
-    <ul>
-      <li *ngFor="let projectTag of projectTags">
-        {{projectTag.projectId}} - {{projectTag.tagId}}
-      </li>
-    </ul>
-  </ul>
+  <div class="intro">
+    <h1>Works</h1>
+    <div class="filters">
+      <div class="cta" 
+      (click)="filter('all')"
+      [class.selected-tag]="selectedTag === 'all'">
+        <a>all</a>
+      </div>
+      <div class="cta" *ngFor="let tag of DATA_TAGS" 
+      (click)="filter(tag.name)"
+      [class.selected-tag]="selectedTag === tag.name">
+        <a>{{ tag.name }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="item" *ngFor="let project of filteredProjects">
+      <div
+        class="item-img"
+        [style.background-image]="'url(' + project.assets[10] + ')'"
+      ></div>
+      <div class="project-info">
+        <h1 class="item-name">{{ project.name }}</h1>
+        <div class="category">
+          <p *ngFor="let tag of project.tags; let last = last">
+            {{ tag }}
+            <ng-icon *ngIf="!last" name="ionRadioButtonOnOutline"></ng-icon>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

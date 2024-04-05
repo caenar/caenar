@@ -47,9 +47,21 @@ router.get("/login", async (req, res) => {
 
 router.post("/login", authController.login);
 
-app.get('/assets', function (req, res, next) {
-   res.render('home.ejs');
-})
+router.get("/images/:folder/:name", (req, res) => {
+   try {
+      const folder = req.params.folder;
+      const name = req.params.name;
+      const folderPath = path.join(__dirname, "..", "..","assets", "projects", folder, name);
+      
+      const files = readdirSync(folderPath);
+      console.log(files)
+
+      res.json(files);
+   } catch (error){
+      console.error("Failed to fetch tags: ", error);
+      res.status(500).json({ error: "Internal Server Error" });
+   }
+});
 
 router.get("/project_tags", async (req, res) => {
    try {

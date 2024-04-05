@@ -8,8 +8,14 @@ import { environment } from '../../../environments/environment';
 })
 export class ProjectService {
   private apiUrl = environment.apiUrl; 
+  private baseUrl = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
+
+  getImages(name: any, folder: any): Observable<any[]> {
+    const url = `${this.baseUrl}/api/images/${folder}/${name}`
+    return this.http.get<any[]>(url);
+  }
 
   getProjects(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
@@ -23,8 +29,8 @@ export class ProjectService {
     return this.http.get<any[]>(url);
   }
 
-  createProject(ProjectData: any): Observable<any[]> {
-    return this.http.post<any[]>(this.apiUrl, ProjectData);
+  createProject(projectData: any): Observable<any[]> {
+    return this.http.post<any[]>(this.apiUrl, projectData);
   }
   
   updateProject(projectId: number, projectData: any): Observable<any> {

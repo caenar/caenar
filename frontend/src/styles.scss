@@ -44,8 +44,7 @@ ol {
   list-style-type: none;
 }
 
-::selection,
-::-moz-selection {
+::selection {
   color: $clr-background;
   background-color: $clr-accent;
 }
@@ -131,6 +130,16 @@ ol {
 }
 .has-hover {
   cursor: pointer;
+}
+.line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.096);
+  margin: 15px 0;
 }
 
 .open-wrap {

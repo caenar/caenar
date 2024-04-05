@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgIconsModule } from '@ng-icons/core';
-import { ionArrowForward, ionArrowUp } from '@ng-icons/ionicons';
+import { ionArrowForward, ionArrowUp, ionRadioButtonOnOutline } from '@ng-icons/ionicons';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -19,6 +19,7 @@ import { PopupComponent } from './shared/constants/popup/popup.component';
 import { LoginComponent } from './shared/constants/login/login.component';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 import { authGuard } from './shared/guards/auth.guard';
+import { ProjectViewComponent } from './components/pages/project-view/project-view.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { authGuard } from './shared/guards/auth.guard';
     ContactComponent,
     AdminComponent,
     LoginComponent,
+    ProjectViewComponent,
   ],
   imports: [
     HttpClientModule,
@@ -42,6 +44,7 @@ import { authGuard } from './shared/guards/auth.guard';
     NgIconsModule.withIcons({
       ionArrowForward,
       ionArrowUp,
+      ionRadioButtonOnOutline
     }),
   ],
   providers: [
