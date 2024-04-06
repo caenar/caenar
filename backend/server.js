@@ -35,13 +35,13 @@ app.use("/casestudies", express.static(__dirname + '/assets/projects/casestudies
 app.use("/miscellaneous", express.static(__dirname + '/assets/projects/miscellaneous/'));
 app.use("/videos", express.static(__dirname + '/assets/projects/videos/'));
 
-// sequelize.sync()
-// .then(()=> {
-//    console.log("Synced");
-// })
-// .catch((err)=> {
-//    console.error(err);
-// })
+sequelize.sync()
+.then(()=> {
+   console.log("Synced");
+})
+.catch((err)=> {
+   console.error(err);
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

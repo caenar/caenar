@@ -10,6 +10,7 @@ import { AdminComponent } from './components/pages/admin/admin.component';
 import { LoginComponent } from './shared/constants/login/login.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { routeGuard } from './shared/guards/route.guard';
+import { ProjectViewComponent } from './components/pages/project-view/project-view.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
     resolve: { animation: AnimationResolver },
   },
   { path: 'work', component: WorkComponent, canActivate: [routeGuard] },
+  {
+    path: 'work/:projectName',
+    component: ProjectViewComponent,
+    canActivate: [routeGuard],
+  },
   { path: 'about', component: AboutComponent, canActivate: [routeGuard] },
   { path: 'contact', component: ContactComponent, canActivate: [routeGuard] },
   {
@@ -34,7 +40,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'top'})],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
