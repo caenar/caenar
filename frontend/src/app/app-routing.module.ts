@@ -17,16 +17,27 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     canActivate: [routeGuard],
-    resolve: { animation: AnimationResolver },
   },
-  { path: 'work', component: WorkComponent, canActivate: [routeGuard] },
+  {
+    path: 'work',
+    component: WorkComponent,
+    canActivate: [routeGuard],
+  },
   {
     path: 'work/:projectName',
     component: ProjectViewComponent,
     canActivate: [routeGuard],
   },
-  { path: 'about', component: AboutComponent, canActivate: [routeGuard] },
-  { path: 'contact', component: ContactComponent, canActivate: [routeGuard] },
+  {
+    path: 'about',
+    component: AboutComponent,
+    canActivate: [routeGuard],
+  },
+  {
+    path: 'contact',
+    component: ContactComponent,
+    canActivate: [routeGuard],
+  },
   {
     path: 'login',
     component: LoginComponent,

@@ -21,6 +21,7 @@ export class authGuard implements CanActivate {
 
     if (!isAuthenticated) {
       this.router.navigate(['/login']);
+      alert("Thou shall not pass! (for now)")
       return false;
     }
 
