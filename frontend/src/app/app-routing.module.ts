@@ -17,7 +17,11 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     canActivate: [routeGuard],
-    resolve: { animation: AnimationResolver },
+  },
+  {
+    path: 'work',
+    component: WorkComponent,
+    canActivate: [routeGuard],
   },
   { path: 'work', component: WorkComponent, canActivate: [routeGuard] },
   {

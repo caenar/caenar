@@ -1,1 +1,16 @@
-<p>project-view works!</p>
+<div class="header">
+  <div class="info-container">
+    <div class="info-item">
+      <p class="label">[name]</p>
+      <h1>{{ caseStudy.name }}</h1>
+    </div>
+    <div class="info-item">
+      <p class="label">[description]</p>
+      <p class="desc">{{ caseStudy.description }}</p>
+    </div>
+    <div class="info-item">
+      <p class="label">[areas]</p>
+      <p *ngFor="let tag of caseStudy.tags">{{tag}}</p>
+    </div>
+  </div>
+</div>
