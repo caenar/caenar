@@ -17,10 +17,12 @@
 
   <div class="container">
     <div class="item" *ngFor="let project of filteredProjects">
-      <div
+      <a [routerLink]="['/work/', project.name.toLowerCase()]">
+        <div
         class="item-img"
         [style.background-image]="'url(' + project.assets[10] + ')'"
-      ></div>
+        ></div>
+      </a>
       <div class="project-info">
         <h1 class="item-name">{{ project.name }}</h1>
         <div class="category">

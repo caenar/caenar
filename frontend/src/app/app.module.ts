@@ -12,6 +12,7 @@ import { HeaderComponent } from './components/partials/header/header.component';
 import { FooterComponent } from './components/partials/footer/footer.component';
 import { HomeComponent } from './components/pages/home/home.component';
 import { WorkComponent } from './components/pages/work/work.component';
+import { ProjectViewComponent } from './components/pages/project-view/project-view.component';
 import { AboutComponent } from './components/pages/about/about.component';
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { ContactComponent } from './components/pages/contact/contact.component';
@@ -19,7 +20,6 @@ import { PopupComponent } from './shared/constants/popup/popup.component';
 import { LoginComponent } from './shared/constants/login/login.component';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 import { authGuard } from './shared/guards/auth.guard';
-import { ProjectViewComponent } from './components/pages/project-view/project-view.component';
 
 @NgModule({
   declarations: [

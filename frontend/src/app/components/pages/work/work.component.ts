@@ -17,13 +17,14 @@ export class WorkComponent implements OnInit {
 
   constructor(private projectService: ProjectService) {}
 
+  projects: any[] = [];
+  caseStudy: any = {};
+
   name!: string;
   description!: string;
   background!: string;
   assets!: string[];
   tags: string[] = [];
-  projects: any[] = [];
-  caseStudy: any = {};
 
   selectedTag: string = 'all';
   filteredProjects: any[] = [];
