@@ -60,3 +60,20 @@
     border: 1px solid transparent;
   }
 }
+.archive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 15rem;
+
+  .cta {
+    padding: 1.5rem 2rem;
+    font-size: 1.5rem;
+    gap: .3rem;
+
+    sup {
+      font-size: 1rem;
+      align-self: flex-start;
+    }
+  }
+}

@@ -18,6 +18,10 @@ const Project = sequelize.define("projects", {
    background: {
       type: DataTypes.TEXT,
       allowNull: false,
+   },
+   is_archived: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
    }
 });
 

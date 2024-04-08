@@ -44,7 +44,7 @@ export class ProjectViewComponent implements OnInit {
           this.DATA_PROJECT_TAGS = data.projectTags.projectTags;
           this.DATA_TAGS = data.tags.tags;
 
-          let folder = 'casestudies';
+          let folder = 'projects';
 
           this.DATA_PROJECT.forEach((project, index) => {
             const name = project.name.toLowerCase().replace(/\s+/g, '');

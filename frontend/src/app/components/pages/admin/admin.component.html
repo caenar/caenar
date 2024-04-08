@@ -1,34 +1,73 @@
+<div class="overlay-wrapper" *ngIf="isOverlayOpen">
+  <div class="overlay">
+    <div class="form-container">
+      <h1 class="title">Edit {{ projectToUpdate.name }}</h1>
+      <input type="text" [(ngModel)]="updateProjectName" />
+      <input type="text" [(ngModel)]="updateProjectDesc" />
+      <textarea type="text" [(ngModel)]="updateProjectBg"> </textarea>
+      <input type="text" [(ngModel)]="updateProjectTag" />
+      <select [(ngModel)]="updateIsArchived">
+        <option [value]="false">Make this an active project</option>
+        <option [value]="true">Archive this project</option>
+      </select>
+      <div class="buttons">
+        <button (click)="isOverlayOpen = false">Cancel</button>
+        <button (click)="updateProject()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="container">
   <div>
     <h1 class="title">
       All Projects <span>({{ projects.length }})</span>
     </h1>
     <div class="item-container">
-      <div class="item" *ngFor="let project of projects">
-        <h1>{{ project.name }}</h1>
-        <p>{{ project.description }}</p>
+      <div
+        class="item"
+        *ngFor="let project of projects"
+        (click)="editProject(project)"
+      >
+        <div class="info">
+          <h1>{{ project.name }}</h1>
+          <p>{{ project.description }}</p>
+        </div>
+        <div class="status">
+          <img src="/assets/images/dot.png" alt="" />
+          <p>{{ project.is_archived ? "Archived" : "Active" }}</p>
+        </div>
       </div>
     </div>
   </div>
   <div class="form">
     <div class="form-container">
       <h1 class="title">Create a project</h1>
-      <input type="text" [(ngModel)]="projectName" placeholder="Name of the project" />
       <input
         type="text"
-        [(ngModel)]="projectDesc"
+        [(ngModel)]="createProjectName"
+        placeholder="Name of the project"
+      />
+      <input
+        type="text"
+        [(ngModel)]="createProjectDesc"
         placeholder="Short description of the project"
       />
       <textarea
         type="text"
-        [(ngModel)]="projectBg"
-        placeholder="Brief background of the project">
+        [(ngModel)]="createProjectBg"
+        placeholder="Brief background of the project"
+      >
       </textarea>
       <input
         type="text"
-        [(ngModel)]="projectTag"
+        [(ngModel)]="createProjectTag"
         placeholder="Tags related to the project (seperate by comma)"
       />
+      <select [(ngModel)]="createIsArchived">
+        <option [value]="false">Make this an active project</option>
+        <option [value]="true">Archive this project</option>
+      </select>
       <button (click)="addProject()">Add project</button>
     </div>
     <div class="form-container">
@@ -41,10 +80,6 @@
       <button (click)="deleteProject()">Delete project</button>
     </div>
   </div>
-
-  <app-popup
-    *ngIf="true"
-    style="position: fixed;"
-    [message]="message"
-  ></app-popup>
 </section>
+
+<app-popup *ngIf="true" style="position: fixed" [message]="message"></app-popup>

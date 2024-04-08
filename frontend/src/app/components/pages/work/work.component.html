@@ -25,7 +25,7 @@
       <a [routerLink]="[createProjectName(project.name)]">
         <div
           class="item-img"
-          [style.background-image]="'url(' + project.assets[10] + ')'"
+          [style.background-image]="'url(' + project.assets[9] + ')'"
         ></div>
       </a>
       <div class="project-info">
@@ -44,4 +44,9 @@
       </div>
     </div>
   </div>
+</section>
+<section class="archive">
+  <a class="cta" routerLink="/archive">
+    View archive <sup>{{DATA_PROJECTS.length}}</sup>
+  </a>
 </section>

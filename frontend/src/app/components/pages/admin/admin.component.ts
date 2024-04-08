@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { ProjectService } from '../../../shared/services/project.service';
 import { PopupService } from '../../../shared/services/popup.service';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -9,16 +15,23 @@ import { Subscription } from 'rxjs';
   styleUrl: './admin.component.scss',
   providers: [PopupService],
 })
-export class AdminComponent {
+export class AdminComponent implements AfterViewInit, OnDestroy {
   projects: any[] = [];
   projectTags: any[] = [];
   tags: any[] = [];
-
-  projectName = '';
-  projectDesc = '';
-  projectTag = '';
-  projectBg = '';
   projectNameToDelete = '';
+
+  updateProjectName: string = '';
+  updateProjectDesc: string = '';
+  updateProjectBg: string = '';
+  updateProjectTag: string = '';
+  updateIsArchived: boolean = false;
+
+  createProjectName: string = '';
+  createProjectDesc: string = '';
+  createProjectBg: string = '';
+  createProjectTag: string = '';
+  createIsArchived: boolean = false;
 
   showPopup = false;
   message: string | null = null;
@@ -33,100 +46,180 @@ export class AdminComponent {
     this.popupService.showMessage(message);
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.subscription.add(
       this.popupService.showPopup$.subscribe((showPopup) => {
         this.showPopup = showPopup;
       })
     );
-
     this.subscription.add(
       this.popupService.message$.subscribe((message) => {
         this.message = message;
       })
     );
-
-    this.projectService.getProjects().subscribe({
+    forkJoin({
+      projects: this.projectService.getProjects(),
+      projectTags: this.projectService.getProjectTags(),
+      tags: this.projectService.getTags(),
+    }).subscribe({
       next: (data: any) => {
-        this.projects = data.project;
-        console.log(this.projects);
+        this.projects = data.projects.project;
+        this.projectTags = data.projectTags.projectTags;
+        this.tags = data.tags.tags;
       },
-      error: (error) => console.error(error),
-    });
-    this.projectService.getProjectTags().subscribe({
-      next: (data: any) => {
-        this.projectTags = data.projectTags;
-        console.log(this.projectTags);
-      },
-      error: (error) => console.error(error),
-    });
-    this.projectService.getTags().subscribe({
-      next: (data: any) => {
-        this.tags = data.tags;
-        console.log(this.tags);
-      },
-      error: (error) => console.error(error),
+      error: (err) => console.error(err),
     });
   }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-  addProject(): void {
-    const tagsArray = this.projectTag.split(',').map((tag) => tag.trim());
+  isOverlayOpen: boolean = false;
+  projectToUpdate: any;
 
-    const projectData = {
-      name: this.projectName,
-      description: this.projectDesc,
-      background: this.projectBg,
-      tags: tagsArray,
-    };
-
-    this.projectService.createProject(projectData).subscribe({
-      next: (response : any) => {
-        this.showMessage(`Created the project ${response.newProject.name} successfully.`);
-
-        this.popupService.showPopup$.subscribe((showPopup) => {
-          if (!showPopup) {
-            window.location.reload();
+  editProject(projectToUpdate: any): void {
+    let tagArray: any = [];
+    this.projectTags.forEach((p) => {
+      if (p.projectId === projectToUpdate.id) {
+        this.tags.forEach((tag) => {
+          if (tag.id === p.tagId) {
+            tagArray.push(tag);
           }
         });
-
-        this.projectName = '';
-        this.projectDesc = '';
-        this.projectBg = '';
-        this.projectTag = '';
-      },
-      error: (err) => {
-        this.showMessage(`Could not create this project possibly due to an internal server error.`);
-        console.error(err);
-      },
+      }
     });
+
+    const tagNames = tagArray.map((obj: any) => obj.name).join(', ');
+    this.updateProjectName = projectToUpdate.name;
+    this.updateProjectDesc = projectToUpdate.description;
+    this.updateProjectBg = projectToUpdate.background;
+    this.updateProjectTag = tagNames;
+    this.updateIsArchived = projectToUpdate.is_archived;
+
+    this.projectToUpdate = {
+      id: projectToUpdate.id,
+      name: projectToUpdate.name,
+      description: projectToUpdate.description,
+      background: projectToUpdate.background,
+      tags: tagNames,
+      is_archived: projectToUpdate.is_archived,
+    };
+
+    this.isOverlayOpen = true;
   }
 
-  deleteProject(): void {
-    const project = this.projects.find(
-      (p) => p.name === this.projectNameToDelete
-    );
+  updateProject(): void {
+    const tagsArray = this.updateProjectTag
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== '');
 
-    if (project) {
-      this.projectService.deleteProject(project.id).subscribe({
+    const projectData = {
+      name: this.updateProjectName,
+      description: this.updateProjectDesc,
+      background: this.updateProjectBg,
+      tags: tagsArray,
+      is_archived: this.updateIsArchived,
+    };
+
+    this.projectService
+      .updateProject(this.projectToUpdate.id, projectData)
+      .subscribe({
         next: () => {
-          this.showMessage(`The project ${this.projectNameToDelete} was succesfully deleted from the database.`);
-
-          const projectTag = this.projectTags.find(
-            (p) => p.projectId === project.id
+          this.isOverlayOpen = false;
+          this.showMessage(
+            `Updated the project ${this.updateProjectName} successfully.`
           );
-
-          this.deleteProjectTags(project.id);
-          this.deleteTags(projectTag.tagId);
-
-          this.projects = this.projects.filter((p) => p.id !== project.id);
-          this.projectNameToDelete = '';
+          this.popupService.showPopup$.subscribe((showPopup) => {
+            if (!showPopup) {
+              window.location.reload();
+            }
+          });
+          this.updateProjectName = '';
+          this.updateProjectDesc = '';
+          this.updateProjectBg = '';
+          this.updateProjectName = '';
+          this.updateIsArchived = false;
         },
         error: (err) => {
+          this.showMessage(`Could not update this project.`);
           console.error(err);
         },
       });
+  }
+
+  addProject(): void {
+    const tagsArray = this.createProjectTag
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== '');
+
+    if (
+      this.createProjectName === '' ||
+      this.createProjectDesc === '' ||
+      this.createProjectBg === '' ||
+      tagsArray.length === 0
+    ) {
+      this.showMessage('Hey, you need to fill in all of those.');
     } else {
-      this.showMessage(`The project ${this.projectNameToDelete} does not exist in the database.`);
+      const projectData = {
+        name: this.createProjectName,
+        description: this.createProjectDesc,
+        background: this.createProjectBg,
+        tags: tagsArray,
+        is_archived: this.createIsArchived,
+      };
+      this.projectService.createProject(projectData).subscribe({
+        next: (response: any) => {
+          this.showMessage(
+            `Created the project ${response.newProject.name} successfully.`
+          );
+          this.popupService.showPopup$.subscribe((showPopup) => {
+            if (!showPopup) {
+              window.location.reload();
+            }
+          });
+          this.createProjectName = '';
+          this.createProjectDesc = '';
+          this.createProjectBg = '';
+          this.createProjectName = '';
+          this.createIsArchived = false;
+        },
+        error: (err) => {
+          this.showMessage(`Could not create this project.`);
+          console.error(err);
+        },
+      });
+    }
+  }
+
+  deleteProject(): void {
+    if (this.projectNameToDelete === '') {
+      this.showMessage('You need to fill up the field, bro.');
+    } else {
+      const project = this.projects.find(
+        (p) => p.name === this.projectNameToDelete
+      );
+      if (project) {
+        this.projectService.deleteProject(project.id).subscribe({
+          next: () => {
+            this.showMessage(
+              `The project ${this.projectNameToDelete} was succesfully deleted from the database.`
+            );
+            const projectTag = this.projectTags.find(
+              (p) => p.projectId === project.id
+            );
+            this.deleteProjectTags(project.id);
+            this.deleteTags(projectTag.tagId);
+            this.projects = this.projects.filter((p) => p.id !== project.id);
+            this.projectNameToDelete = '';
+          },
+        });
+      } else {
+        this.showMessage(
+          `The project ${this.projectNameToDelete} does not exist in the database.`
+        );
+      }
     }
   }
 

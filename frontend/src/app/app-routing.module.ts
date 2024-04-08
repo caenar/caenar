@@ -10,7 +10,9 @@ import { AdminComponent } from './components/pages/admin/admin.component';
 import { LoginComponent } from './shared/constants/login/login.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { routeGuard } from './shared/guards/route.guard';
+
 import { ProjectViewComponent } from './components/pages/project-view/project-view.component';
+import { ArchiveComponent } from './components/pages/archive/archive.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,11 @@ const routes: Routes = [
     canActivate: [routeGuard],
   },
   { path: 'work', component: WorkComponent, canActivate: [routeGuard] },
+  {
+    path: 'archive',
+    component: ArchiveComponent,
+    canActivate: [routeGuard],
+  },
   {
     path: 'work/:projectName',
     component: ProjectViewComponent,

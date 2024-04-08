@@ -40,7 +40,10 @@ export class WorkComponent implements OnInit {
         this.DATA_PROJECT_TAGS = data.projectTags.projectTags;
         this.DATA_TAGS = data.tags.tags;
 
-        let folder = 'casestudies';
+        console.log(this.DATA_PROJECTS);
+        
+        
+        let folder = 'projects';
         this.DATA_PROJECTS.forEach((project) => {
           const projectName = project.name.toLowerCase().replace(/\s+/g, '');
 

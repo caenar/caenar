@@ -12,34 +12,27 @@ app.use(express.json());
 app.use(cors());
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+   user: process.env.DB_USER,
+   host: process.env.DB_HOST,
+   database: process.env.DB_NAME,
+   password: process.env.DB_PASSWORD,
+   port: process.env.DB_PORT,
 });
 
 pool.query("SELECT NOW()", (err, res) => {
-  if (err) {
-    console.error("Error executing query:", err);
-  } else {
-    console.log("Connected to PostgreSQL database");
-    console.log("Current date from database:", res.rows[0].now);
-  }
-  pool.end();
+   if (err) {
+      console.error("Error executing query:", err);
+   } else {
+      console.log("Connected to PostgreSQL database");
+      console.log("Current date from database:", res.rows[0].now);
+   }
+   pool.end();
 });
 
 app.use(bodyParser.json());
-app.use("/api/", projectRouter);
-app.use(
-  "/casestudies",
-  express.static(__dirname + "/assets/projects/casestudies")
-);
-app.use(
-  "/miscellaneous",
-  express.static(__dirname + "/assets/projects/miscellaneous/")
-);
-app.use("/videos", express.static(__dirname + "/assets/projects/videos/"));
+app.use("/api", projectRouter);
+app.use("/projects", express.static(__dirname + "/assets/projects"));
+app.use("/archive", express.static(__dirname + "/assets/archive"));
 
 // sequelize
 //   .sync()
@@ -52,5 +45,5 @@ app.use("/videos", express.static(__dirname + "/assets/projects/videos/"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`\nServer running at http://localhost:${PORT}`);
+   console.log(`\nServer running at http://localhost:${PORT}`);
 });
