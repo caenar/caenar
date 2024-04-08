@@ -101,4 +101,8 @@ export class WorkComponent implements OnInit {
       easing: 'cubicBezier(.39,0,.16,1.01)',
     });
   }
+
+  createProjectName(projectName: string): string {
+    return '/work/' + projectName.toLowerCase().replace(/\s+/g, '');
+  }
 }

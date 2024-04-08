@@ -2,11 +2,12 @@
 
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   height: auto;
-  padding: 200px;
+  padding: 8rem $lr-padding 10rem $lr-padding;
   gap: 150px;
+  width: 100%;
 
   .title {
     font-size: 52px;
@@ -15,19 +16,22 @@
 
   .item-container {
     display: grid;
-    grid-template-columns: repeat(5, 20%);
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
+    width: 100%;
 
     .item {
       padding: 10px 15px;
-      width: 300px;
       height: 250px;
+      width: 100%;
       border-radius: 0.5rem;
       background-color: $clr-secondary;
       color: $clr-background;
 
       p {
         font-size: 17px;
+        opacity: .8;
+        margin-top: .2rem;
       }
     }
   }
@@ -41,7 +45,7 @@
     .form-container {
       display: flex;
       flex-direction: column;
-      width: 600px;
+      width: 750px;
 
       input, button, textarea {
         outline: none;
@@ -72,7 +76,7 @@
         border: 1px solid transparent;
         border-bottom: 1px solid #00000018;
         background: transparent;
-        height: 100px;
+        height: 150px;
         resize: none;
       }
 

@@ -2,14 +2,19 @@
   <div class="intro">
     <h1>Works</h1>
     <div class="filters">
-      <div class="cta" 
-      (click)="filter('all')"
-      [class.selected-tag]="selectedTag === 'all'">
+      <div
+        class="cta"
+        (click)="filter('all')"
+        [class.selected-tag]="selectedTag === 'all'"
+      >
         <a>all</a>
       </div>
-      <div class="cta" *ngFor="let tag of DATA_TAGS" 
-      (click)="filter(tag.name)"
-      [class.selected-tag]="selectedTag === tag.name">
+      <div
+        class="cta"
+        *ngFor="let tag of DATA_TAGS"
+        (click)="filter(tag.name)"
+        [class.selected-tag]="selectedTag === tag.name"
+      >
         <a>{{ tag.name }}</a>
       </div>
     </div>
@@ -17,10 +22,10 @@
 
   <div class="container">
     <div class="item" *ngFor="let project of filteredProjects">
-      <a [routerLink]="['/work/', project.name.toLowerCase()]">
+      <a [routerLink]="[createProjectName(project.name)]">
         <div
-        class="item-img"
-        [style.background-image]="'url(' + project.assets[10] + ')'"
+          class="item-img"
+          [style.background-image]="'url(' + project.assets[10] + ')'"
         ></div>
       </a>
       <div class="project-info">
@@ -28,7 +33,12 @@
         <div class="category">
           <p *ngFor="let tag of project.tags; let last = last">
             {{ tag }}
-            <ng-icon *ngIf="!last" name="ionRadioButtonOnOutline"></ng-icon>
+            <img
+              loading="lazy"
+              alt="An image of a small dot"
+              src="/assets/images/dot.png"
+              *ngIf="!last"
+            />
           </p>
         </div>
       </div>

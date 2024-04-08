@@ -1,16 +1,69 @@
-<div class="header">
-  <div class="info-container">
-    <div class="info-item">
-      <p class="label">[name]</p>
-      <h1>{{ caseStudy.name }}</h1>
-    </div>
-    <div class="info-item">
-      <p class="label">[description]</p>
-      <p class="desc">{{ caseStudy.description }}</p>
-    </div>
-    <div class="info-item">
-      <p class="label">[areas]</p>
-      <p *ngFor="let tag of caseStudy.tags">{{tag}}</p>
+<section class="header">
+  <h1>{{ caseStudy.name }}</h1>
+  <div class="category">
+    <p *ngFor="let tag of caseStudy.tags; let last = last">
+      {{ tag }}
+      <img
+        loading="lazy"
+        alt="An image of a small dot"
+        src="/assets/images/dot.png"
+        *ngIf="!last"
+      />
+    </p>
+  </div>
+</section>
+<section class="header-image">
+  <div class="image" [style.background-image]="'url('+ caseStudy.assets[0] +')'"></div>
+</section>
+<section class="project-info">
+  <h1 class="section-title">/ ABOUT PROJECT</h1>
+  <div class="container">
+    <p class="main-text">{{ caseStudy.background }}</p>
+    <div class="details">
+      <div class="item">
+        <h2 class="title">[Client]</h2>
+        <p class="text">Sagemind Corporation</p>
+      </div>
+      <div class="item">
+        <h2 class="title">[Industry]</h2>
+        <p class="text">Education</p>
+      </div>
+      <div class="item">
+        <h2 class="title">[Services]</h2>
+        <p class="text" *ngFor="let tag of caseStudy.tags">{{ tag }}</p>
+      </div>
+      <div class="item">
+        <h2 class="title">[Year]</h2>
+        <p class="text">2024</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
+<section class="project-image">
+  <div class="item" *ngFor="let image of caseStudy.assets">
+    <ng-container *ngIf="isImage(image)">
+      <img loading="lazy" [src]="image" />
+    </ng-container>
+    <ng-container *ngIf="!isImage(image)">
+      <video muted autoplay loop>
+        <source loading="lazy" [src]="image" />
+      </video>
+    </ng-container>
+  </div>
+</section>
+<section class="next-project">
+  <h1 class="section-title">Next project</h1>
+  <a class="link">{{ nextProject.name }}</a>
+  <div class="container">
+    <div class="preview" (mouseenter)="onPreview($event)">
+      <a
+        class="link-wrapper"
+        [routerLink]="createProjectName(nextProject.name)"
+      >
+        <img [src]="nextProject.assets[0]" />
+      </a>
+    </div>
+    <div class="line-cover"></div>
+    <a class="cta" routerLink="/work">All work</a>
+  </div>
+</section>

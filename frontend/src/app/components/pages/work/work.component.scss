@@ -45,21 +45,9 @@
           margin-bottom: .3rem;
         }
         .category {
-          display: flex;
-          flex-direction: row;
-          
-          p {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: max-content;
-            color: #0000009c;
-            font-size: 1.1rem;
-            
-            ng-icon {
-              font-size: 7px;
-              padding: 0 1rem 0 .5rem;
-            }
+          img {
+            opacity: .5;
+            padding: 0 .2rem;
           }
         }
       }

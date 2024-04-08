@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap");
 
 $clr-text: #181817;
+$clr-text-200: #5c5c5c;
 $clr-text-400: #d3cac3;
 $clr-background: #fff5dc;
 $clr-primary: #324217;
+$clr-primary-100: #10130e;
 $clr-secondary: #647745;
 $clr-accent: #ff531f;
 
@@ -11,6 +13,7 @@ $lr-padding-md: 6rem;
 $lr-padding-s: 4rem;
 $lr-padding: 5rem;
 
+$tb-padding-l: 10rem;
 $tb-padding-md: 6rem;
 $tb-padding-s: 3rem;
 $tb-padding: 1.5rem;
@@ -49,7 +52,7 @@ ol {
   background-color: $clr-accent;
 }
 
-// componenets
+// components
 .header-inner {
   display: flex;
   align-items: center;
@@ -100,19 +103,41 @@ ol {
   border: 1px solid $clr-text;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: 500ms all cubic-bezier(0,-0.03,.35,.99);
+  transition: 500ms all cubic-bezier(0, -0.03, 0.35, 0.99);
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
 
   a {
     font-size: 1rem;
     font-weight: 500;
     text-transform: uppercase;
   }
-  
+
   &:hover {
     border: 1px solid transparent;
     background-color: $clr-accent;
     color: $clr-background;
-    transition: 500ms all cubic-bezier(0,-0.03,.35,.99);
+    transition: 500ms all cubic-bezier(0, -0.03, 0.35, 0.99);
+  }
+}
+
+.category {
+  display: flex;
+  flex-direction: row;
+
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    color: #0000009c;
+    font-size: 1.1rem;
+
+    img {
+      height: 10px;
+      padding: 0 .5rem;
+    }
   }
 }
 

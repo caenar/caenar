@@ -10,10 +10,7 @@
     <div class="intro-banner">
       <div class="video-container">
         <video #videoElement muted autoplay loop preload="auto">
-          <source
-            src="../../../../assets/videos/showreel.mp4"
-            type="video/mp4"
-          />
+          <source src="/assets/videos/showreel.mp4" type="video/mp4" />
         </video>
       </div>
     </div>
@@ -21,7 +18,7 @@
   <section class="about-inner">
     <div
       class="float-img"
-      style="background-image: url(../../../../assets/images/myself.jpg)"
+      style="background-image: url(/assets/images/myself.jpg)"
     ></div>
     <div class="container">
       <h1 class="section-title">/ About me</h1>
@@ -140,78 +137,86 @@
       <h3>View project <ng-icon name="ionArrowForward"></ng-icon></h3>
     </div>
     <div class="container">
-      <div class="item">
-        <div class="img-container">
-          <div
-            class="img"
-            style="
-              background-image: url(../../../../assets/images/projects/greenthumb/cover.png);
-            "
-          ></div>
-        </div>
-        <div class="text">
-          <h2 class="title">Green Thumb</h2>
-          <div class="desc">
-            <p class="tag">Branding</p>
-            <p class="tag">Gardening</p>
-            <p class="year">2024</p>
+      <a routerLink="/work/greenthumb">
+        <div class="item">
+          <div class="img-container">
+            <div
+              class="img"
+              style="
+                background-image: url(/assets/images/projects/greenthumb/cover.png);
+              "
+            ></div>
+          </div>
+          <div class="text">
+            <h2 class="title">Green Thumb</h2>
+            <div class="desc">
+              <p class="tag">Branding</p>
+              <p class="tag">Gardening</p>
+              <p class="year">2024</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="item">
-        <div class="img-container">
-          <div
-            class="img"
-            style="
-              background-image: url(../../../../assets/images/projects/radiant/cover.png);
-            "
-          ></div>
-        </div>
-        <div class="text">
-          <h2 class="title">Radiant</h2>
-          <div class="desc">
-            <p class="tag">Package Design</p>
-            <p class="tag">Skincare</p>
-            <p class="year">2023</p>
+      </a>
+      <a routerLink="/work/radiant">
+        <div class="item">
+          <div class="img-container">
+            <div
+              class="img"
+              style="
+                background-image: url(/assets/images/projects/radiant/cover.png);
+              "
+            ></div>
+          </div>
+          <div class="text">
+            <h2 class="title">Radiant</h2>
+            <div class="desc">
+              <p class="tag">Package Design</p>
+              <p class="tag">Skincare</p>
+              <p class="year">2023</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="item">
-        <div class="img-container">
-          <div
-            class="img"
-            style="
-              background-image: url(../../../../assets/images/projects/pixelperfect/logocover.png);
-            "
-          ></div>
-        </div>
-        <div class="text">
-          <h2 class="title">Pixel Perfect</h2>
-          <div class="desc">
-            <p class="tag">Branding</p>
-            <p class="tag">Photography</p>
-            <p class="year">2023</p>
+      </a>
+      <a routerLink="/work/pixelperfect">
+        <div class="item">
+          <div class="img-container">
+            <div
+              class="img"
+              style="
+                background-image: url(/assets/images/projects/pixelperfect/logocover.png);
+              "
+            ></div>
+          </div>
+          <div class="text">
+            <h2 class="title">Pixel Perfect</h2>
+            <div class="desc">
+              <p class="tag">Branding</p>
+              <p class="tag">Photography</p>
+              <p class="year">2023</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="item">
-        <div class="img-container">
-          <div
-            class="img"
-            style="
-              background-image: url(../../../../assets/images/projects/sparklabs/logocover.png);
-            "
-          ></div>
-        </div>
-        <div class="text">
-          <h2 class="title">Spark Labs</h2>
-          <div class="desc">
-            <p class="tag">Branding</p>
-            <p class="tag">Coding Solutions</p>
-            <p class="year">2023</p>
+      </a>
+      <a routerLink="/work/sparklabs">
+        <div class="item">
+          <div class="img-container">
+            <div
+              class="img"
+              style="
+                background-image: url(/assets/images/projects/sparklabs/logocover.png);
+              "
+            ></div>
+          </div>
+          <div class="text">
+            <h2 class="title">Spark Labs</h2>
+            <div class="desc">
+              <p class="tag">Branding</p>
+              <p class="tag">Coding Solutions</p>
+              <p class="year">2023</p>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
   </section>
   <section class="feedback">
