@@ -3,7 +3,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgIconsModule } from '@ng-icons/core';
-import { ionArrowForward, ionArrowUp, ionRadioButtonOnOutline } from '@ng-icons/ionicons';
+import {
+  ionArrowForward,
+  ionArrowUp,
+  ionRadioButtonOnOutline,
+} from '@ng-icons/ionicons';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -18,6 +22,8 @@ import { AdminComponent } from './components/pages/admin/admin.component';
 import { ContactComponent } from './components/pages/contact/contact.component';
 import { PopupComponent } from './shared/constants/popup/popup.component';
 import { LoginComponent } from './shared/constants/login/login.component';
+import { ArchiveComponent } from './components/pages/archive/archive.component';
+
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 import { authGuard } from './shared/guards/auth.guard';
 
@@ -34,6 +40,7 @@ import { authGuard } from './shared/guards/auth.guard';
     AdminComponent,
     LoginComponent,
     ProjectViewComponent,
+    ArchiveComponent,
   ],
   imports: [
     HttpClientModule,
@@ -44,7 +51,7 @@ import { authGuard } from './shared/guards/auth.guard';
     NgIconsModule.withIcons({
       ionArrowForward,
       ionArrowUp,
-      ionRadioButtonOnOutline
+      ionRadioButtonOnOutline,
     }),
   ],
   providers: [

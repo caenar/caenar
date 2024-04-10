@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { ProjectService } from '../../../shared/services/project.service';
 import { PopupService } from '../../../shared/services/popup.service';
 import { Subscription, forkJoin } from 'rxjs';
@@ -21,16 +15,22 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
   tags: any[] = [];
   projectNameToDelete = '';
 
+  updateProjectClient: string = '';
   updateProjectName: string = '';
   updateProjectDesc: string = '';
   updateProjectBg: string = '';
   updateProjectTag: string = '';
+  updateProjectIndustry: string = '';
+  updateProjectYear!: number;
   updateIsArchived: boolean = false;
 
+  createProjectClient: string = '';
   createProjectName: string = '';
   createProjectDesc: string = '';
   createProjectBg: string = '';
   createProjectTag: string = '';
+  createProjectIndustry: string = '';
+  createProjectYear!: number;
   createIsArchived: boolean = false;
 
   showPopup = false;
@@ -64,6 +64,17 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
     }).subscribe({
       next: (data: any) => {
         this.projects = data.projects.project;
+        this.projects.sort((a, b) => {
+          const nameA = a.id;
+          const nameB = b.id;
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
         this.projectTags = data.projectTags.projectTags;
         this.tags = data.tags.tags;
       },
@@ -90,18 +101,25 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
     });
 
     const tagNames = tagArray.map((obj: any) => obj.name).join(', ');
+
+    this.updateProjectClient = projectToUpdate.client;
     this.updateProjectName = projectToUpdate.name;
     this.updateProjectDesc = projectToUpdate.description;
     this.updateProjectBg = projectToUpdate.background;
     this.updateProjectTag = tagNames;
+    this.updateProjectIndustry = projectToUpdate.industry;
+    this.updateProjectYear = projectToUpdate.year;
     this.updateIsArchived = projectToUpdate.is_archived;
 
     this.projectToUpdate = {
       id: projectToUpdate.id,
+      client: projectToUpdate.client,
       name: projectToUpdate.name,
       description: projectToUpdate.description,
       background: projectToUpdate.background,
       tags: tagNames,
+      industry: projectToUpdate.industry,
+      year: projectToUpdate.year,
       is_archived: projectToUpdate.is_archived,
     };
 
@@ -115,10 +133,13 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
       .filter((tag) => tag !== '');
 
     const projectData = {
+      client: this.updateProjectClient,
       name: this.updateProjectName,
       description: this.updateProjectDesc,
       background: this.updateProjectBg,
       tags: tagsArray,
+      industry: this.updateProjectIndustry,
+      year: this.updateProjectYear,
       is_archived: this.updateIsArchived,
     };
 
@@ -135,10 +156,13 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
               window.location.reload();
             }
           });
+          this.updateProjectClient = '';
           this.updateProjectName = '';
           this.updateProjectDesc = '';
           this.updateProjectBg = '';
           this.updateProjectName = '';
+          this.updateProjectIndustry = '';
+          this.updateProjectYear = 0;
           this.updateIsArchived = false;
         },
         error: (err) => {
@@ -155,18 +179,24 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
       .filter((tag) => tag !== '');
 
     if (
+      this.createProjectClient === '' ||
+      this.createProjectIndustry === '' ||
       this.createProjectName === '' ||
       this.createProjectDesc === '' ||
       this.createProjectBg === '' ||
+      this.createProjectYear === 0 ||
       tagsArray.length === 0
     ) {
       this.showMessage('Hey, you need to fill in all of those.');
     } else {
       const projectData = {
+        client: this.createProjectClient,
         name: this.createProjectName,
         description: this.createProjectDesc,
         background: this.createProjectBg,
         tags: tagsArray,
+        industry: this.createProjectIndustry,
+        year: this.createProjectYear,
         is_archived: this.createIsArchived,
       };
       this.projectService.createProject(projectData).subscribe({
@@ -179,10 +209,13 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
               window.location.reload();
             }
           });
+          this.createProjectClient = '';
           this.createProjectName = '';
           this.createProjectDesc = '';
           this.createProjectBg = '';
           this.createProjectName = '';
+          this.createProjectIndustry = '';
+          this.createProjectYear = 0;
           this.createIsArchived = false;
         },
         error: (err) => {

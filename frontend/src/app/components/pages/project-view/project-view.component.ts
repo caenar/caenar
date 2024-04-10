@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ProjectService } from '../../../shared/services/project.service';
 import { environment } from '../../../../environments/environment';
-import { filter, forkJoin, switchMap } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-project-view',
@@ -15,89 +15,122 @@ export class ProjectViewComponent implements OnInit {
     private projectService: ProjectService
   ) {}
 
-  projectName: any;
-  nextProject: any = {};
+  projectName: any = '';
   currentProjectIndex: number = 0;
-  caseStudy: any = {};
+  caseStudy: any = {
+    client: '',
+    name: '',
+    description: '',
+    background: '',
+    industry: '',
+    year: 0,
+    tags: '',
+    assets: '',
+  };
+  nextProject: any = {
+    name: '',
+    assets: '',
+    link: '',
+  };
   tags: any[] = [];
 
-  DATA_PROJECT!: any[];
-  DATA_PROJECT_TAGS!: any[];
-  DATA_TAGS: any[] = [];
-
   ngOnInit(): void {
-    this.route.paramMap
-      .pipe(
-        switchMap((params: ParamMap) => {
-          this.projectName = params.get('projectName');
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.projectName = params.get('projectName');
+      if (this.projectName) {
+        this.loadData();
+      }
+    });
+  }
 
-          return forkJoin({
-            projects: this.projectService.getProjects(),
-            projectTags: this.projectService.getProjectTags(),
-            tags: this.projectService.getTags(),
-          });
-        })
-      )
-      .subscribe({
-        next: (data: any) => {
-          this.DATA_PROJECT = data.projects.project;
-          this.DATA_PROJECT_TAGS = data.projectTags.projectTags;
-          this.DATA_TAGS = data.tags.tags;
+  loadData(): void {
+    forkJoin({
+      projects: this.projectService.getProjects(),
+      projectTags: this.projectService.getProjectTags(),
+      tags: this.projectService.getTags(),
+    }).subscribe({
+      next: (data) => {
+        this.processData(data);
+      },
+      error: (err) => console.error(err),
+    });
+  }
 
-          let folder = 'projects';
+  sortedProjects: any[] = [];
+  processData(data: any): void {
+    const folder = 'projects';
+    const { projects, projectTags, tags } = data;
 
-          this.DATA_PROJECT.forEach((project, index) => {
-            const name = project.name.toLowerCase().replace(/\s+/g, '');
-            if (this.projectName === name) {
-              this.currentProjectIndex = index + 1;
-              this.projectService
-                .getImages(this.projectName, folder)
-                .subscribe({
-                  next: (imageFiles: string[]) => {
-                    const imageUrls = imageFiles.map(
-                      (fileName) =>
-                        `${environment.baseUrl}/${folder}/${this.projectName}/${fileName}`
-                    );
-                    this.DATA_PROJECT_TAGS.forEach((proTag) => {
-                      if (proTag.projectId === project.id) {
-                        this.DATA_TAGS.forEach((tag) => {
-                          if (tag.id === proTag.tagId) {
-                            this.tags.push(tag.name);
-                          }
-                        });
-                      }
-                    });
-                    this.caseStudy = {
-                      name: project.name,
-                      description: project.description,
-                      background: project.background,
-                      tags: this.tags,
-                      assets: imageUrls,
-                    };
-                    this.tags = [];
-                  },
-                  error: (err) => console.error(err),
-                });
-            }
-            if (this.currentProjectIndex === index) {
-              this.projectService.getImages(name, folder).subscribe({
-                next: (imageFiles: string[]) => {
-                  const imageUrls = imageFiles.map(
-                    (fileName) =>
-                      `${environment.baseUrl}/${folder}/${name}/${fileName}`
-                  );
-                  this.nextProject = {
-                    name: project.name,
-                    assets: imageUrls,
-                  };
-                },
-                error: (err) => console.error(err),
+    projects.project.forEach((project: any) => {
+      if (!project.is_archived) {
+        this.sortedProjects.push(project);
+        this.sortedProjects.sort((a, b) => {
+          const nameA = a.id;
+          const nameB = b.id;
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+    });
+
+    this.sortedProjects.forEach((project: any, index: number) => {
+      const name = project.name.toLowerCase().replace(/\s+/g, '');
+      
+      if (this.projectName === name) {
+        this.currentProjectIndex = index + 1;
+        this.projectService.getImages(this.projectName, folder).subscribe({
+          next: (imageFiles: string[]) => {
+            const imageUrls = imageFiles.map(
+              (fileName) =>
+                `${environment.baseUrl}/${folder}/${this.projectName}/${fileName}`
+            );
+            projectTags.projectTags.forEach((proTag: any) => {
+              tags.tags.forEach((tag: any) => {
+                if (
+                  tag.id === proTag.tagId &&
+                  proTag.projectId === project.id
+                ) {
+                  this.tags.push(tag.name);
+                }
               });
-            }
-          });
-        },
-        error: (err) => console.error(err),
-      });
+            });
+            this.caseStudy = {
+              client: project.client,
+              name: project.name,
+              description: project.description,
+              background: project.background,
+              industry: project.industry,
+              year: project.year,
+              tags: this.tags,
+              assets: imageUrls,
+            };
+            this.tags = [];
+          },
+        });
+      }
+
+      if (this.currentProjectIndex === index) {
+        this.projectService.getImages(name, folder).subscribe({
+          next: (imageFiles: string[]) => {
+            const imageUrls = imageFiles.map(
+              (fileName) =>
+                `${environment.baseUrl}/${folder}/${name}/${fileName}`
+            );
+
+            this.nextProject = {
+              name: project.name,
+              assets: imageUrls,
+              link: `/work/${name}`,
+            };
+          },
+        });
+      }
+    });
   }
 
   onPreview(event: MouseEvent): void {
@@ -115,9 +148,5 @@ export class ProjectViewComponent implements OnInit {
 
   isImage(image: any): boolean {
     return image.toLowerCase().endsWith('.png');
-  }
-
-  createProjectName(projectName: string): string {
-    return '/work/' + projectName.toLowerCase().replace(/\s+/g, '');
   }
 }

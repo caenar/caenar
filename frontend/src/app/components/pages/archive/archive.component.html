@@ -1,1 +1,87 @@
-<p>archive works!</p>
+<section class="header">
+  <h1>
+    Archive <sup>({{ projects.length }})</sup>
+  </h1>
+</section>
+
+<section class="sec-container">
+  <div class="project-container">
+    <div class="category-labels">
+      <h2>Name</h2>
+      <h2>Services</h2>
+      <h2>Industry</h2>
+      <h2>Year</h2>
+    </div>
+    <div class="item" *ngFor="let project of projects">
+      <div class="line"></div>
+      <div class="info">
+        <h1>{{ project.name }}</h1>
+        <div class="tags">
+          <p *ngFor="let tag of project.tags; let last = last">
+            {{ tag }}<img *ngIf="!last" src="/assets/images/dot.png">
+          </p>
+        </div>
+        <p>{{ project.industry }}</p>
+        <p>{{ project.year }}</p>
+      </div>
+    </div>
+    <div class="line"></div>
+  </div>
+
+  <div class="others">
+    <h1 class="title">/ Other projects</h1>
+    <div class="grid-container">
+      <div class="filters">
+        <div
+          class="cta"
+          (click)="filter('all')"
+          [class.selected-tag]="selectedTag === 'all'"
+        >
+          <p>All</p>
+        </div>
+        <div
+          class="cta"
+          *ngFor="let tag of others"
+          (click)="filter(tag.name)"
+          [class.selected-tag]="selectedTag === tag.name"
+        >
+          <p>{{ tag.name }}</p>
+        </div>
+      </div>
+
+      <div class="media-container">
+        <ng-container *ngIf="selectedTag === 'all'; else filteredImages">
+          <div class="project grid" #gridAll>
+            <div class="grid-sizer"></div>
+            <div class="item" *ngFor="let media of allImages">
+              <img
+                class="grid-item"
+                loading="lazy"
+                *ngIf="isImage(media)"
+                [src]="media"
+              />
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #filteredImages>
+          <div
+            class="project grid"
+            #gridFiltered
+            *ngFor="let project of filteredProjects"
+          >
+            <div class="grid-sizer"></div>
+            <script></script>
+            <div class="item" *ngFor="let media of project.files">
+              <img
+                class="grid-item"
+                loading="lazy"
+                [src]="media"
+                *ngIf="isImage(media)"
+              />
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>

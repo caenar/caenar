@@ -13,7 +13,10 @@
   </div>
 </section>
 <section class="header-image">
-  <div class="image" [style.background-image]="'url('+ caseStudy.assets[0] +')'"></div>
+  <div
+    class="image"
+    [style.background-image]="'url(' + caseStudy.assets[0] + ')'"
+  ></div>
 </section>
 <section class="project-info">
   <h1 class="section-title">/ ABOUT PROJECT</h1>
@@ -22,11 +25,11 @@
     <div class="details">
       <div class="item">
         <h2 class="title">[Client]</h2>
-        <p class="text">Sagemind Corporation</p>
+        <p class="text">{{ caseStudy.client }}</p>
       </div>
       <div class="item">
         <h2 class="title">[Industry]</h2>
-        <p class="text">Education</p>
+        <p class="text">{{ caseStudy.industry }}</p>
       </div>
       <div class="item">
         <h2 class="title">[Services]</h2>
@@ -34,7 +37,7 @@
       </div>
       <div class="item">
         <h2 class="title">[Year]</h2>
-        <p class="text">2024</p>
+        <p class="text">{{ caseStudy.year }}</p>
       </div>
     </div>
   </div>
@@ -56,10 +59,7 @@
   <a class="link">{{ nextProject.name }}</a>
   <div class="container">
     <div class="preview" (mouseenter)="onPreview($event)">
-      <a
-        class="link-wrapper"
-        [routerLink]="createProjectName(nextProject.name)"
-      >
+      <a class="link-wrapper" [routerLink]="nextProject.link">
         <img [src]="nextProject.assets[0]" />
       </a>
     </div>

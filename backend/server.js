@@ -34,14 +34,14 @@ app.use("/api", projectRouter);
 app.use("/projects", express.static(__dirname + "/assets/projects"));
 app.use("/archive", express.static(__dirname + "/assets/archive"));
 
-// sequelize
-//   .sync()
-//   .then(() => {
-//     console.log("\nSynced");
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
+sequelize
+  .sync()
+  .then(() => {
+    console.log("\nSynced");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

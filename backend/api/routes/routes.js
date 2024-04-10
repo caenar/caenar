@@ -17,7 +17,16 @@ app.use(cors());
 router.get("/", async (req, res) => {
    try {
       const project = await Projects.findAll({
-         attributes: ["id", "name", "description", "background", "is_archived"],
+         attributes: [
+            "id",
+            "name",
+            "description",
+            "background",
+            "is_archived",
+            "client",
+            "industry",
+            "year",
+         ],
       });
 
       res.json({ project });
@@ -121,13 +130,25 @@ router.delete("/:projectId", async (req, res) => {
 
 router.post("/", async (req, res) => {
    try {
-      const { name, description, background, tags, is_archived } = req.body;
+      const {
+         name,
+         description,
+         background,
+         tags,
+         is_archived,
+         client,
+         industry,
+         year,
+      } = req.body;
 
       const newProject = await Projects.create({
          name,
          description,
          background,
          is_archived,
+         client,
+         industry,
+         year,
       });
 
       await Promise.all(
@@ -154,7 +175,17 @@ router.post("/", async (req, res) => {
 
 router.put("/:projectId", async (req, res) => {
    try {
-      const { name, description, background, tags, is_archived } = req.body;
+      const {
+         name,
+         description,
+         background,
+         tags,
+         is_archived,
+         client,
+         industry,
+         year,
+      } = req.body;
+      
       const existingProject = await Projects.findOne({
          where: { id: req.params.projectId },
       });
@@ -162,13 +193,15 @@ router.put("/:projectId", async (req, res) => {
          return res.status(401).json({ error: "Project not found." });
       }
 
-      const updatedFields = {};
-      if (name !== undefined && name !== "") updatedFields.name = name;
-      if (description !== undefined && description !== "")
-         updatedFields.description = description;
-      if (background !== undefined && background !== "")
-         updatedFields.background = background;
-      if (is_archived !== undefined) updatedFields.is_archived = is_archived;
+      const updatedFields = {
+         name: name,
+         description: description,
+         background: background,
+         is_archived: is_archived,
+         client: client,
+         industry: industry,
+         year: year,
+      };
 
       await existingProject.update(updatedFields);
 

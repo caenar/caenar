@@ -31,7 +31,11 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets", "src/_redirects"],
-            "styles": ["src/styles.scss", "node_modules/splitting/dist/splitting.css"]
+            "styles": [
+              "src/styles.scss",
+              "node_modules/splitting/dist/splitting.css"
+            ],
+            "scripts": ["node_modules/masonry-layout/dist/masonry.pkgd.min.js"]
           },
           "configurations": {
             "production": {

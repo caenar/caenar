@@ -11,7 +11,7 @@
       </div>
       <div
         class="cta"
-        *ngFor="let tag of DATA_TAGS"
+        *ngFor="let tag of ACTIVE_TAGS"
         (click)="filter(tag.name)"
         [class.selected-tag]="selectedTag === tag.name"
       >
@@ -47,6 +47,6 @@
 </section>
 <section class="archive">
   <a class="cta" routerLink="/archive">
-    View archive <sup>{{DATA_PROJECTS.length}}</sup>
+    View archive <sup>{{ archivedProject.length }}</sup>
   </a>
 </section>

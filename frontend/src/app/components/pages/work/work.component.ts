@@ -10,78 +10,94 @@ import anime from 'animejs';
   styleUrl: './work.component.scss',
 })
 export class WorkComponent implements OnInit {
-  DATA_PROJECTS!: any[];
-  DATA_PROJECT_TAGS!: any[];
-  DATA_TAGS!: any[];
-  DATA_FILES: any[] = [];
+  tags: any[] = [];
+  projects: any[] = [];
+  filteredProjects: any[] = [];
+  selectedTag: string = 'all';
+  ACTIVE_TAGS: any[] = [];
+  uniqueTagNames = new Set<string>();
 
   constructor(private projectService: ProjectService) {}
 
-  projects: any[] = [];
-  caseStudy: any = {};
-
-  name!: string;
-  description!: string;
-  background!: string;
-  assets!: string[];
-  tags: string[] = [];
-
-  selectedTag: string = 'all';
-  filteredProjects: any[] = [];
-
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     forkJoin({
       projects: this.projectService.getProjects(),
       projectTags: this.projectService.getProjectTags(),
       tags: this.projectService.getTags(),
     }).subscribe({
       next: (data: any) => {
-        this.DATA_PROJECTS = data.projects.project;
-        this.DATA_PROJECT_TAGS = data.projectTags.projectTags;
-        this.DATA_TAGS = data.tags.tags;
-
-        console.log(this.DATA_PROJECTS);
-        
-        
-        let folder = 'projects';
-        this.DATA_PROJECTS.forEach((project) => {
-          const projectName = project.name.toLowerCase().replace(/\s+/g, '');
-
-          this.projectService.getImages(projectName, folder).subscribe({
-            next: (imageFiles: string[]) => {
-              const imageUrls = imageFiles.map(
-                (fileName) =>
-                  `${environment.baseUrl}/${folder}/${projectName}/${fileName}`
-              );
-              this.name = project.name;
-              this.description = project.description;
-              this.background = project.background;
-
-              this.DATA_PROJECT_TAGS.forEach((proTag) => {
-                if (proTag.projectId === project.id) {
-                  this.DATA_TAGS.forEach((tag) => {
-                    if (tag.id === proTag.tagId) {
-                      this.tags.push(tag.name);
-                    }
-                  });
-                }
-              });
-              this.caseStudy = {
-                name: this.name,
-                description: this.description,
-                background: this.background,
-                tags: this.tags,
-                assets: imageUrls,
-              };
-              this.projects.push(this.caseStudy);
-              this.tags = [];
-            },
-            error: (err) => console.error(err),
-          });
-        });
-        this.filteredProjects = this.projects;
+        this.processData(data);
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  archivedProject: any[] = [];
+  processData(data: any): void {
+    const { projects, projectTags, tags } = data;
+    let projectTagArray: any[] = [];
+
+    projects.project.forEach((project: any) => {
+      if (!project.is_archived) {
+        
+        const projectName = project.name.toLowerCase().replace(/\s+/g, '');
+        this.projectService.getImages(projectName, 'projects').subscribe({
+          next: (imageFiles: string[]) => {
+            const imageUrls = imageFiles.map(
+              (fileName) =>
+                `${environment.baseUrl}/projects/${projectName}/${fileName}`
+            );
+            projectTags.projectTags.forEach((proTag: any) => {
+              tags.tags.forEach((tag: any) => {
+                if (tag.id === proTag.tagId && project.id === proTag.projectId)
+                  projectTagArray.push(tag);
+              });
+            });
+            this.processTags(projectTagArray);
+            this.projects.push({
+              id: project.id,
+              name: project.name,
+              description: project.description,
+              background: project.background,
+              tags: [...this.tags],
+              assets: imageUrls,
+            });
+            this.projects.sort((a, b) => {
+              const nameA = a.id;
+              const nameB = b.id;
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+              return 0;
+            });
+            this.tags = [];
+            projectTagArray = [];
+          },
+          error: (err) => console.error(err),
+        });
+      } else {
+        this.archivedProject.push(project);
+      }
+    });
+    this.filteredProjects = this.projects;
+  }
+
+  processTags(projectTags: any[]): void {
+    projectTags.forEach((tag: any) => {
+      this.tags.push(tag.name);
+      if (!this.uniqueTagNames.has(tag.name)) {
+        this.ACTIVE_TAGS.push(tag);
+        this.uniqueTagNames.add(tag.name);
+      }
     });
   }
 
@@ -94,8 +110,11 @@ export class WorkComponent implements OnInit {
         project.tags.includes(tagName)
       );
     }
-    const container = document.querySelector('.container') as HTMLElement;
+    this.animateContainer();
+  }
 
+  animateContainer(): void {
+    const container = document.querySelector('.container') as HTMLElement;
     anime({
       targets: container,
       opacity: [0, 1],

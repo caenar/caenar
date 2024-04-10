@@ -3,6 +3,9 @@
     <div class="form-container">
       <h1 class="title">Edit {{ projectToUpdate.name }}</h1>
       <input type="text" [(ngModel)]="updateProjectName" />
+      <input type="text" [(ngModel)]="updateProjectClient" />
+      <input type="text" [(ngModel)]="updateProjectIndustry" />
+      <input type="year" [(ngModel)]="updateProjectYear" />
       <input type="text" [(ngModel)]="updateProjectDesc" />
       <textarea type="text" [(ngModel)]="updateProjectBg"> </textarea>
       <input type="text" [(ngModel)]="updateProjectTag" />
@@ -47,6 +50,21 @@
         type="text"
         [(ngModel)]="createProjectName"
         placeholder="Name of the project"
+      />
+      <input
+        type="text"
+        [(ngModel)]="createProjectClient"
+        placeholder="Name of the client"
+      />
+      <input
+        type="text"
+        [(ngModel)]="createProjectIndustry"
+        placeholder="Industry of project"
+      />
+      <input
+        type="year"
+        [(ngModel)]="createProjectYear"
+        placeholder="Year created"
       />
       <input
         type="text"

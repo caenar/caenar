@@ -1,0 +1,125 @@
+@import "../../../../styles.scss";
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-direction: column;
+  background-color: $clr-background;
+  padding: $top-stretch-padding;
+
+  h1 {
+    font-size: 10rem;
+
+    sup {
+      font-size: 5rem;
+      align-self: flex-start;
+    }
+  }
+}
+
+.sec-container {
+  padding: 0 $lr-padding 14rem $lr-padding;
+  width: 100%;
+
+  .title {
+    text-transform: uppercase;
+    margin-bottom: 5rem;
+  }
+
+  .project-container {
+    padding: 3rem 0 10rem 0;
+
+    .category-labels {
+      display: grid;
+      grid-template-columns: 35% 35% 25% 5%;
+      padding: 0 6rem 2rem 6rem;
+
+      h2 {
+        font-weight: 500;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        width: max-content;
+        opacity: 0.5;
+
+        &:last-of-type {
+          justify-self: flex-end;
+        }
+      }
+    }
+
+    .item {
+      .info {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        grid-template-columns: 35% 35% 25% 5%;
+        padding: 1rem 6rem;
+
+        h1 {
+          font-size: 2.1rem;
+          font-weight: 500;
+        }
+
+        .tags {
+          display: flex;
+
+          img {
+            height: 8px;
+            margin: 0rem 0.3rem 0.1rem 0.3rem;
+          }
+        }
+
+        p {
+          font-size: 1.2rem;
+
+          &:last-of-type {
+            justify-self: flex-end;
+          }
+        }
+      }
+    }
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: 15% 85%;
+
+    .filters {
+      top: 10rem;
+      position: sticky;
+      display: flex;
+      flex-direction: column;
+      height: max-content;
+      gap: 0.5rem;
+
+      p {
+        text-transform: capitalize;
+      }
+    }
+
+    .grid {
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .grid-sizer,
+    .grid-item {
+      width: 33.3%;
+      padding: 5px;
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 0.5rem;
+    }
+  }
+}
+.selected-tag {
+  pointer-events: none;
+  color: $clr-background;
+  background-color: $clr-secondary;
+  border: 1px solid transparent;
+}

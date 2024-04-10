@@ -105,7 +105,7 @@
 .container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  align-items: flex-start;
   height: auto;
   padding: 8rem $lr-padding 10rem $lr-padding;
   gap: 150px;

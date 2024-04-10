@@ -19,10 +19,22 @@ const Project = sequelize.define("projects", {
       type: DataTypes.TEXT,
       allowNull: false,
    },
+   client: {
+      type: DataTypes.TEXT(255),
+      allowNull: false,
+   },
+   industry: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+   },
+   year: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+   },
    is_archived: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-   }
+   },
 });
 
 module.exports = Project;
