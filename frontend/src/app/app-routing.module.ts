@@ -13,6 +13,7 @@ import { routeGuard } from './shared/guards/route.guard';
 
 import { ProjectViewComponent } from './components/pages/project-view/project-view.component';
 import { ArchiveComponent } from './components/pages/archive/archive.component';
+import { ArchiveViewComponent } from './components/pages/archive-view/archive-view.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,11 @@ const routes: Routes = [
   {
     path: 'work/:projectName',
     component: ProjectViewComponent,
+    canActivate: [routeGuard],
+  },
+  {
+    path: 'archive/:projectName',
+    component: ArchiveViewComponent,
     canActivate: [routeGuard],
   },
   { path: 'about', component: AboutComponent, canActivate: [routeGuard] },

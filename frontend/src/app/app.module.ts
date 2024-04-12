@@ -26,6 +26,7 @@ import { ArchiveComponent } from './components/pages/archive/archive.component';
 
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 import { authGuard } from './shared/guards/auth.guard';
+import { ArchiveViewComponent } from './components/pages/archive-view/archive-view.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { authGuard } from './shared/guards/auth.guard';
     LoginComponent,
     ProjectViewComponent,
     ArchiveComponent,
+    ArchiveViewComponent,
   ],
   imports: [
     HttpClientModule,

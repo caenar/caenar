@@ -79,8 +79,11 @@ export class ProjectViewComponent implements OnInit {
     });
 
     this.sortedProjects.forEach((project: any, index: number) => {
-      const name = project.name.toLowerCase().replace(/\s+/g, '');
-      
+      const name = project.name
+        .toLowerCase()
+        .replace(/[^\w\s]/gi, '')
+        .replace(/\s+/g, '-');
+
       if (this.projectName === name) {
         this.currentProjectIndex = index + 1;
         this.projectService.getImages(this.projectName, folder).subscribe({

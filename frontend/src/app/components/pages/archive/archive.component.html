@@ -14,16 +14,18 @@
     </div>
     <div class="item" *ngFor="let project of projects">
       <div class="line"></div>
-      <div class="info">
-        <h1>{{ project.name }}</h1>
-        <div class="tags">
-          <p *ngFor="let tag of project.tags; let last = last">
-            {{ tag }}<img *ngIf="!last" src="/assets/images/dot.png">
-          </p>
+      <a [routerLink]="createLink(project.name)">
+        <div class="info">
+          <h1>{{ project.name }}</h1>
+          <div class="tags">
+            <p *ngFor="let tag of project.tags; let last = last">
+              {{ tag }}<img *ngIf="!last" src="/assets/images/dot.png" />
+            </p>
+          </div>
+          <p>{{ project.industry }}</p>
+          <p>{{ project.year }}</p>
         </div>
-        <p>{{ project.industry }}</p>
-        <p>{{ project.year }}</p>
-      </div>
+      </a>
     </div>
     <div class="line"></div>
   </div>

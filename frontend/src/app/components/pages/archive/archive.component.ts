@@ -209,4 +209,14 @@ export class ArchiveComponent implements OnInit, AfterViewInit {
       image.toLowerCase().endsWith('.jpg')
     );
   }
+
+  createLink(projectName: string): string {
+    return (
+      '/archive/' +
+      projectName
+        .toLowerCase()
+        .replace(/[^\w\s]/gi, '')
+        .replace(/\s+/g, '-')
+    );
+  }
 }

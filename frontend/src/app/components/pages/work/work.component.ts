@@ -46,7 +46,7 @@ export class WorkComponent implements OnInit {
     projects.project.forEach((project: any) => {
       if (!project.is_archived) {
         
-        const projectName = project.name.toLowerCase().replace(/\s+/g, '');
+        const projectName = project.name.toLowerCase().replace(/\s+/g, '-');
         this.projectService.getImages(projectName, 'projects').subscribe({
           next: (imageFiles: string[]) => {
             const imageUrls = imageFiles.map(
@@ -125,6 +125,6 @@ export class WorkComponent implements OnInit {
   }
 
   createProjectName(projectName: string): string {
-    return '/work/' + projectName.toLowerCase().replace(/\s+/g, '');
+    return '/work/' + projectName.toLowerCase().replace(/\s+/g, '-');
   }
 }
