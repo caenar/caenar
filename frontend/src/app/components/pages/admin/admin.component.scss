@@ -9,13 +9,6 @@
     margin-bottom: 10px;
   }
 
-  button {
-    outline: none;
-    padding: 15px;
-    margin: 10px 0;
-    transition: 500ms ease;
-  }
-
   input,
   textarea,
   select {
@@ -23,6 +16,11 @@
     padding: 15px;
     margin: 10px 0;
     transition: 500ms ease;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #00000018;
+    background: transparent;
 
     &:focus {
       border-bottom: 1px solid $clr-accent;
@@ -33,22 +31,16 @@
     }
   }
 
-  input,
-  select,
-  textarea {
-    font-size: 16px;
-    border-radius: 0.5rem;
-    border: 1px solid transparent;
-    border-bottom: 1px solid #00000018;
-    background: transparent;
-  }
-
   textarea {
     height: 150px;
     resize: none;
   }
 
   button {
+    outline: none;
+    padding: 15px;
+    margin: 10px 0;
+    transition: 500ms ease;
     cursor: pointer;
     margin-top: 20px;
     font-size: 16px;

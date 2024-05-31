@@ -1,0 +1,92 @@
+@import "../../../../styles.scss";
+
+.header-inner {
+  background-color: $clr-text;
+  color: $clr-background;
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    max-width: 40ch;
+    gap: 3rem;
+
+    h1 {
+      font-size: 5rem;
+      line-height: 4.7rem;
+    }
+
+     a {
+      font-weight: 500;
+     }
+  }
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: $bot-stretch-padding;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 40vw;
+    gap: 2rem;
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 0.7rem;
+
+        span {
+          color: $clr-accent;
+        }
+      }
+
+      input,textarea {
+        padding: 1rem;
+        outline: none;
+        margin: 10px 0;
+        transition: 500ms ease;
+        font-size: 16px;
+        border-radius: 0.5rem;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #00000018;
+        background: transparent;
+
+        &:focus {
+          border-bottom: 1px solid $clr-accent;
+        }
+        &:hover {
+          border-bottom: 1px solid $clr-accent;
+          transition: 500ms ease;
+        }
+      }
+
+      textarea {
+        height: 200px;
+        resize: none;
+      }
+    }
+    
+    button {
+      outline: none;
+      padding: 15px;
+      margin: 10px 0;
+      transition: 500ms ease;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      color: $clr-background;
+      background-color: $clr-accent;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      width: 160px;
+    }
+  }
+}

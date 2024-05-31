@@ -18,10 +18,10 @@ $tb-padding-md: 6rem;
 $tb-padding-s: 3rem;
 $tb-padding: 1.5rem;
 
-$top-stretch-padding: 6rem 5rem 3rem 5rem;
-$bot-stretch-padding: 3rem 6rem 10rem 5rem;
+$top-stretch-padding: 6rem 5rem 5rem 5rem;
+$bot-stretch-padding: 5rem 6rem 10rem 5rem;
 $small-padding: 1rem 5rem;
-$section-padding: 14rem 5rem;
+$section-padding: 10rem 5rem;
 $mobile-padding: 1rem 1.5rem;
 $m-section-padding: 5rem 1.5rem;
 
@@ -55,43 +55,12 @@ ol {
 // components
 .header-inner {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: $clr-background;
   padding: $section-padding;
   height: auto;
-
-  .grid-wrapper {
-    display: grid;
-    grid-template-columns: 30% 70%;
-    justify-content: center;
-    height: max-content;
-    width: 100%;
-
-    @media screen and (max-width: 500px) {
-      display: flex;
-      flex-direction: column;
-      padding: $tb-padding-s 0;
-      gap: 1.5rem;
-    }
-  }
-
-  .container {
-    .header {
-      h1 {
-        font-weight: 600;
-        max-width: 15ch;
-        line-height: 6rem;
-        margin-bottom: 6rem;
-
-        @media screen and (max-width: 500px) {
-          font-size: 4.5rem;
-          line-height: 4.5rem;
-          margin-bottom: 4rem;
-        }
-      }
-    }
-  }
 }
 
 .cta {
@@ -139,6 +108,19 @@ ol {
       padding: 0 .5rem;
     }
   }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.button-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style-type: disc;
 }
 
 // typography

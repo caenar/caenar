@@ -1,15 +1,24 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const projectRouter = require("./api/routes/routes");
+const router = require("./api/routes/routes");
 const sequelize = require("./api/db");
 require("dotenv").config();
+
+const env = process.env.NODE_ENV || 'development';
+const originUrl = process.env[`ORIGIN_URL_${env.toUpperCase()}`];
+console.log("\n"+env + "\n");
+console.log("\n"+originUrl + "\n");
 
 const { Pool } = require("pg");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: originUrl,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 const pool = new Pool({
    user: process.env.DB_USER,
@@ -30,7 +39,8 @@ pool.query("SELECT NOW()", (err, res) => {
 });
 
 app.use(bodyParser.json());
-app.use("/api", projectRouter);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/api", router);
 app.use("/projects", express.static(__dirname + "/assets/projects"));
 app.use("/archive", express.static(__dirname + "/assets/archive"));
 

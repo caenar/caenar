@@ -1,0 +1,106 @@
+@import "../../../../styles.scss";
+
+.label {
+  text-transform: uppercase;
+  font-weight: 100;
+  font-size: 1rem;
+}
+
+.title {
+  font-size: 4rem;
+  max-width: 15ch;
+  line-height: 4rem;
+}
+
+.header-inner {
+  flex-direction: column;
+  background-color: $clr-text;
+  color: $clr-background;
+
+  h1 {
+    font-size: 6rem;
+  }
+}
+
+.about-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding: $bot-stretch-padding;
+
+  .text-container {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    padding: 0 25rem;
+
+    .desc {
+      p {
+        line-height: 1.9rem;
+      }
+    }
+  }
+}
+
+.why-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding: $tb-padding-md $lr-padding;
+  background-color: $clr-background;
+  
+  .label {
+    margin-bottom: 1.5rem;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    .item {
+      position: sticky;
+      top: 5%;
+      border-top: 1px solid $clr-text;
+      border-radius: 0.5rem;
+      padding: 3rem;
+      background-color: $clr-background;
+
+      .title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        svg {
+          width: 3rem;
+        }
+        h2 {
+          font-size: 4rem;
+        }
+      }
+
+      .text {
+        display: grid;
+        grid-template-columns: 60% 40%;
+
+        p {
+          max-width: 50ch;
+          font-size: 1.5rem;
+          text-wrap: balance;
+          line-height: 2rem;
+        }
+
+        .list {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+
+          p {
+            font-weight: 800;
+            font-size: 2.5rem;
+          }
+        }
+      }
+    }
+  }
+}
