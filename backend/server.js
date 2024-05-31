@@ -7,8 +7,8 @@ require("dotenv").config();
 
 const env = process.env.NODE_ENV || 'development';
 const originUrl = process.env[`ORIGIN_URL_${env.toUpperCase()}`];
-console.log("\n"+env + "\n");
-console.log("\n"+originUrl + "\n");
+console.log("\nNode environment: "+env);
+console.log("Origin URL: " + originUrl + "\n");
 
 const { Pool } = require("pg");
 
@@ -34,6 +34,7 @@ pool.query("SELECT NOW()", (err, res) => {
    } else {
       console.log("Connected to PostgreSQL database");
       console.log("Current date from database:", res.rows[0].now);
+      console.log();
    }
    pool.end();
 });
@@ -47,7 +48,7 @@ app.use("/archive", express.static(__dirname + "/assets/archive"));
 sequelize
   .sync()
   .then(() => {
-    console.log("\nSynced");
+    console.log("\nSynced tables.");
   })
   .catch((err) => {
     console.error(err);
@@ -55,5 +56,5 @@ sequelize
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-   console.log(`\nServer running at http://localhost:${PORT}`);
+   console.log(`Server running at http://localhost:${PORT}\n`);
 });
