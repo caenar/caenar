@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EmailService } from '../../../shared/services/email.service';
 import { Subscription } from 'rxjs';
 import { PopupService } from '../../../shared/services/popup.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { cityCountryValidator } from '../../../shared/validators/city-country.validator';
 
 @Component({
   selector: 'app-contact',
@@ -12,7 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ContactComponent implements OnInit, OnDestroy {
   contactForm!: FormGroup;
-
+  loading = false;
   showPopup = false;
   message: string | null = null;
   private subscription = new Subscription();
@@ -20,7 +21,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   constructor(
     private emailService: EmailService,
     public popupService: PopupService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {}
 
   showMessage(message: string): void {
@@ -40,9 +41,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     );
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
-      location: ['', Validators.required],
+      location: ['', [Validators.required, cityCountryValidator()]],
       email: ['', [Validators.required, Validators.email]],
-      form_message: ['', Validators.required]
+      form_message: ['', Validators.required],
     });
   }
   ngOnDestroy(): void {
@@ -55,24 +56,27 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log("HELLO");
-    
+    console.log('HELLO');
 
     if (this.contactForm.invalid) {
       this.showMessage('Something is wrong');
       return;
     }
 
+    this.loading = true;
     const formData = this.contactForm.value;
 
     this.emailService.sendEmail(formData).subscribe(
       (response) => {
-        this.showMessage('Hello!');
+        this.showMessage(
+          "Your form has been submitted. I'll get back to you as soon as possible!"
+        );
+        this.loading = false;
       },
       (error) => {
         this.showMessage('Your form was not submitted. Please try again.');
+        this.loading = false;
       }
     );
   }
 }
-

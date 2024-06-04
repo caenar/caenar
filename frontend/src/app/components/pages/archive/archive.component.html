@@ -14,18 +14,16 @@
     </div>
     <div class="item" *ngFor="let project of projects">
       <div class="line"></div>
-      <a [routerLink]="createLink(project.name)">
-        <div class="info">
-          <h1>{{ project.name }}</h1>
-          <div class="tags">
-            <p *ngFor="let tag of project.tags; let last = last">
-              {{ tag }}<img *ngIf="!last" src="/assets/images/dot.png" />
-            </p>
-          </div>
-          <p>{{ project.industry }}</p>
-          <p>{{ project.year }}</p>
+      <div class="info">
+        <h1>{{ project.name }}</h1>
+        <div class="tags">
+          <p *ngFor="let tag of project.tags; let last = last">
+            {{ tag }}<img *ngIf="!last" src="/assets/images/dot.png" />
+          </p>
         </div>
-      </a>
+        <p>{{ project.industry }}</p>
+        <p>{{ project.year }}</p>
+      </div>
     </div>
     <div class="line"></div>
   </div>
@@ -61,6 +59,7 @@
                 loading="lazy"
                 *ngIf="isImage(media)"
                 [src]="media"
+                (click)="expandImage(media)"
               />
             </div>
           </div>
@@ -79,6 +78,7 @@
                 loading="lazy"
                 [src]="media"
                 *ngIf="isImage(media)"
+                (click)="expandImage(media)"
               />
             </div>
           </div>
@@ -87,3 +87,10 @@
     </div>
   </div>
 </section>
+
+<div class="modal" *ngIf="expandedImage">
+  <span class="close" (click)="closeImage()">&times;</span>
+  <div class="modal-content" (click)="closeImageOnOutsideClick($event)">
+    <img [src]="expandedImage" />
+  </div>
+</div>

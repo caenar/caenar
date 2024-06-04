@@ -80,7 +80,7 @@
       .buttons {
         display: flex;
         align-self: flex-end;
-        gap: .5rem;
+        gap: 0.5rem;
 
         button {
           font-size: 16px;
@@ -95,66 +95,70 @@
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
   align-items: flex-start;
-  height: auto;
+  grid-template-columns: repeat(2, 1fr);
   padding: 8rem $lr-padding 10rem $lr-padding;
-  gap: 150px;
+  gap: 4rem;
   width: 100%;
 
-  .title {
-    font-size: 52px;
-    margin-bottom: 20px;
-  }
+  .project-container {
+    height: auto;
+    gap: 150px;
 
-  .item-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    width: 100%;
+    .title {
+      font-size: 52px;
+      margin-bottom: 20px;
+    }
 
-    .item {
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 15px 20px;
-      height: 250px;
+    .item-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
       width: 100%;
-      border-radius: 0.5rem;
-      background-color: $clr-secondary;
-      color: $clr-background;
 
-      .info {
-        p {
-          font-size: 17px;
-          opacity: 0.8;
-          margin-top: 0.2rem;
-        }
-      }
-
-      .status {
+      .item {
+        cursor: pointer;
         display: flex;
-        align-items: center;
-        align-self: flex-end;
-        background-color: $clr-primary;
-        width: max-content;
-        padding: .4rem;
-        border-radius: .2rem;
-        gap: .2rem;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 15px 20px;
+        height: 250px;
+        width: 100%;
+        border-radius: 0.5rem;
+        background-color: $clr-secondary;
+        color: $clr-background;
 
-        p {
-          font-size: 13px;
-          font-weight: 600;
-          text-transform: uppercase;
-          color: $clr-background;
+        .info {
+          p {
+            font-size: 17px;
+            opacity: 0.8;
+            margin-top: 0.2rem;
+          }
         }
 
-        img {
-          display: block;
-          width: 10px;
-          filter: invert(100%);
+        .status {
+          display: flex;
+          align-items: center;
+          align-self: flex-end;
+          background-color: $clr-primary;
+          width: max-content;
+          padding: 0.4rem;
+          border-radius: 0.2rem;
+          gap: 0.2rem;
+
+          p {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: $clr-background;
+          }
+
+          img {
+            display: block;
+            width: 10px;
+            filter: invert(100%);
+          }
         }
       }
     }

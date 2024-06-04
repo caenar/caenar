@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   QueryList,
   ViewChild,
@@ -203,20 +204,30 @@ export class ArchiveComponent implements OnInit, AfterViewInit {
     });
   }
 
-  isImage(image: any): boolean {
-    return (
-      image.toLowerCase().endsWith('.png') ||
-      image.toLowerCase().endsWith('.jpg')
-    );
+  isImage(media: string): boolean {
+    return /\.(jpg|jpeg|png|gif)$/.test(media);
   }
 
-  createLink(projectName: string): string {
-    return (
-      '/archive/' +
-      projectName
-        .toLowerCase()
-        .replace(/[^\w\s]/gi, '')
-        .replace(/\s+/g, '-')
-    );
+  expandedImage: string | null = null;
+
+  expandImage(media: string): void {
+    this.expandedImage = media;
+  }
+
+  closeImage(): void {
+    this.expandedImage = null;
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape(event: KeyboardEvent): void {
+    if (this.expandedImage) {
+      this.closeImage();
+    }
+  }
+
+  closeImageOnOutsideClick(event: MouseEvent): void {
+    if ((event.target as HTMLElement).classList.contains('modal-content')) {
+      this.closeImage();
+    }
   }
 }

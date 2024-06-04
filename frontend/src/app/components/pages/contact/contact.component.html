@@ -15,13 +15,13 @@
     <div class="input-container">
       <label>What's your name?</label>
       <input type="text" formControlName="name" placeholder="Full name" />
-      <div
+      <small
         *ngIf="
           contactForm.get('name')!.invalid && contactForm.get('name')!.touched
         "
       >
         Name is required.
-      </div>
+      </small>
     </div>
     <div class="input-container">
       <label>Where are you from?</label>
@@ -30,14 +30,19 @@
         formControlName="location"
         placeholder="City, Country"
       />
-      <div
+      <small
         *ngIf="
           contactForm.get('location')!.invalid &&
           contactForm.get('location')!.touched
         "
       >
         Location is required.
-      </div>
+      </small>
+      <small
+        *ngIf="contactForm.get('location')!.errors?.['invalidCityCountry']"
+      >
+        Please follow the "City, Country" format.
+      </small>
     </div>
     <div class="input-container">
       <label>How do I write back to you?</label>
@@ -47,12 +52,12 @@
           contactForm.get('email')!.invalid && contactForm.get('email')!.touched
         "
       >
-        <div *ngIf="contactForm.get('email')!.errors?.['required']">
+        <small *ngIf="contactForm.get('email')!.errors?.['required']">
           Email is required.
-        </div>
-        <div *ngIf="contactForm.get('email')!.errors?.['email']">
+        </small>
+        <small *ngIf="contactForm.get('email')!.errors?.['email']">
           Please enter a valid email address.
-        </div>
+        </small>
       </div>
     </div>
     <div class="input-container">
@@ -61,16 +66,19 @@
         formControlName="form_message"
         placeholder="You can tell me about the scope of the project"
       ></textarea>
-      <div
+      <small
         *ngIf="
           contactForm.get('form_message')!.invalid &&
           contactForm.get('form_message')!.touched
         "
       >
         Message is required.
-      </div>
+      </small>
     </div>
-    <button type="submit" [disabled]="contactForm.invalid">Submit</button>
+    <button type="submit" [disabled]="contactForm.invalid || loading">
+      <span *ngIf="loading">Submitting...</span>
+      <span *ngIf="!loading">Submit</span>
+    </button>
   </form>
 </section>
 
