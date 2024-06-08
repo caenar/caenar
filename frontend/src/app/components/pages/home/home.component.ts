@@ -97,7 +97,7 @@ export class HomeComponent implements AfterViewInit {
       color: '#fff5dc',
     });
     
-    mm.add('(min-width: 1200px)', () => {
+    mm.add('(min-width: 700px)', () => {
       gsap.to('.intro-inner', {
         backgroundColor: '#fff5dc',
         scrollTrigger: {

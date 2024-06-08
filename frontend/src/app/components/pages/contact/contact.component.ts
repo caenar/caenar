@@ -56,8 +56,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('HELLO');
-
     if (this.contactForm.invalid) {
       this.showMessage('Something is wrong');
       return;
@@ -69,8 +67,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.emailService.sendEmail(formData).subscribe(
       (response) => {
         this.showMessage(
-          "Your form has been submitted. I'll get back to you as soon as possible!"
+          "Thank you! I'll get back to you as soon as possible!"
         );
+        this.contactForm.reset();
         this.loading = false;
       },
       (error) => {

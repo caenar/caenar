@@ -169,7 +169,6 @@ export class HeaderComponent implements OnInit {
       ++this.getItemInfoCounter;
 
       var navItems = document.querySelectorAll('.nav-list .nav-item')!;
-      console.log(navItems);
       var navLinks: string[] = [];
 
       navItems.forEach((element, index) => {
@@ -177,7 +176,6 @@ export class HeaderComponent implements OnInit {
         if (navLinks[index] === this.currentRouterLink) {
           this.currentLink = navItems[index];
           this.currentLinkIndex = index;
-          console.log(this.currentLinkIndex);
         }
         if (this.itemsTop.length !== 4) {
           this.itemsTop.push(element.getBoundingClientRect().top);
