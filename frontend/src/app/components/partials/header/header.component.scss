@@ -1,8 +1,8 @@
 @import "../../../../styles.scss";
 
 $easeTrans: 500ms left cubic-bezier(0.71, 0, 0.19, 1.01),
-            500ms top cubic-bezier(0.71, 0, 0.19, 1.01),
-            500ms color cubic-bezier(0.71, 0, 0.19, 1.01);
+  500ms top cubic-bezier(0.71, 0, 0.19, 1.01),
+  500ms color cubic-bezier(0.71, 0, 0.19, 1.01);
 $opacityTrans: 500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
 
 header {
@@ -17,6 +17,10 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: $small-padding;
+
+    @media screen and (max-width: 1200px) {
+      padding: 1.5rem 2rem;
+    }
 
     @media screen and (max-width: 500px) {
       padding: $mobile-padding;

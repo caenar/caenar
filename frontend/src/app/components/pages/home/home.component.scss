@@ -33,9 +33,11 @@
         }
       }
 
-      @media screen and (max-width: 500px) {
+      @media screen and (max-width: 700px) {
         margin: 0;
+      }
 
+      @media screen and (max-width: 500px) {
         p {
           font-size: 0.8rem;
         }
@@ -83,7 +85,7 @@
     height: 110vh;
     border-radius: 1rem;
 
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 700px) {
       height: 0;
     }
 
@@ -111,16 +113,39 @@
   padding: $tb-padding-md $lr-padding;
   gap: 4rem;
 
+  @media screen and (max-width: 700px) {
+    padding: $tablet-padding;
+  }
+
   .float-img {
     height: 70vh;
     width: 33vw;
     background-position: center;
     background-size: cover;
     border-radius: 1rem;
+
+    @media screen and (max-width: 1200px) {
+      height: 55vh;
+      width: 60vw;
+      grid-row-start: 2;
+      grid-column-start: 2;
+    }
+
+    @media screen and (max-width: 700px) {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      width: 100%;
+    }
   }
 
   .container {
     grid-column-start: 2;
+
+    @media screen and (max-width: 1200px) {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 1;
+    }
 
     h2 {
       top: -1.8%;
@@ -135,6 +160,11 @@
         font-size: 2.5rem;
         line-height: 3rem;
       }
+
+      @media screen and (max-width: 700px) {
+        font-size: 2rem;
+        line-height: 2.5rem;
+      }
     }
   }
 }
@@ -142,6 +172,10 @@
 .skill-inner {
   padding: $tb-padding-md $lr-padding;
   background-color: $clr-background;
+
+  @media screen and (max-width: 700px) {
+    padding: $tablet-padding;
+  }
 
   .container {
     display: flex;
@@ -156,6 +190,10 @@
       padding: 3rem;
       background-color: $clr-background;
 
+      @media screen and (max-width: 1000px) {
+        padding: 2.5rem 1.5rem;
+      }
+
       .title {
         display: flex;
         align-items: center;
@@ -164,9 +202,29 @@
 
         svg {
           width: 3rem;
+
+          @media screen and (max-width: 1200px) {
+            width: 2.5rem;
+          }
+
+          @media screen and (max-width: 700px) {
+            width: 2rem;
+          }
         }
         h2 {
           font-size: 4rem;
+
+          @media screen and (max-width: 1200px) {
+            font-size: 3rem;
+          }
+
+          @media screen and (max-width: 700px) {
+            font-size: 2.5rem;
+          }
+
+          @media screen and (max-width: 500px) {
+            font-size: 2.3rem;
+          }
         }
       }
 
@@ -175,11 +233,30 @@
         grid-template-columns: 60% 40%;
         gap: 2rem;
 
+        @media screen and (max-width: 1200px) {
+          grid-template-columns: unset;
+          grid-template-rows: repeat(2, 1fr);
+          gap: 4rem;
+        }
+
+        @media screen and (max-width: 1000px) {
+          gap: 3rem;
+        }
+
         p {
           max-width: 50ch;
           font-size: 1.5rem;
           text-wrap: balance;
           line-height: 2rem;
+
+          @media screen and (max-width: 1200px) {
+            font-size: 1.4rem;
+            max-width: 100%;
+          }
+
+          @media screen and (max-width: 700px) {
+            font-size: 1.3rem;
+          }
         }
 
         .list {
@@ -187,9 +264,25 @@
           flex-direction: column;
           gap: 2rem;
 
+          @media screen and (max-width: 1200px) {
+            flex-direction: row;
+            justify-content: space-between;
+            opacity: 0.5;
+          }
+
+          @media screen and (max-width: 1000px) {
+            flex-direction: column;
+            justify-content: unset;
+            gap: 1.5rem;
+          }
+
           p {
             font-weight: 800;
             font-size: 2.5rem;
+
+            @media screen and (max-width: 1200px) {
+              font-size: 2.1rem;
+            }
           }
         }
       }
@@ -200,6 +293,10 @@
 .featured {
   padding: $tb-padding-md $lr-padding;
   background-color: $clr-background;
+
+  @media screen and (max-width: 700px) {
+    padding: $tablet-padding;
+  }
 
   #curs {
     position: absolute;
@@ -216,6 +313,10 @@
     translate: -50% -50%;
     pointer-events: none;
     opacity: 0;
+
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
 
     h3 {
       display: flex;
@@ -234,6 +335,12 @@
     gap: 4rem;
 
     @media screen and (max-width: 1600px) {
+      gap: 2.5rem;
+    }
+
+    @media screen and (max-width: 1000px) {
+      display: flex;
+      flex-direction: column;
       gap: 3rem;
     }
 
@@ -243,6 +350,11 @@
       flex-direction: column;
       object-fit: cover;
       gap: 2rem;
+
+      @media screen and (max-width: 1000px) {
+        width: 100%;
+        gap: 1rem;
+      }
 
       &:first-child {
         grid-column-start: 1;
@@ -264,6 +376,18 @@
       &:nth-child(2) .img-container,
       &:nth-child(3) .img-container {
         height: 600px;
+
+        @media screen and (max-width: 1200px) {
+          height: 300px;
+        }
+
+        @media screen and (max-width: 1000px) {
+          height: 500px;
+        }
+
+        @media screen and (max-width: 500px) {
+          height: 300px;
+        }
       }
 
       .img-container {
@@ -273,6 +397,18 @@
 
         @media screen and (max-width: 1600px) {
           height: 700px;
+        }
+
+        @media screen and (max-width: 1200px) {
+          height: 400px;
+        }
+
+        @media screen and (max-width: 1000px) {
+          height: 500px;
+          cursor: pointer;
+        }
+        @media screen and (max-width: 500px) {
+          height: 300px;
         }
 
         .img {
@@ -295,10 +431,25 @@
           gap: 0.5rem;
         }
 
+        @media screen and (max-width: 1000px) {
+          flex-direction: row;
+          align-items: center;
+        }
+
+        @media screen and (max-width: 700px) {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
         .title {
           font-weight: 800;
           font-size: 2.8rem;
           max-width: 10ch;
+
+          @media screen and (max-width: 1000px) {
+            font-size: 2.5rem;
+          }
         }
         .desc {
           display: flex;
@@ -310,6 +461,10 @@
             text-transform: uppercase;
             border-radius: 2rem;
             padding: 0.3rem 0.6rem;
+
+            @media screen and (max-width: 1000px) {
+              font-size: 0.9rem;
+            }
           }
 
           .tag {
@@ -329,11 +484,19 @@
   padding: $tb-padding-md $lr-padding;
   background-color: $clr-background;
 
+  @media screen and (max-width: 700px) {
+    padding: $tablet-padding;
+  }
+
   .container {
     position: relative;
     display: flex;
     justify-content: space-between;
     gap: 3rem;
+
+    @media screen and (max-width: 1000px) {
+      flex-direction: column;
+    }
 
     .title {
       h2 {
@@ -343,6 +506,11 @@
         line-height: 3.7rem;
         margin-bottom: 2rem;
         max-width: 10ch;
+
+        @media screen and (max-width: 1000px) {
+          position: unset;
+          font-size: 3.3rem;
+        }
       }
     }
 
@@ -370,6 +538,10 @@
 
           @media screen and (max-width: 1600px) {
             font-size: 1.7rem;
+          }
+
+          @media screen and (max-width: 1200px) {
+            font-size: 1.4rem;
           }
 
           &::before,
@@ -401,11 +573,27 @@
   h1 {
     text-align: center;
     font-size: 7rem;
+    line-height: 6.5rem;
     max-width: 10ch;
+
+    @media screen and (max-width: 700px) {
+      font-size: 4.5rem;
+      line-height: 4.5rem;
+      max-width: 20ch;
+    }
   }
 
   .links {
     display: flex;
     gap: 1rem;
+
+    @media screen and (max-width: 500px) {
+      flex-direction: column;
+
+      a {
+        text-align: center;
+        width: 180px;
+      }
+    }
   }
 }

@@ -14,7 +14,7 @@ import anime from 'animejs';
 export class HomeComponent implements AfterViewInit {
   constructor(private router: Router) {}
 
-  @ViewChild('videoElement') videoElement!: ElementRef; 
+  @ViewChild('videoElement') videoElement!: ElementRef;
 
   ngAfterViewInit(): void {
     Splitting();
@@ -96,7 +96,7 @@ export class HomeComponent implements AfterViewInit {
     gsap.set(['.intro-inner .title', '.intro-inner .text-wrapper p'], {
       color: '#fff5dc',
     });
-    
+
     mm.add('(min-width: 700px)', () => {
       gsap.to('.intro-inner', {
         backgroundColor: '#fff5dc',
@@ -107,15 +107,15 @@ export class HomeComponent implements AfterViewInit {
           scrub: 1,
         },
       }),
-      gsap.to('.intro-inner .video-container video', {
-        borderRadius: '1rem',
-        scrollTrigger: {
-          trigger: '.intro-inner',
-          start: '30% center',
-          end: '60% center',
-          scrub: 1,
-        },
-      })
+        gsap.to('.intro-inner .video-container video', {
+          borderRadius: '1rem',
+          scrollTrigger: {
+            trigger: '.intro-inner',
+            start: '30% center',
+            end: '60% center',
+            scrub: 1,
+          },
+        });
       gsap.to('.intro-inner .video-container', {
         top: '50%',
         padding: '2rem 5rem 2rem 5rem',

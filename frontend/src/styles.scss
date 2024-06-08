@@ -22,6 +22,7 @@ $top-stretch-padding: 6rem 5rem 5rem 5rem;
 $bot-stretch-padding: 5rem 6rem 10rem 5rem;
 $small-padding: 1rem 5rem;
 $section-padding: 10rem 5rem;
+$tablet-padding: 5rem 2rem;
 $mobile-padding: 1rem 1.5rem;
 $m-section-padding: 5rem 1.5rem;
 
@@ -74,6 +75,7 @@ ol {
   cursor: pointer;
   transition: 500ms all cubic-bezier(0, -0.03, 0.35, 0.99);
   font-size: 1rem;
+  line-height: 1rem;
   font-weight: 500;
   text-transform: uppercase;
 
@@ -81,6 +83,10 @@ ol {
     font-size: 1rem;
     font-weight: 500;
     text-transform: uppercase;
+
+    @media screen and (max-width: 700px) {
+      font-size: 0.9rem;
+    }
   }
 
   &:hover {
@@ -105,7 +111,7 @@ ol {
 
     img {
       height: 10px;
-      padding: 0 .5rem;
+      padding: 0 0.5rem;
     }
   }
 }
@@ -126,9 +132,14 @@ ol {
 // typography
 .section-title {
   font-size: 1.2rem;
+  line-height: 1.2rem;
   font-weight: 300;
   text-transform: uppercase;
   margin-bottom: 3rem;
+
+  @media screen and (max-width: 700px) {
+    font-size: 1rem;
+  }
 }
 
 // decorations
