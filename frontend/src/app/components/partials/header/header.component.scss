@@ -18,6 +18,10 @@ header {
     justify-content: space-between;
     padding: $small-padding;
 
+    @media screen and (max-width: 1600px) {
+      padding: $tb-padding $lr-padding-s;
+    }
+
     @media screen and (max-width: 500px) {
       padding: $mobile-padding;
     }
