@@ -1,8 +1,8 @@
 @import "../../../../styles.scss";
 
 $easeTrans: 500ms left cubic-bezier(0.71, 0, 0.19, 1.01),
-            500ms top cubic-bezier(0.71, 0, 0.19, 1.01),
-            500ms color cubic-bezier(0.71, 0, 0.19, 1.01);
+  500ms top cubic-bezier(0.71, 0, 0.19, 1.01),
+  500ms color cubic-bezier(0.71, 0, 0.19, 1.01);
 $opacityTrans: 500ms opacity cubic-bezier(0.71, 0, 0.19, 1.01);
 
 header {
@@ -16,7 +16,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: $small-padding;
+    padding: 2rem 5rem;
 
     @media screen and (max-width: 1600px) {
       padding: $tb-padding $lr-padding-s;
@@ -83,6 +83,7 @@ nav {
     font-weight: 800;
     font-size: 7rem;
     transform: translateY(-30px);
+    margin-top: 1.3rem;
 
     li {
       overflow: hidden;
@@ -126,7 +127,30 @@ nav {
   opacity: 0.2;
   transition: $easeTrans, $opacityTrans;
 }
+@media screen and (max-width: 1200px) {
+  nav {
+    padding: 5rem;
 
+    .nav-list {
+      font-size: 5rem;
+      .selector-left,
+      .selector-right {
+        visibility: hidden;
+      }
+      .nav-item {
+        margin: 0;
+      }
+    }
+
+    .nav-links {
+      font-size: 1rem;
+      flex-direction: column;
+      align-items: start;
+      padding: 0;
+      gap: 1rem;
+    }
+  }
+}
 @media screen and (max-width: 500px) {
   nav {
     padding: $mobile-padding;

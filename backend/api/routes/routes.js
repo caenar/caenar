@@ -3,6 +3,7 @@ const { readdirSync } = require("fs");
 const path = require("path");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const authController = require("../controllers/authController");
+const emailController = require("../controllers/emailController");
 
 const Projects = require("../models/Project");
 const Tags = require("../models/Tag");
@@ -13,6 +14,8 @@ const router = express.Router();
 
 const app = express();
 app.use(cors());
+
+router.post('/send-email', emailController.sendEmail);
 
 router.get("/", async (req, res) => {
    try {

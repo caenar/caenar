@@ -1,1 +1,85 @@
-<p>contact works!</p>
+<section class="header-inner">
+  <div class="text">
+    <h1>Let's talk about that project</h1>
+    <p>
+      Contact me for a quote, to start a project, or to ask any questions you
+      may have.
+    </p>
+    <a href="mailto:kaiserlaconfiture@gmail.com?subject=Project%20Inquiry%20|%20Caenar"
+      >kaiserlaconfiture&#64;gmail.com</a
+    >
+  </div>
+</section>
+<section class="form-container">
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <div class="input-container">
+      <label>What's your name?</label>
+      <input type="text" formControlName="name" placeholder="Full name" />
+      <small
+        *ngIf="
+          contactForm.get('name')!.invalid && contactForm.get('name')!.touched
+        "
+      >
+        Name is required.
+      </small>
+    </div>
+    <div class="input-container">
+      <label>Where are you from?</label>
+      <input
+        type="text"
+        formControlName="location"
+        placeholder="City, Country"
+      />
+      <small
+        *ngIf="
+          contactForm.get('location')!.invalid &&
+          contactForm.get('location')!.touched
+        "
+      >
+        Location is required.
+      </small>
+      <small
+        *ngIf="contactForm.get('location')!.errors?.['invalidCityCountry']"
+      >
+        Please follow the "City, Country" format.
+      </small>
+    </div>
+    <div class="input-container">
+      <label>How do I write back to you?</label>
+      <input type="email" formControlName="email" placeholder="Email address" />
+      <div
+        *ngIf="
+          contactForm.get('email')!.invalid && contactForm.get('email')!.touched
+        "
+      >
+        <small *ngIf="contactForm.get('email')!.errors?.['required']">
+          Email is required.
+        </small>
+        <small *ngIf="contactForm.get('email')!.errors?.['email']">
+          Please enter a valid email address.
+        </small>
+      </div>
+    </div>
+    <div class="input-container">
+      <label>What can I do for you?</label>
+      <textarea
+        formControlName="form_message"
+        placeholder="You can tell me about the scope of the project"
+      ></textarea>
+      <small
+        *ngIf="
+          contactForm.get('form_message')!.invalid &&
+          contactForm.get('form_message')!.touched
+        "
+      >
+        Message is required.
+      </small>
+    </div>
+    <button type="submit" [disabled]="contactForm.invalid || loading">
+      <span *ngIf="loading">Submitting...</span>
+      <span *ngIf="!loading">Submit</span>
+    </button>
+  </form>
+</section>
+
+<app-popup *ngIf="true" style="position: fixed" [message]="message"></app-popup>

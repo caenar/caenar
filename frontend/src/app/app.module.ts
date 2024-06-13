@@ -8,7 +8,7 @@ import {
   ionArrowUp,
   ionRadioButtonOnOutline,
 } from '@ng-icons/ionicons';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -23,10 +23,11 @@ import { ContactComponent } from './components/pages/contact/contact.component';
 import { PopupComponent } from './shared/constants/popup/popup.component';
 import { LoginComponent } from './shared/constants/login/login.component';
 import { ArchiveComponent } from './components/pages/archive/archive.component';
+import { ArchiveViewComponent } from './components/pages/archive-view/archive-view.component';
 
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 import { authGuard } from './shared/guards/auth.guard';
-import { ArchiveViewComponent } from './components/pages/archive-view/archive-view.component';
+import { EmailService } from './shared/services/email.service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ArchiveViewComponent } from './components/pages/archive-view/archive-vi
     HttpClientModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     NgIconsModule.withIcons({
@@ -57,6 +59,7 @@ import { ArchiveViewComponent } from './components/pages/archive-view/archive-vi
     }),
   ],
   providers: [
+    EmailService,
     authGuard,
     { provide: 'authGuard', useClass: authGuard },
     { provide: 'CanActivate', useExisting: 'authGuard' },

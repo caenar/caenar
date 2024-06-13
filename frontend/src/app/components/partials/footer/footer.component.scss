@@ -16,6 +16,10 @@ footer {
     padding: $top-stretch-padding;
     gap: 3rem;
 
+    @media screen and (max-width: 1000px) {
+      gap: 6rem;
+    }
+
     @media screen and (max-width: 500px) {
       padding: $mobile-padding;
     }
@@ -41,9 +45,19 @@ footer {
       display: grid;
       grid-template-columns: 40% 30% 30%;
 
+      @media screen and (max-width: 1000px) {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-evenly;
+        gap: 1.5rem;
+      }
+
       @media screen and (max-width: 500px) {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
         gap: 3rem;
       }
 
@@ -51,6 +65,7 @@ footer {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        opacity: 0.6;
 
         a {
           font-size: 1.2rem;
@@ -66,8 +81,10 @@ footer {
     .bottom-wrapper {
       align-items: end;
 
-      @media screen and (max-width: 500px) {
+      @media screen and (max-width: 1000px) {
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: 0.3rem;
 
         svg {
@@ -87,7 +104,7 @@ footer {
         font-size: 1.1rem;
         font-weight: 500;
         cursor: pointer;
-        
+
         ng-icon {
           font-size: 1.5rem;
           rotate: 0deg;
