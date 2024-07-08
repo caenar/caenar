@@ -28,6 +28,8 @@ export class ArchiveComponent implements OnInit, AfterViewInit {
   projects: any[] = [];
   others: any[] = [];
   allImages: any[] = [];
+  currentIndex: number = 0;
+  expandedImage: string | null = null;
 
   filterName: any;
   containerTop!: any;
@@ -101,6 +103,8 @@ export class ArchiveComponent implements OnInit, AfterViewInit {
       tags: this.projectService.getTags(),
     }).subscribe({
       next: (data: any) => {
+        data.projects.project.sort((a: any, b: any) => b.year - a.year);
+
         this.processData(data);
       },
       error: (err) => console.error(err),
@@ -136,7 +140,6 @@ export class ArchiveComponent implements OnInit, AfterViewInit {
 
   getOthers(): void {
     const names: string[] = [
-      // 'videos',
       'brochures',
       'apparel',
       'cards',
@@ -208,10 +211,40 @@ export class ArchiveComponent implements OnInit, AfterViewInit {
     return /\.(jpg|jpeg|png|gif)$/.test(media);
   }
 
-  expandedImage: string | null = null;
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.expandedImage) {
+      if (event.key === 'ArrowRight') {
+        this.nextImage();
+      } else if (event.key === 'ArrowLeft') {
+        this.prevImage();
+      } else if (event.key === 'Escape') {
+        this.closeImage();
+      }
+    }
+  }
 
   expandImage(media: string): void {
     this.expandedImage = media;
+    this.currentIndex = this.allImages.indexOf(media);
+  }
+
+  nextImage() {
+    if (this.currentIndex < this.allImages.length - 1) {
+      this.currentIndex++;
+    } else {
+      this.currentIndex = 0;
+    }
+    this.expandedImage = this.allImages[this.currentIndex];
+  }
+
+  prevImage() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    } else {
+      this.currentIndex = this.allImages.length - 1;
+    }
+    this.expandedImage = this.allImages[this.currentIndex];
   }
 
   closeImage(): void {
