@@ -1,0 +1,87 @@
+@import "./typography.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  img {
+    width: auto;
+    height: auto;
+  }
+}
+
+@font-face {
+  font-family: "Koluta";
+  src: url("/fonts/Koluta.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  /* fonts */
+  --font-koluta: "Koluta", monospace;
+
+  /* color */
+  --background: #eaefff;
+  --background-200: #d6dfff;
+  --background-300: #c3cdec;
+
+  --foreground: #141414;
+  --foreground-200: #95979d;
+  --foreground-300: #d0d3d9;
+
+  --violet: #8d49ed;
+  --violet-200: #7e45cd;
+  --violet-300: #6a3aae;
+  --violet-400: #562d8f;
+
+  --pink: #ff54a1;
+  --pink-200: #e45093;
+  --pink-300: #bd447b;
+  --pink-400: #9a2c5d;
+
+  /* transitions */
+  --default-trans: cubic-bezier(0.34, 0, 0.13, 1);
+}
+
+/* for dark mode (?) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #141414;
+    --foreground: #eaefff;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-size: 15px;
+}
+
+.box {
+  @apply h-1.5 w-1.5 bg-foreground;
+}
+
+.navbar {
+  @apply fixed w-full px-7 py-3 flex items-center justify-between;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.151);
+}
+
+button {
+  max-width: fit-content;
+}
+
+.primary-btn {
+  background-color: var(--violet-400);
+  border-radius: 5px;
+  padding: 5px 13px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  transition: 300ms var(--default-trans);
+}
+
+.primary-btn:hover {
+  background-color: transparent;
+  border: 1px solid var(--violet-400);
+}
