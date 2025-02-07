@@ -7,8 +7,8 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const links = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -16,14 +16,14 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="h-14 w-14 flex items-center content-center">
+      <div className="h-12 w-12 flex items-center content-center">
         <Image
           priority
           src="/logo.svg"
           alt="Caenar's pretty cool logo"
           className="invert"
-          width={50}
-          height={50}
+          width={45}
+          height={45}
         />
       </div>
       <ul className="flex gap-10">

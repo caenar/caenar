@@ -34,7 +34,7 @@ export default function RootLayout({
         className={`flex flex-col min-h-screen ${ptSerif.variable} ${inclusiveSans.variable} antialiased `}
       >
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 mx-2-">{children}</main>
         <Footer />
       </body>
     </html>

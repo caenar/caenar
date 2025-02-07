@@ -9,35 +9,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: {
-          DEFAULT: "var(--background)",
-          200: "var(--background-200)",
-          300: "var(--background-300)",
-        },
-        foreground: {
-          DEFAULT: "var(--foreground)",
-          200: "var(--foreground-200)",
-          300: "var(--foreground-300)",
-        },
-        violet: {
-          DEFAULT: "var(--violet)",
-          200: "var(--violet-200)",
-          300: "var(--violet-300)",
-          400: "var(--violet-400)",
-        },
-        pink: {
-          DEFAULT: "var(--pink)",
-          200: "var(--pink-200)",
-          300: "var(--pink-300)",
-          400: "var(--pink-400)",
-        },
+        "background-100": "#141414",
+        "background-200": "#95979d",
+        "background-300": "#d0d3d9",
+        "background-400": "cccccc",
+
+        "foreground-100": "#eaefff",
+        "foreground-200": "#d6dfff",
+        "foreground-300": "#c3cdec",
+
+        "violet-100": "#8d49ed",
+        "violet-200": "#7e45cd",
+        "violet-300": "#6a3aae",
+        "violet-400": "#562d8f",
+
+        "pink-100": "#ff54a1",
+        "pink-200": "#e45093",
+        "pink-300": "#bd447b",
+        "pink-400": "#9a2c5d",
+      },
+      fontFamily: {
+        body: ["Inclusive Sans", "sans-serif"],
+        secondary: ["Koluta", "monospace"],
       },
     },
-    fontFamily: {
-      display: ["var(--font-display)"],
-      body: ["var(--font-body)"],
-      secondary: ["var(--font-koluta)"],
-    }
   },
   plugins: [],
 } satisfies Config;
