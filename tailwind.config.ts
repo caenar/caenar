@@ -12,7 +12,7 @@ export default {
         "background-100": "#141414",
         "background-200": "#95979d",
         "background-300": "#d0d3d9",
-        "background-400": "cccccc",
+        "background-400": "#3d3d3d",
 
         "foreground-100": "#eaefff",
         "foreground-200": "#d6dfff",

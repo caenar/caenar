@@ -3,77 +3,81 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Koluta";
-    src: url("/fonts/Koluta.ttf") format("ttf");
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Koluta";
+  src: url("/fonts/Koluta.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
 }
 
 body {
-    @apply bg-background-100 text-foreground-100 text-[15px] font-body;
+  @apply bg-background-100 text-foreground-100 text-[15px] font-body;
 }
 
 main {
-    margin-left: 5rem;
-    margin-right: 5rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
 }
 
 * {
-    @apply text-pretty font-body;
+  @apply text-pretty font-body;
 }
 
 h1 {
-    @apply text-6xl font-bold;
+  @apply text-6xl font-bold;
 }
 
 h2 {
-    @apply text-4xl font-semibold;
+  @apply text-4xl font-semibold;
 }
 
 h3 {
-    @apply text-3xl font-medium;
+  @apply text-3xl font-medium;
 }
 
 h4 {
-    @apply text-2xl font-medium;
+  @apply text-2xl font-medium;
 }
 
 h5 {
-    @apply text-lg font-normal;
+  @apply text-lg font-normal;
 }
 
 h6 {
-    @apply text-base font-normal;
+  @apply text-base font-normal;
 }
 
 p {
-    @apply text-lg;
+  @apply text-lg;
 }
 
 p,
 button,
 a {
-    @apply font-body;
+  @apply font-body;
 }
 
 .primary-button {
-    @apply bg-violet-200 px-3 py-1.5 rounded-md;
+  @apply bg-violet-200 px-3 py-1.5 rounded-md;
 }
 
 .card {
-    @apply border rounded-md p-5 border-foreground-100 opacity-30 w-full h-[350px];
+  @apply p-5 rounded-lg border border-background-400;
 }
 
 .box {
-    @apply h-1.5 w-1.5 bg-foreground-100;
+  @apply h-1.5 w-1.5 bg-foreground-100;
 }
 
 .line {
-    height: 1px;
-    @apply bg-foreground-100 opacity-10;
+  height: 1px;
+  @apply bg-foreground-100 opacity-10;
 }
 
 .navbar {
-    @apply z-[99] fixed w-full px-7 py-3 flex items-center justify-between backdrop-blur-md;
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.151);
+  @apply z-[99] fixed w-full px-7 py-3 flex items-center justify-between backdrop-blur-md;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.151);
+}
+
+#terminal * {
+  @apply font-secondary text-base;
 }
