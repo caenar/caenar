@@ -1,86 +1,70 @@
 "use client";
 
-import { KeyboardEvent, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { COMMANDS } from "@/constants/TerminalCommands";
 
 export default function Terminal() {
   const [history, setHistory] = useState<
-    { command: string; output: JSX.Element; index: number }[]
+    { command: string; output: string; index: number }[]
   >([]);
-  const termInput = useRef<HTMLInputElement>(null);
-
-  function getOutput(command: string) {
-    switch (command) {
-      case "clear":
-        setHistory([]);
-      case "whoami":
-        return (
-          <p>
-            My name is Caenar Arteta
-            <br />
-            I am currently 20 years old
-            <br />
-            based in Legazpi City, PH
-          </p>
-        );
-      case "whoami --graphicdesign --skills":
-        return (
-          <p>
-            Figma, Webflow, Wix
-            <br />
-            Photoshop, Premiere Pro, After Effects, Illustrator
-            <br />
-            Davinci Resolve, Topaz Labs
-          </p>
-        );
-      case "whoami --programming --skills":
-        return (
-          <p>
-            Frontend: HTML/CSS, Javascript/Typescript, Tailwind, Sass, Angular,
-            Astro, React, Next.js, Flutter <br />
-            Backend: Node.js, Express.js, NestJS, REST API, WebSockets,
-            PostgreSQL, MongoDB, Prisma, Mongoose <br />
-            Languages: Java, Python, PHP <br />
-            Technologies: Git/Github, Docker, Jira <br />
-            Deployment: Vercel, Netlify, Render, Neon, Supabase
-          </p>
-        );
-      case "whoami --mantra":
-        return <p>Amor fati, accept fate and embrace it.</p>;
-      default:
-        return <p>Command not found: {command}</p>;
-    }
-  }
+  const terminalContainer = useRef<HTMLInputElement>(null);
 
   const focusTerminal = () => {
-    if (termInput.current) termInput.current.focus();
+    if (terminalContainer.current) terminalContainer.current.focus();
   };
 
-  const runCommand = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleCommand = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      const command = event.currentTarget.value.trim();
-      if (command === "") return;
 
-      setHistory((prevState) => [
-        ...prevState,
-        {
-          command,
-          output: getOutput(command),
-          index:
-            prevState.length > 0
-              ? prevState[prevState.length - 1].index + 1
-              : 69,
-        },
-      ]);
+      const value = event.currentTarget.value;
+
+      // get the flags
+      const args = value.trim().split(/\s+/);
+      console.log(args);
+      // get the command
+      const command = args.shift()?.toLowerCase();
+
+      if (command === "" || !command) return;
+
+      const commandFunc = COMMANDS[command];
+
+      if (commandFunc) {
+        if (command === "clear") {
+          commandFunc(setHistory);
+        } else {
+          setHistory((prev) => [
+            ...prev,
+            {
+              command: value.trim(),
+              output: commandFunc(args),
+              index: history.length + 1,
+            },
+          ]);
+        }
+      } else {
+        setHistory((prev) => [
+          ...prev,
+          {
+            command,
+            output: `Command not found: ${command}`,
+            index: history.length + 1,
+          },
+        ]);
+      }
 
       event.currentTarget.value = "";
     }
   };
 
+  useEffect(() => {
+    console.log(history);
+  });
+
   return (
-    <div className="w-[40vw] card cursor-pointer" onClick={focusTerminal}>
-      {history.map((entry, idx) => (
-        <div key={idx}>
+    <div className="w-[50vw] card cursor-pointer" onClick={focusTerminal}>
+      {history.map((entry, index) => (
+        <div key={index}>
           <p>
             ╭─<span className="text-violet-100">[</span>~
             <span className="text-violet-100">]</span>─
@@ -122,8 +106,8 @@ export default function Terminal() {
         <input
           className="bg-transparent border-transparent outline-none text-white w-[90%]"
           type="text"
-          ref={termInput}
-          onKeyDown={runCommand}
+          ref={terminalContainer}
+          onKeyDown={handleCommand}
           placeholder={
             history.length <= 0 ? "Run help to see available commands" : ""
           }
