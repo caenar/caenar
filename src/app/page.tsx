@@ -8,13 +8,8 @@ import {
 } from "react-icons/tb";
 import { IconSizes } from "@/constants/IconSizes";
 import Terminal from "@/components/terminal";
-import { COMMANDS } from "@/constants/TerminalCommands";
 
 export default function Home() {
-  useEffect(() => {
-    console.log(COMMANDS["whoami"].name);
-  });
-
   return (
     <>
       <section className="h-[70vh] flex items-center justify-center">

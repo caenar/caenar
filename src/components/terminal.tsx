@@ -1,11 +1,11 @@
 "use client";
 
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { COMMANDS } from "@/constants/TerminalCommands";
+import { JSX, KeyboardEvent, useRef, useState } from "react";
+import TERMINAL_COMMANDS from "@/hooks/useTerminal";
 
 export default function Terminal() {
   const [history, setHistory] = useState<
-    { command: string; output: string; index: number }[]
+    { command: string; output: JSX.Element | string | any; index: number }[]
   >([]);
   const terminalContainer = useRef<HTMLInputElement>(null);
 
@@ -21,13 +21,12 @@ export default function Terminal() {
 
       // get the flags
       const args = value.trim().split(/\s+/);
-      console.log(args);
       // get the command
       const command = args.shift()?.toLowerCase();
 
-      if (command === "" || !command) return;
+      if (!command ) return;
 
-      const commandFunc = COMMANDS[command];
+      const commandFunc = TERMINAL_COMMANDS[command];
 
       if (commandFunc) {
         if (command === "clear") {
@@ -38,7 +37,7 @@ export default function Terminal() {
             {
               command: value.trim(),
               output: commandFunc(args),
-              index: history.length + 1,
+              index: (history.length - 1) + 1,
             },
           ]);
         }
@@ -48,21 +47,18 @@ export default function Terminal() {
           {
             command,
             output: `Command not found: ${command}`,
-            index: history.length + 1,
+            index: (history.length - 1) + 1,
           },
         ]);
       }
 
+      // reset input 
       event.currentTarget.value = "";
     }
   };
 
-  useEffect(() => {
-    console.log(history);
-  });
-
   return (
-    <div className="w-[50vw] card cursor-pointer" onClick={focusTerminal}>
+    <div className="w-[50vw] max-h-[50vh] overflow-scroll card cursor-pointer" onClick={focusTerminal}>
       {history.map((entry, index) => (
         <div key={index}>
           <p>
@@ -95,7 +91,7 @@ export default function Terminal() {
         <span className="text-violet-100">[</span>0
         <span className="text-violet-100">]</span>─
         <span className="text-violet-100">[</span>
-        {history.length > 0 ? history[history.length - 1].index + 1 : 69}
+        {history.length}
         <span className="text-violet-200">]</span>
       </p>
       <p>
