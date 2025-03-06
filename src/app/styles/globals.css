@@ -19,7 +19,7 @@ main {
 }
 
 * {
-  @apply text-pretty font-body;
+  @apply font-body;
 }
 
 h1 {
