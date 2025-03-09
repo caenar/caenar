@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.2.1",
-    "@supabase/supabase-js": "^2.47.12",
+    "@supabase/supabase-js": "^2.49.1",
     "caenar": "file:",
     "next": "15.1.4",
     "react": "^19.0.0",

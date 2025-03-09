@@ -65,17 +65,21 @@ export default function Home() {
             Take a look at some of highlight projects that I've done before.
           </p>
         </div>
-        {PROJECTS.map((project, index: number) => {
-          return (
-            <React.Fragment key={`${project}-${index}`}>
-              <ProjectCard
-                title={project.title}
-                desc={project.desc}
-                tags={project.tags}
-              />
-            </React.Fragment>
-          );
-        })}
+        <div className="grid grid-cols-2 gap-5">
+          {PROJECTS.sort((a, b) => a.title.localeCompare(b.title)).map(
+            (project: ProjectCardProps, index: number) => {
+              return (
+                <React.Fragment key={`${project}-${index}`}>
+                  <ProjectCard
+                    title={project.title}
+                    desc={project.desc}
+                    tags={project.tags}
+                  />
+                </React.Fragment>
+              );
+            },
+          )}
+        </div>
       </section>
     </>
   );
