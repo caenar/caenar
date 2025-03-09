@@ -78,6 +78,14 @@ a {
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.151);
 }
 
+.content {
+  @apply py-36;
+}
+
+.icon-label {
+  @apply flex flex-row gap-2.5 items-center;
+}
+
 #terminal * {
   @apply font-secondary text-base;
 }

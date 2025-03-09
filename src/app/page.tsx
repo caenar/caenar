@@ -5,14 +5,17 @@ import {
   TbBrandFacebook,
   TbBrandGithub,
   TbBrandLinkedin,
+  TbComponents,
 } from "react-icons/tb";
 import { IconSizes } from "@/constants/IconSizes";
 import Terminal from "@/components/terminal";
+import { PROJECTS } from "@/data/FeaturedProjects";
+import ProjectCard, { ProjectCardProps } from "@/components/projectCard";
 
 export default function Home() {
   return (
     <>
-      <section className="h-[70vh] flex items-center justify-center">
+      <section className="h-[60vh] flex items-center justify-center">
         <div className="flex flex-col gap-10 w-[650px]">
           <div className="grid gap-5">
             <h1 className="font-body">
@@ -50,6 +53,29 @@ export default function Home() {
 
       <section className="flex justify-center">
         <Terminal />
+      </section>
+
+      <section className="content grid gap-10">
+        <div className="grid gap-2">
+          <div className="icon-label">
+            <TbComponents size={IconSizes.XL} />
+            <h2>Projects</h2>
+          </div>
+          <p className="max-w-[30ch] text-background-200">
+            Take a look at some of highlight projects that I've done before.
+          </p>
+        </div>
+        {PROJECTS.map((project, index: number) => {
+          return (
+            <React.Fragment key={`${project}-${index}`}>
+              <ProjectCard
+                title={project.title}
+                desc={project.desc}
+                tags={project.tags}
+              />
+            </React.Fragment>
+          );
+        })}
       </section>
     </>
   );

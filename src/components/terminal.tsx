@@ -75,7 +75,7 @@ export default function Terminal() {
 
   return (
     <div
-      className="w-full max-h-[50vh] overflow-scroll card cursor-pointer"
+      className="w-full min-h-[30vh] max-h-[50vh] overflow-scroll card cursor-pointer"
       onClick={focusTerminal}
       ref={terminalContainer}
     >
