@@ -27,45 +27,44 @@ export default function Terminal() {
 
       const commandFunc = TERMINAL_COMMANDS[command]; // get appropriate function
 
-      if (commandFunc) {
-        if (command === "clear") {
-          commandFunc(setHistory);
-        } else {
-          setHistory((prev) => [
-            ...prev,
-            {
-              command: value.trim(),
-              output: commandFunc(args),
-              index: history.length - 1 + 1,
-            },
-          ]);
-        }
-      } else {
-        setHistory((prev) => [
+      if (commandFunc === "clear") commandFunc(setHistory);
+
+      setHistory((prev) => {
+        const newHistory = [
           ...prev,
           {
-            command: value.trim(),
-            output: <p>Command not found: {value.trim()}</p>,
-            index: history.length - 1 + 1,
+            command: value,
+            output: commandFunc ? (
+              commandFunc(args)
+            ) : (
+              <p>Command not found: {value}</p>
+            ),
+            index: prev.length,
           },
-        ]);
-      }
+        ];
+        return newHistory;
+      });
 
       event.currentTarget.value = ""; // reset input
       setKeyIndex(0); // refresh history
+
+      // handle arrow key up
     } else if (event.key === "ArrowUp") {
-      setKeyIndex((prev) => (prev < history.length - 1 ? prev + 1 : prev));
+      if (history.length === 0) return;
+
+      setKeyIndex((prev) => Math.min(prev + 1, history.length - 1));
       event.currentTarget.value =
         history[history.length - 1 - keyIndex].command;
+
+      // handle arrow key down
     } else if (event.key === "ArrowDown") {
-      setKeyIndex((prev) => (prev > 1 ? prev - 1 : prev));
-      event.currentTarget.value = history[history.length - keyIndex].command;
+      if (history.length === 0) return;
+
+      setKeyIndex((prev) => Math.max(prev - 1, 0));
+      event.currentTarget.value =
+        history[history.length - 1 - keyIndex].command;
     }
   };
-
-  useEffect(() => {
-    console.log(keyIndex);
-  }, [keyIndex]);
 
   useEffect(() => {
     if (terminalContainer.current) {
@@ -76,7 +75,7 @@ export default function Terminal() {
 
   return (
     <div
-      className="w-[50vw] max-h-[50vh] overflow-scroll card cursor-pointer"
+      className="w-full max-h-[50vh] overflow-scroll card cursor-pointer"
       onClick={focusTerminal}
       ref={terminalContainer}
     >

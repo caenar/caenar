@@ -47,6 +47,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="flex justify-center">
         <Terminal />
       </section>
