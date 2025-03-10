@@ -24,7 +24,7 @@ export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
   }, [title]);
 
   return (
-    <Link href={title.toLocaleLowerCase().replace(" ", "-")}>
+    <Link href={`/projects/${title.toLocaleLowerCase().replace(" ", "-")}`}>
       <div className="card h-full flex flex-col gap-7">
         <div className="w-full h-fit rounded-md">
           {imageLink && (
