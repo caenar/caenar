@@ -55,8 +55,8 @@ function whoami(args?: string[]): JSX.Element {
   }
 }
 
-function clear(setHistory: (history: []) => void): void {
-  setHistory([]);
+function clear() {
+  return console.log("uwu");
 }
 
 function help(): JSX.Element {
@@ -96,11 +96,11 @@ function help(): JSX.Element {
           <div className="grid grid-cols-[5%_95%]">
             {cmd.flags.length > 0
               ? cmd.flags.map((flag, flagIndex) => (
-                  <React.Fragment key={flagIndex}>
-                    <p className="opacity-50">{flag.alias}</p>
-                    <p>{flag.desc}</p>
-                  </React.Fragment>
-                ))
+                <React.Fragment key={flagIndex}>
+                  <p className="opacity-50">{flag.alias}</p>
+                  <p>{flag.desc}</p>
+                </React.Fragment>
+              ))
               : null}
           </div>
         </div>

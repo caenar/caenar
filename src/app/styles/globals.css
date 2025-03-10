@@ -14,8 +14,7 @@ body {
 }
 
 main {
-  margin-left: 35rem;
-  margin-right: 35rem;
+  @apply mx-[35rem] sm:mx-[5rem] md:mx-[30rem];
 }
 
 * {

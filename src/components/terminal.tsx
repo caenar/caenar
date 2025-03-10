@@ -27,7 +27,7 @@ export default function Terminal() {
 
       const commandFunc = TERMINAL_COMMANDS[command]; // get appropriate function
 
-      if (commandFunc === "clear") commandFunc(setHistory);
+      if (commandFunc.name === "clear") return setHistory([]);
 
       setHistory((prev) => {
         const newHistory = [
@@ -75,7 +75,7 @@ export default function Terminal() {
 
   return (
     <div
-      className="w-full min-h-[30vh] max-h-[50vh] overflow-scroll card cursor-pointer"
+      className="w-full h-[35vh] overflow-scroll card cursor-pointer"
       onClick={focusTerminal}
       ref={terminalContainer}
     >

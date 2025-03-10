@@ -15,7 +15,7 @@ import ProjectCard, { ProjectCardProps } from "@/components/projectCard";
 export default function Home() {
   return (
     <>
-      <section className="h-[60vh] flex items-center justify-center">
+      <section className="pt-[10rem] pb-[7rem] flex items-center justify-center">
         <div className="flex flex-col gap-10 w-[650px]">
           <div className="grid gap-5">
             <h1 className="font-body">

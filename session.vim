@@ -13,162 +13,14 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +1 src/components/terminal.tsx
-badd +66 src/hooks/useTerminal.tsx
-badd +86 src/app/styles/globals.css
-badd +14 tailwind.config.ts
-badd +71 src/app/page.tsx
-badd +21 src/components/projectCard.tsx
-badd +32 src/data/FeaturedProjects.ts
+badd +17 src/app/styles/globals.css
+badd +1 tailwind.config.ts
+badd +18 src/app/page.tsx
+badd +26 src/components/projectCard.tsx
 argglobal
 %argdel
 tabnew +setlocal\ bufhidden=wipe
-tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit src/components/terminal.tsx
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 126 + 126) / 253)
-exe 'vert 2resize ' . ((&columns * 126 + 126) / 253)
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-3,4fold
-12,13fold
-34,35fold
-39,42fold
-37,44fold
-36,44fold
-33,45fold
-47,50fold
-47,52fold
-46,52fold
-17,56fold
-16,58fold
-69,75fold
-78,80fold
-76,82fold
-68,83fold
-67,85fold
-66,86fold
-89,99fold
-106,113fold
-100,115fold
-88,116fold
-62,117fold
-61,118fold
-6,118fold
-let &fdl = &fdl
-6
-normal! zo
-16
-normal! zo
-17
-normal! zo
-33
-normal! zo
-46
-normal! zo
-47
-normal! zo
-61
-normal! zo
-62
-normal! zo
-66
-normal! zo
-67
-normal! zo
-68
-normal! zo
-76
-normal! zo
-let s:l = 1 - ((0 * winheight(0) + 33) / 66)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 1
-normal! 013|
-wincmd w
-argglobal
-if bufexists(fnamemodify("src/hooks/useTerminal.tsx", ":p")) | buffer src/hooks/useTerminal.tsx | else | edit src/hooks/useTerminal.tsx | endif
-if &buftype ==# 'terminal'
-  silent file src/hooks/useTerminal.tsx
-endif
-balt src/components/terminal.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-6,17fold
-5,18fold
-4,18fold
-21,28fold
-20,29fold
-19,29fold
-30,31fold
-34,40fold
-33,41fold
-32,41fold
-3,42fold
-45,46fold
-53,58fold
-51,58fold
-50,62fold
-68,70fold
-75,77fold
-74,79fold
-73,80fold
-71,82fold
-67,83fold
-66,84fold
-65,85fold
-64,86fold
-49,86fold
-89,92fold
-let &fdl = &fdl
-49
-normal! zo
-50
-normal! zo
-51
-normal! zo
-let s:l = 58 - ((29 * winheight(0) + 33) / 66)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 58
-normal! 031|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 126 + 126) / 253)
-exe 'vert 2resize ' . ((&columns * 126 + 126) / 253)
-tabnext
 edit src/app/page.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
@@ -186,38 +38,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 126 + 126) / 253)
-exe 'vert 2resize ' . ((&columns * 126 + 126) / 253)
-tcd ~/code/caenar
+exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
 argglobal
-balt ~/code/caenar/src/components/projectCard.tsx
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal nofen
-silent! normal! zE
-4,8fold
-3,11fold
-let &fdl = &fdl
-3
-normal! zo
-let s:l = 71 - ((38 * winheight(0) + 33) / 66)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 71
-normal! 026|
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/code/caenar/src/components/projectCard.tsx", ":p")) | buffer ~/code/caenar/src/components/projectCard.tsx | else | edit ~/code/caenar/src/components/projectCard.tsx | endif
-if &buftype ==# 'terminal'
-  silent file ~/code/caenar/src/components/projectCard.tsx
-endif
-balt ~/code/caenar/src/app/page.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -227,18 +50,88 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
+4,8fold
+3,13fold
+21,25fold
+26,30fold
+20,31fold
+33,35fold
+37,39fold
+41,42fold
+40,45fold
+46,48fold
+36,49fold
+32,50fold
+19,51fold
+18,52fold
+54,56fold
+60,63fold
+64,66fold
+59,67fold
+74,75fold
+72,78fold
+71,79fold
+70,79fold
+69,81fold
+68,82fold
+58,83fold
+17,84fold
+16,85fold
+15,85fold
 let &fdl = &fdl
-let s:l = 5 - ((4 * winheight(0) + 33) / 66)
+let s:l = 65 - ((31 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 5
+keepjumps 65
+normal! 055|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/components/projectCard.tsx", ":p")) | buffer src/components/projectCard.tsx | else | edit src/components/projectCard.tsx | endif
+if &buftype ==# 'terminal'
+  silent file src/components/projectCard.tsx
+endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+3,7fold
+9,12fold
+18,23fold
+18,24fold
+35,39fold
+32,40fold
+30,43fold
+29,44fold
+46,49fold
+56,58fold
+54,59fold
+53,60fold
+52,60fold
+52,61fold
+51,62fold
+45,63fold
+28,64fold
+27,65fold
+26,66fold
+15,66fold
+let &fdl = &fdl
+let s:l = 26 - ((10 * winheight(0) + 31) / 63)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 26
 normal! 07|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 126 + 126) / 253)
-exe 'vert 2resize ' . ((&columns * 126 + 126) / 253)
+exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
 tabnext
-edit ~/code/caenar/src/app/styles/globals.css
+edit src/app/styles/globals.css
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -255,8 +148,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 126 + 126) / 253)
-exe 'vert 2resize ' . ((&columns * 126 + 126) / 253)
+exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -269,36 +162,38 @@ setlocal fen
 silent! normal! zE
 5,9fold
 12,13fold
-16,18fold
-21,22fold
-25,26fold
-29,30fold
-33,34fold
-37,38fold
-41,42fold
-45,46fold
-49,50fold
-55,56fold
-59,60fold
-63,64fold
-67,68fold
-71,73fold
-76,78fold
-89,90fold
+16,17fold
+20,21fold
+24,25fold
+28,29fold
+32,33fold
+36,37fold
+40,41fold
+44,45fold
+48,49fold
+54,55fold
+58,59fold
+62,63fold
+66,67fold
+70,72fold
+75,77fold
+80,81fold
+84,85fold
+88,89fold
 let &fdl = &fdl
-let s:l = 81 - ((59 * winheight(0) + 33) / 66)
+let s:l = 15 - ((14 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 81
-normal! 010|
+keepjumps 15
+normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/code/caenar/tailwind.config.ts", ":p")) | buffer ~/code/caenar/tailwind.config.ts | else | edit ~/code/caenar/tailwind.config.ts | endif
+if bufexists(fnamemodify("tailwind.config.ts", ":p")) | buffer tailwind.config.ts | else | edit tailwind.config.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/code/caenar/tailwind.config.ts
+  silent file tailwind.config.ts
 endif
-balt ~/code/caenar/src/app/styles/globals.css
+balt src/app/styles/globals.css
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -315,22 +210,16 @@ silent! normal! zE
 10,36fold
 3,38fold
 let &fdl = &fdl
-3
-normal! zo
-10
-normal! zo
-11
-normal! zo
-let s:l = 14 - ((13 * winheight(0) + 33) / 66)
+let s:l = 14 - ((13 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 14
-normal! 028|
+normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 126 + 126) / 253)
-exe 'vert 2resize ' . ((&columns * 126 + 126) / 253)
-tabnext 2
+exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
