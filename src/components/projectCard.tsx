@@ -9,7 +9,7 @@ import { supabase } from "@/utils/supabase/client";
 export interface ProjectCardProps {
   title: string;
   desc?: string;
-  tags: string[];
+  tags?: string[];
 }
 
 export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
@@ -20,7 +20,6 @@ export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
       .from("images")
       .getPublicUrl(title.toLowerCase().replace(" ", "-"));
     setImageLink(data.publicUrl + ".png");
-    console.log(data.publicUrl);
   }, [title]);
 
   return (
@@ -49,16 +48,17 @@ export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
           </div>
           <div className="line"></div>
           <div className="flex flex-row gap-2 items-center">
-            {tags.map((tag: string, index: number) => {
-              return (
-                <React.Fragment key={index}>
-                  <p>{tag.trim()}</p>
-                  {index !== tags.length - 1 && (
-                    <TbCircleFilled style={{ marginTop: "3px" }} size={6} />
-                  )}
-                </React.Fragment>
-              );
-            })}
+            {tags &&
+              tags.map((tag: string, index: number) => {
+                return (
+                  <React.Fragment key={index}>
+                    <p>{tag.trim()}</p>
+                    {index !== tags.length - 1 && (
+                      <TbCircleFilled style={{ marginTop: "3px" }} size={6} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
           </div>
         </div>
       </div>
