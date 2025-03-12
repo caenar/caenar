@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const projects = await prisma.project.findMany();
+    const projects = await prisma.projects.findMany();
     return NextResponse.json(projects, { status: 200 });
   } catch (error) {
     return NextResponse.json(
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { title, desc } = body;
 
-    const project = await prisma.projec.create({
+    const project = await prisma.projects.create({
       data: { title, desc },
     });
 

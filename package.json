@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^6.2.1",
+    "@prisma/client": "^6.5.0",
     "@supabase/supabase-js": "^2.49.1",
     "caenar": "file:",
     "next": "15.1.4",

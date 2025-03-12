@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: bigint } },
 ) {
   try {
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: params.id },
     });
     return NextResponse.json(project, { status: 200 });
@@ -19,13 +19,13 @@ export async function GET(
 }
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: bigint } },
 ) {
   try {
     const body = await req.json();
     const { title, desc } = body;
 
-    const project = await prisma.project.update({
+    const project = await prisma.projects.update({
       where: { id: params.id },
       data: { title, desc },
     });
@@ -45,10 +45,10 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: bigint } },
 ) {
   try {
-    await prisma.project.delete({ where: { id: params.id } });
+    await prisma.projects.delete({ where: { id: params.id } });
     return NextResponse.json({ message: "Project deleted", status: 200 });
   } catch (error) {
     return NextResponse.json(
