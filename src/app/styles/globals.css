@@ -14,7 +14,7 @@ body {
 }
 
 main {
-  @apply mx-[10rem] sm:mx-[5rem] md:mx-[20rem];
+  @apply mx-[10rem] sm:mx-[5rem] md:mx-[15rem];
 }
 
 * {

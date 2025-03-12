@@ -13,13 +13,17 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +6 src/app/api/projects/route.ts
-badd +6 ~/code/caenar/src/lib/fetchData.ts
-badd +51 src/components/projectCard.tsx
-badd +28 ~/code/caenar/src/app/projects/page.tsx
+badd +9 src/app/api/projects/route.ts
+badd +8 src/app/projects/page.tsx
+badd +1 prisma/schema.prisma
+badd +1 src/app/api/projects/\[id]/route.ts
+badd +3 ~/code/caenar/src/app/admin/page.tsx
 argglobal
 %argdel
-edit ~/code/caenar/src/app/projects/page.tsx
+tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit src/app/api/projects/\[id]/route.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -36,9 +40,188 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 94 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 98 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
 argglobal
+balt src/app/api/projects/route.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+1,2fold
+9,10fold
+9,11fold
+8,12fold
+14,17fold
+13,17fold
+4,18fold
+28,30fold
+28,31fold
+33,34fold
+24,37fold
+39,42fold
+38,42fold
+20,43fold
+50,52fold
+54,57fold
+53,57fold
+46,58fold
+let &fdl = &fdl
+20
+normal! zo
+24
+normal! zo
+let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/app/api/projects/route.ts", ":p")) | buffer src/app/api/projects/route.ts | else | edit src/app/api/projects/route.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/app/api/projects/route.ts
+endif
+balt src/app/api/projects/\[id]/route.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+1,2fold
+8,9fold
+12,14fold
+12,15fold
+5,17fold
+19,22fold
+18,22fold
+4,23fold
+31,32fold
+31,33fold
+27,35fold
+37,40fold
+36,40fold
+26,41fold
+let &fdl = &fdl
+let s:l = 11 - ((10 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 11
+normal! 0
+wincmd w
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+tabnext
+edit prisma/schema.prisma
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+1,2fold
+5,8fold
+11,17fold
+20,24fold
+27,33fold
+let &fdl = &fdl
+let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 015|
+tabnext
+edit ~/code/caenar/src/app/admin/page.tsx
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 99 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 93 + 96) / 193)
+argglobal
+balt src/app/projects/page.tsx
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+3,4fold
+9,10fold
+13,16fold
+21,23fold
+24,25fold
+20,26fold
+19,29fold
+19,30fold
+38,39fold
+38,40fold
+37,41fold
+34,42fold
+33,43fold
+32,43fold
+54,55fold
+52,57fold
+52,58fold
+51,59fold
+50,60fold
+61,63fold
+50,64fold
+49,65fold
+47,66fold
+46,67fold
+6,67fold
+let &fdl = &fdl
+6
+normal! zo
+19
+normal! zo
+19
+normal! zo
+let s:l = 52 - ((34 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 52
+normal! 017|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/app/projects/page.tsx", ":p")) | buffer src/app/projects/page.tsx | else | edit src/app/projects/page.tsx | endif
+if &buftype ==# 'terminal'
+  silent file src/app/projects/page.tsx
+endif
+balt ~/code/caenar/src/app/admin/page.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -62,59 +245,16 @@ silent! normal! zE
 23,34fold
 7,34fold
 let &fdl = &fdl
-let s:l = 17 - ((16 * winheight(0) + 25) / 51)
+let s:l = 7 - ((6 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 17
-normal! 0
+keepjumps 7
+normal! 02|
 wincmd w
-argglobal
-if bufexists(fnamemodify("src/components/projectCard.tsx", ":p")) | buffer src/components/projectCard.tsx | else | edit src/components/projectCard.tsx | endif
-if &buftype ==# 'terminal'
-  silent file src/components/projectCard.tsx
-endif
-balt ~/code/caenar/src/lib/fetchData.ts
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-3,7fold
-9,12fold
-18,22fold
-18,23fold
-34,38fold
-31,39fold
-29,42fold
-28,43fold
-45,48fold
-56,58fold
-54,59fold
-53,60fold
-52,60fold
-52,61fold
-50,62fold
-44,63fold
-27,64fold
-26,65fold
-25,66fold
-15,66fold
-let &fdl = &fdl
-let s:l = 51 - ((35 * winheight(0) + 25) / 51)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 51
-normal! 020|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 94 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 98 + 96) / 193)
-tabnext 1
+exe 'vert 1resize ' . ((&columns * 99 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 93 + 96) / 193)
+tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

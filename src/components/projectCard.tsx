@@ -29,11 +29,11 @@ export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
           {imageLink && (
             <Image
               src={imageLink}
-              width={500}
-              height={500}
+              width={100}
+              height={100}
               style={{
                 width: "100%",
-                height: "500px",
+                height: "370px",
                 objectFit: "cover",
                 borderRadius: "inherit",
               }}

@@ -5,6 +5,10 @@ export async function GET() {
   try {
     const projects = await prisma.projects.findMany();
 
+    if (!projects) {
+      return NextResponse.json({ message: "No projects", status: 404 });
+    }
+
     const serializedProjects = projects.map((project) => ({
       ...project,
       id: project.id.toString(),
