@@ -14,7 +14,7 @@ body {
 }
 
 main {
-  @apply mx-[35rem] sm:mx-[5rem] md:mx-[30rem];
+  @apply mx-[10rem] sm:mx-[5rem] md:mx-[20rem];
 }
 
 * {
@@ -78,7 +78,7 @@ a {
 }
 
 .content {
-  @apply py-36;
+  @apply py-[15rem];
 }
 
 .icon-label {

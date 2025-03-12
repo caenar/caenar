@@ -13,12 +13,14 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +17 src/app/styles/globals.css
-badd +1 tailwind.config.ts
-badd +18 src/app/page.tsx
-badd +26 src/components/projectCard.tsx
+badd +15 src/app/styles/globals.css
+badd +14 tailwind.config.ts
+badd +65 src/app/page.tsx
+badd +1 src/app/api/projects/routes.ts
+badd +1 src/components/terminal.tsx
 argglobal
 %argdel
+tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
 edit src/app/page.tsx
@@ -38,9 +40,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
-exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
 argglobal
+balt src/components/terminal.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -63,34 +66,34 @@ silent! normal! zE
 36,49fold
 32,50fold
 19,51fold
-18,52fold
-54,56fold
-60,63fold
-64,66fold
-59,67fold
-74,75fold
-72,78fold
-71,79fold
-70,79fold
-69,81fold
-68,82fold
-58,83fold
-17,84fold
-16,85fold
-15,85fold
+18,53fold
+57,60fold
+61,63fold
+56,64fold
+71,72fold
+69,75fold
+68,76fold
+67,76fold
+66,78fold
+65,79fold
+55,80fold
+17,81fold
+16,82fold
+15,82fold
 let &fdl = &fdl
-let s:l = 65 - ((31 * winheight(0) + 31) / 63)
+let s:l = 65 - ((32 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 65
-normal! 055|
+normal! 048|
 wincmd w
 argglobal
-if bufexists(fnamemodify("src/components/projectCard.tsx", ":p")) | buffer src/components/projectCard.tsx | else | edit src/components/projectCard.tsx | endif
+if bufexists(fnamemodify("src/components/terminal.tsx", ":p")) | buffer src/components/terminal.tsx | else | edit src/components/terminal.tsx | endif
 if &buftype ==# 'terminal'
-  silent file src/components/projectCard.tsx
+  silent file src/components/terminal.tsx
 endif
+balt src/app/page.tsx
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -100,36 +103,45 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-3,7fold
-9,12fold
-18,23fold
-18,24fold
-35,39fold
-32,40fold
-30,43fold
-29,44fold
-46,49fold
-56,58fold
-54,59fold
-53,60fold
-52,60fold
-52,61fold
-51,62fold
-45,63fold
-28,64fold
-27,65fold
-26,66fold
-15,66fold
+3,4fold
+15,16fold
+37,39fold
+37,41fold
+35,42fold
+33,44fold
+32,45fold
+32,46fold
+20,51fold
+52,59fold
+60,65fold
+19,66fold
+70,72fold
+69,73fold
+69,74fold
+78,79fold
+85,95fold
+98,100fold
+96,102fold
+84,103fold
+83,105fold
+82,106fold
+109,119fold
+126,131fold
+120,134fold
+108,135fold
+77,136fold
+76,137fold
+6,137fold
 let &fdl = &fdl
-let s:l = 26 - ((10 * winheight(0) + 31) / 63)
+let s:l = 78 - ((25 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 26
-normal! 07|
+keepjumps 78
+normal! 029|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
-exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
 tabnext
 edit src/app/styles/globals.css
 let s:save_splitbelow = &splitbelow
@@ -148,8 +160,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
-exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -181,7 +193,7 @@ silent! normal! zE
 84,85fold
 88,89fold
 let &fdl = &fdl
-let s:l = 15 - ((14 * winheight(0) + 31) / 63)
+let s:l = 15 - ((14 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -210,15 +222,77 @@ silent! normal! zE
 10,36fold
 3,38fold
 let &fdl = &fdl
-let s:l = 14 - ((13 * winheight(0) + 31) / 63)
+let s:l = 14 - ((11 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 14
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 118 + 118) / 237)
-exe 'vert 2resize ' . ((&columns * 118 + 118) / 237)
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+tabnext
+edit src/app/api/projects/routes.ts
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/app/api/projects/routes.ts", ":p")) | buffer src/app/api/projects/routes.ts | else | edit src/app/api/projects/routes.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/app/api/projects/routes.ts
+endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 0
+wincmd w
+exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
