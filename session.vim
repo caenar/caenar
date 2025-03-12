@@ -16,8 +16,9 @@ endif
 badd +15 src/app/styles/globals.css
 badd +14 tailwind.config.ts
 badd +65 src/app/page.tsx
-badd +1 src/app/api/projects/routes.ts
+badd +47 src/app/api/projects/routes.ts
 badd +1 src/components/terminal.tsx
+badd +7 ~/code/caenar/src/utils/prisma.ts
 argglobal
 %argdel
 tabnew +setlocal\ bufhidden=wipe
@@ -40,8 +41,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 argglobal
 balt src/components/terminal.tsx
 setlocal fdm=manual
@@ -81,12 +82,12 @@ silent! normal! zE
 16,82fold
 15,82fold
 let &fdl = &fdl
-let s:l = 65 - ((32 * winheight(0) + 25) / 51)
+let s:l = 39 - ((20 * winheight(0) + 36) / 73)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 65
-normal! 048|
+keepjumps 39
+normal! 018|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/components/terminal.tsx", ":p")) | buffer src/components/terminal.tsx | else | edit src/components/terminal.tsx | endif
@@ -133,15 +134,15 @@ silent! normal! zE
 76,137fold
 6,137fold
 let &fdl = &fdl
-let s:l = 78 - ((25 * winheight(0) + 25) / 51)
+let s:l = 78 - ((36 * winheight(0) + 36) / 73)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 78
 normal! 029|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 tabnext
 edit src/app/styles/globals.css
 let s:save_splitbelow = &splitbelow
@@ -160,8 +161,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -193,7 +194,7 @@ silent! normal! zE
 84,85fold
 88,89fold
 let &fdl = &fdl
-let s:l = 15 - ((14 * winheight(0) + 25) / 51)
+let s:l = 15 - ((14 * winheight(0) + 36) / 73)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -222,23 +223,26 @@ silent! normal! zE
 10,36fold
 3,38fold
 let &fdl = &fdl
-let s:l = 14 - ((11 * winheight(0) + 25) / 51)
+let s:l = 14 - ((13 * winheight(0) + 36) / 73)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 14
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 tabnext
-edit src/app/api/projects/routes.ts
+edit ~/code/caenar/src/utils/prisma.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -249,9 +253,24 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 30 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 105 + 136) / 272)
+exe 'vert 3resize ' . ((&columns * 135 + 136) / 272)
 argglobal
+enew
+file neo-tree\ filesystem\ \[3]
+balt src/app/api/projects/routes.ts
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+wincmd w
+argglobal
+balt src/app/api/projects/routes.ts
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -262,12 +281,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+let s:l = 7 - ((6 * winheight(0) + 36) / 72)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 7
+normal! 072|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/app/api/projects/routes.ts", ":p")) | buffer src/app/api/projects/routes.ts | else | edit src/app/api/projects/routes.ts | endif
@@ -284,16 +303,18 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+let s:l = 47 - ((46 * winheight(0) + 36) / 72)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 47
+normal! 051|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
-tabnext 1
+3wincmd w
+exe 'vert 1resize ' . ((&columns * 30 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 105 + 136) / 272)
+exe 'vert 3resize ' . ((&columns * 135 + 136) / 272)
+tabnext 3
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
