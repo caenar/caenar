@@ -9,7 +9,7 @@ datasource db {
 }
 
 model project {
-  id          Int           @id @default(autoincrement())
+  id          BigInt        @id @default(autoincrement())
   title       String
   desc        String?
   tags        tag[]         @relation("project_tag")
@@ -18,15 +18,15 @@ model project {
 }
 
 model tag {
-  id          Int           @id @default(autoincrement())
+  id          BigInt        @id @default(autoincrement())
   name        String        @unique
   projects    project[]     @relation("project_tag")
   project_tag project_tag[]
 }
 
 model project_tag {
-  project_id Int
-  tag_id     Int
+  project_id BigInt
+  tag_id     BigInt
   project    project @relation(fields: [project_id], references: [id], onDelete: Cascade)
   tag        tag     @relation(fields: [tag_id], references: [id], onDelete: Cascade)
 

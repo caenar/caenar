@@ -1,10 +1,14 @@
 "use client";
 
+import { IconSizes } from "@/constants/IconSizes";
+import { usePopup } from "@/context/PopupContext";
 import { fetchProjects } from "@/lib/fetchData";
 import React, { useEffect, useState } from "react";
+import { TbPlus } from "react-icons/tb";
 
 export default function Admin() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const { openPopup } = usePopup();
 
   type Tag = {
     name: string;
@@ -43,18 +47,47 @@ export default function Admin() {
     );
   };
 
+  const openAddProjectPopup = () => {
+    console.log("hello");
+
+    openPopup(
+      "Add a project",
+      <>
+        <form action="">
+          <div className="grid grid-cols-[max-h-100px_1fr]">
+            <label>Name</label>
+            <input type="text" />
+          </div>
+        </form>
+      </>,
+    );
+  };
+
   return (
     <section className="pt-[10rem]">
-      <h2>Projects</h2>
+      <div className="flex justify-between">
+        <h2>Projects</h2>
+        <button
+          type="button"
+          className="primary-button icon-label"
+          onClick={() => openAddProjectPopup()}
+        >
+          <TbPlus size={IconSizes.SMALL} />
+          Add a project
+        </button>
+      </div>
       <div className="grid grid-cols-4">
-        {projects ? (
+        {projects.length !== 0 ? (
           <>
             {projects.map((project: Project) => {
-              <ProjectCard
-                title={project.title}
-                desc={project.desc}
-                tags={project.tags}
-              />;
+              return (
+                <ProjectCard
+                  key={project.title}
+                  title={project.title}
+                  desc={project.desc}
+                  tags={project.tags}
+                />
+              );
             })}
           </>
         ) : (

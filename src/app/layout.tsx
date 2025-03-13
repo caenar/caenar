@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { PopupProvider } from "@/context/PopupContext";
 
 const ptSerif = PT_Serif({
   variable: "--font-display",
@@ -33,9 +34,11 @@ export default function RootLayout({
       <body
         className={`flex flex-col min-h-screen ${ptSerif.variable} ${inclusiveSans.variable} antialiased `}
       >
-        <Navbar />
-        <main className="flex-1 mx-2-">{children}</main>
-        <Footer />
+        <PopupProvider>
+          <Navbar />
+          <main className="flex-1 mx-2-">{children}</main>
+          <Footer />
+        </PopupProvider>
       </body>
     </html>
   );
