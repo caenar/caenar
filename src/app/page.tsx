@@ -62,7 +62,7 @@ export default function Home() {
             Take a look at some of highlight projects that I've done before.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-3 gap-5">
           {PROJECTS.sort((a, b) => a.title.localeCompare(b.title)).map(
             (project: ProjectCardProps, index: number) => {
               return (

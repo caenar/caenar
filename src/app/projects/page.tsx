@@ -1,6 +1,6 @@
 "use client";
 
-import ProjectCard from "@/components/projectCard";
+import ProjectCard, { ProjectCardProps } from "@/components/projectCard";
 import { fetchProjects } from "@/lib/fetchData";
 import React, { useEffect, useState } from "react";
 
@@ -21,9 +21,9 @@ export default function Project() {
   }, []);
 
   return (
-    <section className="pt-[10rem] flex flex-col gap-16">
+    <section className="content">
       <h1>Projects</h1>
-      {projects.map((project, index) => {
+      {projects.map((project: ProjectCardProps, index) => {
         return (
           <React.Fragment key={index}>
             <ProjectCard title={project.title} desc={project?.desc} />

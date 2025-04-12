@@ -1,10 +1,15 @@
 import prisma from "@/utils/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET({ params }: { params: { id: bigint } }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const id = (await params).id;
+
     const project = await prisma.project.findUnique({
-      where: { id: params.id },
+      where: { id: Number(id) },
     });
     return NextResponse.json(project, { status: 200 });
   } catch (error) {
@@ -16,14 +21,15 @@ export async function GET({ params }: { params: { id: bigint } }) {
 }
 export async function PUT(
   req: Request,
-  { params }: { params: { id: bigint } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const body = await req.json();
     const { title, desc } = body;
+    const id = (await params).id;
 
     const project = await prisma.project.update({
-      where: { id: params.id },
+      where: { id: Number(id) },
       data: { title, desc },
     });
 
@@ -40,9 +46,14 @@ export async function PUT(
   }
 }
 
-export async function DELETE({ params }: { params: { id: bigint } }) {
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
-    await prisma.project.delete({ where: { id: params.id } });
+    const id = (await params).id;
+
+    await prisma.project.delete({ where: { id: Number(id) } });
     return NextResponse.json({ message: "Project deleted", status: 200 });
   } catch (error) {
     return NextResponse.json(

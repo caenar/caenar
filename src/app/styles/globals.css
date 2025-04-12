@@ -9,12 +9,12 @@
   font-style: normal;
 }
 
-body {
-  @apply bg-background-100 text-foreground-100 text-[15px] font-body;
+main {
+  @apply mx-[10vw];
 }
 
-main {
-  @apply mx-[10rem] sm:mx-[5rem] md:mx-[15rem];
+body {
+  @apply bg-background-100 text-foreground-100 text-[15px] font-body;
 }
 
 * {
@@ -46,7 +46,7 @@ h6 {
 }
 
 p {
-  @apply text-lg;
+  @apply text-lg text-balance;
 }
 
 p,
@@ -78,7 +78,7 @@ a {
 }
 
 .content {
-  @apply py-[15rem];
+  @apply py-36;
 }
 
 .icon-label {

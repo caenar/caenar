@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         <PopupProvider>
           <Navbar />
-          <main className="flex-1 mx-2-">{children}</main>
+          <main className="flex-1">{children}</main>
           <Footer />
         </PopupProvider>
       </body>
