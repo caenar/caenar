@@ -14,11 +14,7 @@ main {
 }
 
 body {
-  @apply bg-background-100 text-foreground-100 text-[15px] font-body;
-}
-
-* {
-  @apply font-body;
+  @apply bg-background-100 text-foreground-100 text-[16px] font-body;
 }
 
 h1 {
@@ -87,6 +83,10 @@ a {
 
 .page-title {
   @apply opacity-50;
+}
+
+.list-border li:not(:last-child) {
+  @apply pb-5 border-b-background-400 border-b;
 }
 
 #terminal * {

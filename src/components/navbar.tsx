@@ -16,16 +16,18 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="h-12 w-12 flex items-center content-center">
-        <Image
-          priority
-          src="/logo.svg"
-          alt="Caenar's pretty cool logo"
-          className="invert"
-          width={45}
-          height={45}
-        />
-      </div>
+      <a href="/">
+        <div className="h-12 w-12 flex items-center content-center">
+          <Image
+            priority
+            src="/logo.svg"
+            alt="Caenar's pretty cool logo"
+            className="invert"
+            width={45}
+            height={45}
+          />
+        </div>
+      </a>
       <ul className="flex gap-10">
         {links.map(({ name, href }) => {
           const isActiveLink = href === pathname;
