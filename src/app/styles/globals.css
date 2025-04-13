@@ -85,6 +85,10 @@ a {
   @apply flex flex-row gap-2.5 items-center;
 }
 
+.page-title {
+  @apply opacity-50;
+}
+
 #terminal * {
   @apply font-secondary text-base;
 }
