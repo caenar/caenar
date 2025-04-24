@@ -11,17 +11,24 @@ import selfPortrait from "@/assets/self-portrait-2.jpg";
 
 import selfComputer from "@/assets/self-portrait-3.jpg";
 import selfFriends from "@/assets/self-with-friends.jpg";
+import selfBike from "@/assets/self-bike.jpg";
 
 export default function AboutPage() {
   const sectionRef = useRef(null);
+  const sectionRefPictures = useRef(null);
   const sectionRefExperience = useRef(null);
   const sectionRefEducation = useRef(null);
+  const pictures = [selfComputer, selfBike, selfFriends];
 
   const textRef = useRef(null);
   const listRef = useRef<HTMLLIElement[]>([]);
+  const picturesRef = useRef<HTMLElement[]>([]);
 
-  const selfFriendsRef = useRef(null);
-  const selfComputerRef = useRef(null);
+  const addToPicturesRef = (el: HTMLImageElement) => {
+    if (el && !picturesRef.current.includes(el)) {
+      picturesRef.current.push(el);
+    }
+  };
 
   const itemsRef = (el: HTMLLIElement) => {
     if (el && !listRef.current.includes(el)) {
@@ -39,13 +46,48 @@ export default function AboutPage() {
           opacity: 1,
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 80%",
-            end: "80% center",
+            start: "30% 80%",
+            end: "80% 80%",
             scrub: 1.5,
           },
         },
       );
     }, sectionRef);
+
+    picturesRef.current.forEach((item, index) => {
+      gsap.fromTo(
+        item,
+        { y: 0, x: -1600, rotate: -6 * index },
+        {
+          x: 1600 + 40 * index,
+          rotate: Math.random() * (10 - -10) + -10,
+          scrollTrigger: {
+            trigger: sectionRefPictures.current,
+            start: "top 80%",
+            end: "110% -80%",
+            scrub: 1.5,
+          },
+        },
+      );
+    });
+
+    listRef.current.forEach((item, index) => {
+      gsap.fromTo(
+        item,
+        { y: 90 * index, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          scrollTrigger: {
+            trigger: sectionRefExperience.current,
+            start: "top bottom",
+            end: "top top",
+            scrub: 1.5,
+          },
+          delay: 0.7 * index,
+        },
+      );
+    });
 
     gsap.fromTo(
       sectionRefExperience.current,
@@ -77,54 +119,6 @@ export default function AboutPage() {
       },
     );
 
-    gsap.fromTo(
-      selfFriendsRef.current,
-      { y: 200, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "bottom center",
-          scrub: 1.5,
-        },
-      },
-    );
-
-    gsap.fromTo(
-      selfComputerRef.current,
-      { y: 200, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 40%",
-          end: "bottom center",
-          scrub: 1.5,
-        },
-      },
-    );
-
-    listRef.current.forEach((item, index) => {
-      gsap.fromTo(
-        item,
-        { y: 90 * index, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: sectionRefExperience.current,
-            start: "top bottom",
-            end: "top top",
-            scrub: 1.5,
-          },
-          delay: 0.7 * index,
-        },
-      );
-    });
-
     return () => ctx.revert();
   }, []);
 
@@ -132,7 +126,7 @@ export default function AboutPage() {
     <>
       <section className="content h-screen flex flex-col justify-between">
         <h5 className="page-title">/ About</h5>
-        <div className="flex items-end justify-between">
+        <div className="flex gap-14 items-end justify-between">
           <div className="flex flex-col gap-10 w-[65ch]">
             <h2 className="!text-5xl">
               A bit wild to think I was supposed to be a geodetic engineer, yet
@@ -161,24 +155,8 @@ export default function AboutPage() {
 
       <section
         ref={sectionRef}
-        className="content relative h-screen flex items-center justify-center"
+        className="content h-screen flex items-center justify-center"
       >
-        <Image
-          className="absolute rounded-lg top-40 rotate-[-3deg] left-0"
-          ref={selfFriendsRef}
-          src={selfFriends}
-          width={400}
-          height={0}
-          alt="Picture of me with classmates"
-        />
-        <Image
-          className="absolute rounded-lg bottom-40 rotate-3 right-0"
-          ref={selfComputerRef}
-          src={selfComputer}
-          width={400}
-          height={0}
-          alt="Picture of me with my computer"
-        />
         <h1 ref={textRef} className="w-[35ch] text-center text-balance">
           Back in senior high, I started freelancing—taking on projects from
           logos to banners, posters, and even video editing gigs. That hustle
@@ -187,6 +165,30 @@ export default function AboutPage() {
           for another company, as well as developing brand identities for
           various clients.
         </h1>
+      </section>
+
+      <section
+        ref={sectionRefPictures}
+        className="content relative overflow-hidden flex h-screen items-center justify-center"
+      >
+        <h1>Queue carousel</h1>
+        {pictures.map((img, index) => {
+          return (
+            <Image
+              key={index}
+              className="max-w-[35%] absolute rounded-lg top-50 rotate-[-3deg]"
+              ref={addToPicturesRef}
+              src={img}
+              width={0}
+              height={0}
+              style={{
+                zIndex: `${10 - 3 * index}`,
+                left: `${30 * index}%`,
+              }}
+              alt={`Picture ${index}`}
+            />
+          );
+        })}
       </section>
 
       <section className="content flex flex-col items-center justify-center gap-10">

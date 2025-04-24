@@ -76,7 +76,7 @@ export default function Admin() {
           Add a project
         </button>
       </div>
-      <div className="grid grid-cols-4">
+      <div className="grid mt-7 grid-cols-4">
         {projects.length !== 0 ? (
           <>
             {projects.map((project: Project) => {
