@@ -48,18 +48,14 @@ export default function Admin() {
   };
 
   const openAddProjectPopup = () => {
-    console.log("hello");
-
     openPopup(
       "Add a project",
-      <>
-        <form action="">
-          <div className="grid grid-cols-[max-h-100px_1fr]">
-            <label>Name</label>
-            <input type="text" />
-          </div>
-        </form>
-      </>,
+      <form action="">
+        <div className="grid grid-cols-[max-h-100px_1fr]">
+          <label>Name</label>
+          <input type="text" />
+        </div>
+      </form>,
     );
   };
 

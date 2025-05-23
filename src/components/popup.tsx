@@ -5,10 +5,10 @@ import { usePopup } from "@/context/PopupContext";
 export default function Popup() {
   const { isOpen, title, content, closePopup } = usePopup();
 
-  if (!isOpen) return null; // Don't render if popup is closed
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+    <div className="bg-red h-full w-full">
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-lg font-semibold">{title}</h2>
         <div className="mt-4">{content}</div>
