@@ -63,10 +63,6 @@ export default function Admin() {
           <label>Tags</label>
           <input type="text" />
         </div>
-        <div className="form-input">
-          <label>Category</label>
-          <input type="text" />
-        </div>
         <div className="button-container justify-self-end">
           <button type="button">Cancel</button>
           <button type="button" className="primary-button">
