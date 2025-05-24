@@ -14,7 +14,7 @@ main {
 }
 
 body {
-  @apply bg-background-100 text-foreground-100 text-[16px] font-body;
+  @apply bg-background-100 text-foreground-100 text-[15px] font-body;
 }
 
 h1 {
@@ -53,6 +53,10 @@ a {
 
 .primary-button {
   @apply bg-violet-200 px-3 py-1.5 rounded-md;
+}
+
+.button-container {
+  @apply flex gap-3 place-items-center;
 }
 
 .card {

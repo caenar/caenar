@@ -18,9 +18,6 @@ export function PopupProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<ReactNode>(null);
 
   const openPopup = (title: string, content: ReactNode) => {
-    console.log(children);
-    console.log(title);
-    console.log(content);
     setTitle(title);
     setContent(content);
     setIsOpen(true);

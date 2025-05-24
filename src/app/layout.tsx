@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { PopupProvider } from "@/context/PopupContext";
+import Popup from "@/components/popup";
 
 const ptSerif = PT_Serif({
   variable: "--font-display",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Popup />
         </PopupProvider>
       </body>
     </html>

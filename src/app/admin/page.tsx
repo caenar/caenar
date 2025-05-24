@@ -50,10 +50,28 @@ export default function Admin() {
   const openAddProjectPopup = () => {
     openPopup(
       "Add a project",
-      <form action="">
-        <div className="grid grid-cols-[max-h-100px_1fr]">
+      <form className="grid">
+        <div className="form-input">
           <label>Name</label>
           <input type="text" />
+        </div>
+        <div className="form-input">
+          <label>Description</label>
+          <input type="text" />
+        </div>
+        <div className="form-input">
+          <label>Tags</label>
+          <input type="text" />
+        </div>
+        <div className="form-input">
+          <label>Category</label>
+          <input type="text" />
+        </div>
+        <div className="button-container justify-self-end">
+          <button type="button">Cancel</button>
+          <button type="button" className="primary-button">
+            Create project
+          </button>
         </div>
       </form>,
     );
