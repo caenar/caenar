@@ -1,5 +1,6 @@
 "use client";
 
+import AddProject from "@/components/forms/addProject";
 import { IconSizes } from "@/constants/IconSizes";
 import { usePopup } from "@/context/PopupContext";
 import { fetchProjects } from "@/lib/fetchData";
@@ -8,9 +9,10 @@ import { TbPlus } from "react-icons/tb";
 
 export default function Admin() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const { openPopup } = usePopup();
+  const { openPopup, closePopup } = usePopup();
 
   type Tag = {
+    id: number;
     name: string;
   };
 
@@ -31,6 +33,7 @@ export default function Admin() {
     }
 
     loadProjects();
+    console.log(projects);
   }, []);
 
   const ProjectCard = ({ title, desc, tags }: Project) => {
@@ -48,29 +51,7 @@ export default function Admin() {
   };
 
   const openAddProjectPopup = () => {
-    openPopup(
-      "Add a project",
-      <form className="grid">
-        <div className="form-input">
-          <label>Name</label>
-          <input type="text" />
-        </div>
-        <div className="form-input">
-          <label>Description</label>
-          <input type="text" />
-        </div>
-        <div className="form-input">
-          <label>Tags</label>
-          <input type="text" />
-        </div>
-        <div className="button-container justify-self-end">
-          <button type="button">Cancel</button>
-          <button type="button" className="primary-button">
-            Create project
-          </button>
-        </div>
-      </form>,
-    );
+    openPopup("Add a project", <AddProject close={() => closePopup()} />);
   };
 
   return (

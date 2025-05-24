@@ -106,6 +106,10 @@ a {
   @apply resize-y;
 }
 
+.image-upload {
+  @apply flex flex-col justify-center items-center gap-1.5 border border-background-400 rounded-lg p-5 cursor-pointer;
+}
+
 #terminal * {
   @apply font-secondary text-base;
 }
