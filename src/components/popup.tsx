@@ -48,7 +48,7 @@ export default function Popup() {
       className="h-full w-full fixed flex justify-center items-center backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="min-w-[400px] bg-background-100 border border-background-400 p-4 rounded-lg">
+      <div className="min-w-[450px] bg-background-100 border border-background-400 p-4 rounded-lg">
         <h2 className="text-2xl font-semibold">{title}</h2>
         <div className="mt-4">{content}</div>
       </div>

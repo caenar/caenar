@@ -55,6 +55,10 @@ a {
   @apply bg-violet-200 px-3 py-1.5 rounded-md;
 }
 
+.secondary-button {
+  @apply bg-background-400 text-white px-3 py-1.5 rounded-md;
+}
+
 .button-container {
   @apply flex gap-3 place-items-center;
 }
@@ -108,6 +112,10 @@ a {
 
 .image-upload {
   @apply flex flex-col justify-center items-center gap-1.5 border border-background-400 rounded-lg p-5 cursor-pointer;
+}
+
+.uploads-container {
+  @apply grid gap-3;
 }
 
 #terminal * {

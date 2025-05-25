@@ -6,13 +6,24 @@ import Link from "next/link";
 import { TbCircleFilled } from "react-icons/tb";
 import { supabase } from "@/utils/supabase/client";
 
-export interface ProjectCardProps {
-  title: string;
-  desc?: string;
-  tags?: string[];
-}
+type Tag = {
+  id: number;
+  name: string;
+};
 
-export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
+export type ProjectCardProps = {
+  title: string;
+  desc: string;
+  tags: Tag[];
+  height?: number;
+};
+
+export default function ProjectCard({
+  title,
+  desc,
+  tags,
+  height = 350,
+}: ProjectCardProps) {
   const [imageLink, setImageLink] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,7 +44,7 @@ export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
               height={100}
               style={{
                 width: "100%",
-                height: "370px",
+                height: height ? `${height}px` : "350px",
                 objectFit: "cover",
                 borderRadius: "inherit",
               }}
@@ -47,12 +58,12 @@ export default function ProjectCard({ title, desc, tags }: ProjectCardProps) {
             <p className="text-balance text-background-200 mb-1.5">{desc}</p>
           </div>
           <div className="line"></div>
-          <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-row flex-wrap gap-2 items-center">
             {tags &&
-              tags.map((tag: string, index: number) => {
+              tags.map((tag: Tag, index: number) => {
                 return (
                   <React.Fragment key={index}>
-                    <p>{tag.trim()}</p>
+                    <p key={index}>{tag.name}</p>
                     {index !== tags.length - 1 && (
                       <TbCircleFilled style={{ marginTop: "3px" }} size={6} />
                     )}

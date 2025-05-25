@@ -1,19 +1,24 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
-import { TbFileUpload } from "react-icons/tb";
+import { TbFileUpload, TbPlus, TbX } from "react-icons/tb";
 
 export default function AddProject({ close }: { close: () => void }) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [tags, setTags] = useState("");
-  const [images, setImages] = useState<FileList | null>(null);
+  const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fileInput = useRef<HTMLInputElement>(null);
 
   const addFile = () => {
     fileInput.current?.click();
+  };
+
+  const removeFile = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,6 +57,35 @@ export default function AddProject({ close }: { close: () => void }) {
     }
   };
 
+  const ImageContainer = ({
+    name,
+    src,
+    onRemove,
+  }: {
+    name: string;
+    src: string;
+    onRemove: () => void;
+  }) => {
+    return (
+      <div className="flex gap-2 w-full items-center">
+        <Image
+          src={src}
+          alt="Picture"
+          width={0}
+          height={0}
+          style={{ width: "40px", height: "40px", objectFit: "cover" }}
+          className="rounded-lg border border-background-400"
+        />
+        <div className="flex justify-between items-center w-full gap-4">
+          <h5 className="truncate max-w-[20rem]">{name}</h5>
+          <button onClick={onRemove}>
+            <TbX className="text-pink-100" size={20} />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -69,12 +103,12 @@ export default function AddProject({ close }: { close: () => void }) {
       </div>
       <div className="form-input">
         <label>Description</label>
-        <input
-          type="text"
+        <textarea
+          rows={2}
           placeholder="Keep it short and concise"
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
-        />
+        ></textarea>
       </div>
       <div className="form-input">
         <label>Tags (comma-separated)</label>
@@ -87,25 +121,54 @@ export default function AddProject({ close }: { close: () => void }) {
       </div>
       <div className="form-input">
         <label>Images</label>
-        <div className="image-upload" onClick={addFile}>
-          <div className="border border-background-400 rounded-full p-3">
-            <TbFileUpload size={20} />
+        {images.length !== 0 && (
+          <div className="uploads-container">
+            {images.map((image, index) => (
+              <ImageContainer
+                key={index}
+                name={image.name}
+                src={URL.createObjectURL(image)}
+                onRemove={() => removeFile(index)}
+              />
+            ))}
           </div>
-          <span className="!text-center">
-            Drag and drop images
-            <br />
-            or click this container
-          </span>
-        </div>
+        )}
+        {images.length !== 0 ? (
+          <button
+            className="w-full secondary-button icon-label !gap-1 text-[14px]"
+            type="button"
+            onClick={addFile}
+          >
+            <TbPlus size={16} />
+            Add more
+          </button>
+        ) : (
+          <>
+            <div className="image-upload" onClick={addFile}>
+              <div className="border border-background-400 rounded-full p-3">
+                <TbFileUpload size={20} />
+              </div>
+              <span className="!text-center">
+                Drag and drop images
+                <br />
+                or click this container
+              </span>
+            </div>
+          </>
+        )}
         <input
           ref={fileInput}
           type="file"
           hidden
           multiple
-          onChange={(e) => setImages(e.target.files)}
+          onChange={(e) => {
+            if (!e.target.files) return;
+            const newFiles = Array.from(e.target.files);
+            setImages((prev) => [...prev, ...newFiles]);
+          }}
         />
       </div>
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-4 mt-5">
         <button type="button" onClick={close}>
           Cancel
         </button>

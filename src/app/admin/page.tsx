@@ -1,6 +1,7 @@
 "use client";
 
 import AddProject from "@/components/forms/addProject";
+import ProjectCard from "@/components/projectCard";
 import { IconSizes } from "@/constants/IconSizes";
 import { usePopup } from "@/context/PopupContext";
 import { fetchProjects } from "@/lib/fetchData";
@@ -35,20 +36,6 @@ export default function Admin() {
     loadProjects();
     console.log(projects);
   }, []);
-
-  const ProjectCard = ({ title, desc, tags }: Project) => {
-    return (
-      <div>
-        <h3>{title}</h3>
-        <p>{desc}</p>
-        <div>
-          {tags.map((tag: Tag, index: number) => {
-            return <p key={index}>{tag.name}</p>;
-          })}
-        </div>
-      </div>
-    );
-  };
 
   const openAddProjectPopup = () => {
     openPopup("Add a project", <AddProject close={() => closePopup()} />);
