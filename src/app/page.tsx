@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TbBrandFacebook,
   TbBrandGithub,
@@ -9,10 +9,28 @@ import {
 } from "react-icons/tb";
 import { IconSizes } from "@/constants/IconSizes";
 import Terminal from "@/components/terminal";
-import { PROJECTS } from "@/data/FeaturedProjects";
 import ProjectCard, { ProjectCardProps } from "@/components/projectCard";
+import { fetchProjects } from "@/lib/fetchData";
+import { Project } from "@/lib/types/project";
 
 export default function Home() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        setLoading(true);
+        const data = await fetchProjects({});
+        setProjects(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  });
+
   return (
     <>
       <section className="pt-20 h-[100vh] flex flex-col gap-[5rem] items-center justify-center">
@@ -63,8 +81,9 @@ export default function Home() {
           </p>
         </div>
         <div className="grid grid-cols-3 gap-5">
-          {PROJECTS.sort((a, b) => a.title.localeCompare(b.title)).map(
-            (project: ProjectCardProps, index: number) => {
+          {projects
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map((project: ProjectCardProps, index) => {
               return (
                 <React.Fragment key={`${project}-${index}`}>
                   <ProjectCard
@@ -74,8 +93,7 @@ export default function Home() {
                   />
                 </React.Fragment>
               );
-            },
-          )}
+            })}
         </div>
       </section>
     </>
