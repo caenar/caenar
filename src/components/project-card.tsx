@@ -35,8 +35,8 @@ export default function ProjectCard({
 
   return (
     <Link href={`/projects/${title.toLocaleLowerCase().replace(" ", "-")}`}>
-      <div className="card h-full flex flex-col gap-7">
-        <div className="w-full h-fit rounded-md">
+      <div className="card h-full flex flex-col gap-5">
+        <div className="w-full h-fit rounded-md px-4 pt-4">
           {imageLink && (
             <Image
               src={imageLink}
@@ -52,25 +52,23 @@ export default function ProjectCard({
             />
           )}
         </div>
-        <div className="flex flex-col justify-between gap-4">
-          <div className="grid gap-2">
+        <div className="flex flex-col justify-between">
+          <div className="grid gap-1 px-4">
             <h3 className="font-bold">{title}</h3>
-            <p className="text-balance text-background-200 mb-1.5">{desc}</p>
+            <p className="text-background-200">{desc}</p>
           </div>
-          <div className="line"></div>
-          <div className="flex flex-row flex-wrap gap-2 items-center">
+          <div className="line my-4"></div>
+          <ul className="flex flex-row flex-wrap px-4 pb-5 gap-x-2 items-center">
             {tags &&
               tags.map((tag: Tag, index: number) => {
                 return (
                   <React.Fragment key={index}>
-                    <p key={index}>{tag.name}</p>
-                    {index !== tags.length - 1 && (
-                      <TbCircleFilled style={{ marginTop: "3px" }} size={6} />
-                    )}
+                    <li>{tag.name}</li>
+                    {index !== tags.length - 1 && <TbCircleFilled size={5} />}
                   </React.Fragment>
                 );
               })}
-          </div>
+          </ul>
         </div>
       </div>
     </Link>

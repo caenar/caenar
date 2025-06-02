@@ -8,7 +8,7 @@ import ProjectCard from "@/components/project-card";
 
 import { IconSizes } from "@/lib/constants";
 import type { Project } from "@/lib/types/project";
-import { Facebook, Github, Linkedin } from "lucide-react";
+import { Component, Facebook, Github, Linkedin } from "lucide-react";
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -73,7 +73,7 @@ export default function Home() {
       <section className="content grid gap-10">
         <div className="grid gap-2">
           <div className="icon-label">
-            <TbComponents size={IconSizes.XL} />
+            <Component size={IconSizes.XL} />
             <h2>Projects</h2>
           </div>
           <p className="max-w-[30ch] text-background-200">

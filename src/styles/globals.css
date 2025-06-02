@@ -42,13 +42,13 @@ h6 {
 }
 
 p {
-  @apply text-lg text-balance;
+  @apply text-lg;
 }
 
 p,
 button,
 a {
-  @apply font-body w-fit;
+  @apply font-body;
 }
 
 .primary-button {
@@ -64,7 +64,7 @@ a {
 }
 
 .card {
-  @apply p-5 rounded-lg border border-background-400;
+  @apply rounded-lg border border-background-400;
 }
 
 .box {

@@ -8,11 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutPage() {
-  const sectionRef = useRef(null);
   const sectionRefExperience = useRef(null);
   const sectionRefEducation = useRef(null);
 
-  const textRef = useRef(null);
   const listRef = useRef<HTMLLIElement[]>([]);
 
   const itemsRef = (el: HTMLLIElement) => {
@@ -22,23 +20,6 @@ export default function AboutPage() {
   };
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        textRef.current,
-        { y: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "30% 80%",
-            end: "80% 80%",
-            scrub: 1.5,
-          },
-        },
-      );
-    }, sectionRef);
-
     listRef.current.forEach((item, index) => {
       gsap.fromTo(
         item,
@@ -86,58 +67,13 @@ export default function AboutPage() {
         },
       },
     );
-
-    return () => ctx.revert();
   }, []);
 
   return (
     <>
-      <section className="content h-screen flex flex-col justify-between">
-        <h5 className="page-title">/ About</h5>
-        <div className="flex gap-14 items-end justify-between">
-          <div className="flex flex-col gap-5 w-[55ch]">
-            <h2 className="!text-3xl">
-              Wild to think I was supposed to be a geodetic engineer, yet here I
-              am now — building websites instead..
-            </h2>
-            <p className="text-xl">
-              I’m Caenar (pronounced “kay-nar”) Arteta. I’m a self-taught
-              graphic designer and a college student taking Information
-              Technology. Over the years, I’ve built up a skillset that blends
-              frontend and backend development, branding, video editing, and
-              graphic design.
-            </p>
-          </div>
-          <div>
-            <Image
-              priority
-              width={800}
-              height={800}
-              src={}
-              alt="A picture of myself"
-              className="rounded-xl"
-            />
-          </div>
-        </div>
+      <section className="content">
+        <h5 className="page-title">/ Contact</h5>
       </section>
-
-      <section
-        ref={sectionRef}
-        className="content h-screen flex items-center justify-center"
-      >
-        <h1
-          ref={textRef}
-          className="w-[35ch] text-center text-balance leading-tight"
-        >
-          Back in senior high, I started freelancing — taking on projects from
-          logos to banners, posters, and even video editing gigs. That hustle
-          eventually led me to work with a creative agency based in Auckland,
-          New Zealand. There, I was in charge of crafting promotional content
-          for another company, as well as developing brand identities for
-          various clients.
-        </h1>
-      </section>
-
       <section className="content flex flex-col items-center justify-center gap-10">
         <div
           ref={sectionRefExperience}

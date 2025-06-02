@@ -26,22 +26,33 @@ export default function Project() {
     loadProjects();
   }, []);
 
+  const filters = projects.reduce((acc, item) => {
+    if (!acc.includes(item)) {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
+
+  console.log(filters);
+
   return (
     <section className="content">
       <h1 className="mb-10">Projects</h1>
       {loading && <span>Loading projects..</span>}
-      {projects.map((project: Project, index) => {
-        return (
-          <React.Fragment key={index}>
-            <ProjectCard
-              title={project.title}
-              desc={project?.desc}
-              tags={project.tags}
-              height={500}
-            />
-          </React.Fragment>
-        );
-      })}
+      <div className="grid grid-cols-4 gap-4">
+        {projects.map((project: Project, index) => {
+          return (
+            <React.Fragment key={index}>
+              <ProjectCard
+                title={project.title}
+                desc={project?.desc}
+                tags={project.tags}
+                height={300}
+              />
+            </React.Fragment>
+          );
+        })}
+      </div>
     </section>
   );
 }

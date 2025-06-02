@@ -1,11 +1,13 @@
 "use client";
 
-import AddProject from "@/components/forms/addProject";
-import ProjectCard from "@/components/projectCard";
-import { IconSizes } from "@/constants/IconSizes";
-import { usePopup } from "@/context/PopupContext";
-import { fetchProjects } from "@/lib/fetchData";
 import React, { useEffect, useState } from "react";
+import { usePopup } from "@/shared/context/popup-context";
+import { fetchProjects } from "@/lib/fetch-data";
+
+import AddProjectForm from "@/components/ui/forms/add-project";
+import ProjectCard from "@/components/project-card";
+
+import { IconSizes } from "@/lib/constants";
 import { TbPlus } from "react-icons/tb";
 
 export default function Admin() {
@@ -26,7 +28,7 @@ export default function Admin() {
   useEffect(() => {
     async function loadProjects() {
       try {
-        const data = await fetchProjects({});
+        const data = await fetchProjects();
         setProjects(data);
       } catch (error) {
         console.error(error);
@@ -38,7 +40,7 @@ export default function Admin() {
   }, []);
 
   const openAddProjectPopup = () => {
-    openPopup("Add a project", <AddProject close={() => closePopup()} />);
+    openPopup("Add a project", <AddProjectForm close={() => closePopup()} />);
   };
 
   return (
