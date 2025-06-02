@@ -1,8 +1,10 @@
 "use client";
 
-import ProjectCard, { ProjectCardProps } from "@/components/projectCard";
-import { fetchProjects } from "@/lib/fetchData";
 import React, { useEffect, useState } from "react";
+import { fetchProjects } from "@/lib/fetch-data";
+
+import ProjectCard from "@/components/project-card";
+import type { Project } from "@/lib/types/project";
 
 export default function Project() {
   const [projects, setProjects] = useState([]);
@@ -12,7 +14,7 @@ export default function Project() {
     async function loadProjects() {
       try {
         setLoading(true);
-        const data = await fetchProjects({});
+        const data = await fetchProjects();
         setProjects(data);
       } catch (error) {
         console.error(error);
@@ -28,7 +30,7 @@ export default function Project() {
     <section className="content">
       <h1 className="mb-10">Projects</h1>
       {loading && <span>Loading projects..</span>}
-      {projects.map((project: ProjectCardProps, index) => {
+      {projects.map((project: Project, index) => {
         return (
           <React.Fragment key={index}>
             <ProjectCard

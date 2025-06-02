@@ -1,17 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  TbBrandFacebook,
-  TbBrandGithub,
-  TbBrandLinkedin,
-  TbComponents,
-} from "react-icons/tb";
-import { IconSizes } from "@/constants/IconSizes";
+import { fetchProjects } from "@/lib/fetch-data";
+
 import Terminal from "@/components/terminal";
-import ProjectCard, { ProjectCardProps } from "@/components/projectCard";
-import { fetchProjects } from "@/lib/fetchData";
-import { Project } from "@/lib/types/project";
+import ProjectCard from "@/components/project-card";
+
+import { IconSizes } from "@/lib/constants";
+import type { Project } from "@/lib/types/project";
+import { Facebook, Github, Linkedin } from "lucide-react";
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -21,7 +18,7 @@ export default function Home() {
     async function loadProjects() {
       try {
         setLoading(true);
-        const data = await fetchProjects({});
+        const data = await fetchProjects();
         setProjects(data);
       } catch (error) {
         console.error(error);
@@ -29,7 +26,9 @@ export default function Home() {
         setLoading(false);
       }
     }
-  });
+
+    loadProjects();
+  }, []);
 
   return (
     <>
@@ -53,20 +52,21 @@ export default function Home() {
             </button>
             <div className="flex gap-2">
               <a href="https://www.github.com/notansjwmember" target="_blank">
-                <TbBrandGithub size={IconSizes.MEDIUM} />
+                <Github size={IconSizes.MEDIUM} />
               </a>
               <a
                 href="https://www.facebook.com/bobo.o.ng.bulaklak"
                 target="_blank"
               >
-                <TbBrandFacebook size={IconSizes.MEDIUM} />
+                <Facebook size={IconSizes.MEDIUM} />
               </a>
               <a href="https://www.linkedin.com/in/caenarguen" target="_blank">
-                <TbBrandLinkedin size={IconSizes.MEDIUM} />
+                <Linkedin size={IconSizes.MEDIUM} />
               </a>
             </div>
           </div>
         </div>
+
         <Terminal />
       </section>
 
@@ -81,19 +81,24 @@ export default function Home() {
           </p>
         </div>
         <div className="grid grid-cols-3 gap-5">
-          {projects
-            .sort((a, b) => a.title.localeCompare(b.title))
-            .map((project: ProjectCardProps, index) => {
-              return (
-                <React.Fragment key={`${project}-${index}`}>
-                  <ProjectCard
-                    title={project.title}
-                    desc={project.desc}
-                    tags={project.tags}
-                  />
-                </React.Fragment>
-              );
-            })}
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            projects
+              .sort((a, b) => a.title.localeCompare(b.title))
+              .map((project: Project, index: number) => {
+                return (
+                  <React.Fragment key={`${project}-${index}`}>
+                    <ProjectCard
+                      title={project.title}
+                      desc={project.desc}
+                      tags={project.tags}
+                      height={300}
+                    />
+                  </React.Fragment>
+                );
+              })
+          )}
         </div>
       </section>
     </>

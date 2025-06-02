@@ -1,6 +1,6 @@
 "use client";
 
-import { usePopup } from "@/context/PopupContext";
+import { usePopup } from "@/shared/context/popup-context";
 import { useEffect, useRef } from "react";
 
 export default function Popup() {

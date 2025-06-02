@@ -1,5 +1,5 @@
-import prisma from "@/utils/prisma";
-import { supabase } from "@/utils/supabase/client";
+import prisma from "@/lib/prisma";
+import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
 export async function GET() {

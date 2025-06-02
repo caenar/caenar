@@ -1,7 +1,7 @@
 "use client";
 
 import { JSX, KeyboardEvent, useEffect, useRef, useState } from "react";
-import TERMINAL_COMMANDS from "@/hooks/useTerminal";
+import TERMINAL_COMMANDS from "@/shared/hooks/use-terminal";
 
 export default function Terminal() {
   const [history, setHistory] = useState<

@@ -1,10 +1,10 @@
-import "./styles/globals.css";
+import "../styles/globals.css";
 import { PT_Serif, Inclusive_Sans } from "next/font/google";
 import type { Metadata } from "next";
+import { PopupProvider } from "@/shared/context/popup-context";
 
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { PopupProvider } from "@/context/PopupContext";
 import Popup from "@/components/popup";
 
 const ptSerif = PT_Serif({

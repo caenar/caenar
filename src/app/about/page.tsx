@@ -7,28 +7,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-import selfPortrait from "@/assets/self-portrait-2.jpg";
-
-import selfComputer from "@/assets/self-portrait-3.jpg";
-import selfFriends from "@/assets/self-with-friends.jpg";
-import selfBike from "@/assets/self-bike.jpg";
-
 export default function AboutPage() {
   const sectionRef = useRef(null);
-  const sectionRefPictures = useRef(null);
   const sectionRefExperience = useRef(null);
   const sectionRefEducation = useRef(null);
-  const pictures = [selfComputer, selfBike, selfFriends];
 
   const textRef = useRef(null);
   const listRef = useRef<HTMLLIElement[]>([]);
-  const picturesRef = useRef<HTMLElement[]>([]);
-
-  const addToPicturesRef = (el: HTMLImageElement) => {
-    if (el && !picturesRef.current.includes(el)) {
-      picturesRef.current.push(el);
-    }
-  };
 
   const itemsRef = (el: HTMLLIElement) => {
     if (el && !listRef.current.includes(el)) {
@@ -53,23 +38,6 @@ export default function AboutPage() {
         },
       );
     }, sectionRef);
-
-    picturesRef.current.forEach((item, index) => {
-      gsap.fromTo(
-        item,
-        { y: 0, x: -1600, rotate: -6 * index },
-        {
-          x: 1600 + 40 * index,
-          rotate: Math.random() * (10 - -10) + -10,
-          scrollTrigger: {
-            trigger: sectionRefPictures.current,
-            start: "top 80%",
-            end: "110% -80%",
-            scrub: 1.5,
-          },
-        },
-      );
-    });
 
     listRef.current.forEach((item, index) => {
       gsap.fromTo(
@@ -127,14 +95,14 @@ export default function AboutPage() {
       <section className="content h-screen flex flex-col justify-between">
         <h5 className="page-title">/ About</h5>
         <div className="flex gap-14 items-end justify-between">
-          <div className="flex flex-col gap-10 w-[65ch]">
-            <h2 className="!text-5xl">
-              A bit wild to think I was supposed to be a geodetic engineer, yet
-              here I am now—building websites instead
+          <div className="flex flex-col gap-5 w-[55ch]">
+            <h2 className="!text-3xl">
+              Wild to think I was supposed to be a geodetic engineer, yet here I
+              am now — building websites instead..
             </h2>
-            <p className="text-2xl">
+            <p className="text-xl">
               I’m Caenar (pronounced “kay-nar”) Arteta. I’m a self-taught
-              graphic designer and a college student taking up Information
+              graphic designer and a college student taking Information
               Technology. Over the years, I’ve built up a skillset that blends
               frontend and backend development, branding, video editing, and
               graphic design.
@@ -143,9 +111,9 @@ export default function AboutPage() {
           <div>
             <Image
               priority
-              width={900}
-              height={900}
-              src={selfPortrait}
+              width={800}
+              height={800}
+              src={}
               alt="A picture of myself"
               className="rounded-xl"
             />
@@ -157,38 +125,17 @@ export default function AboutPage() {
         ref={sectionRef}
         className="content h-screen flex items-center justify-center"
       >
-        <h1 ref={textRef} className="w-[35ch] text-center text-balance">
-          Back in senior high, I started freelancing—taking on projects from
+        <h1
+          ref={textRef}
+          className="w-[35ch] text-center text-balance leading-tight"
+        >
+          Back in senior high, I started freelancing — taking on projects from
           logos to banners, posters, and even video editing gigs. That hustle
           eventually led me to work with a creative agency based in Auckland,
           New Zealand. There, I was in charge of crafting promotional content
           for another company, as well as developing brand identities for
           various clients.
         </h1>
-      </section>
-
-      <section
-        ref={sectionRefPictures}
-        className="content relative overflow-hidden flex h-screen items-center justify-center"
-      >
-        <h1>Queue carousel</h1>
-        {pictures.map((img, index) => {
-          return (
-            <Image
-              key={index}
-              className="max-w-[35%] absolute rounded-lg top-50 rotate-[-3deg]"
-              ref={addToPicturesRef}
-              src={img}
-              width={0}
-              height={0}
-              style={{
-                zIndex: `${10 - 3 * index}`,
-                left: `${30 * index}%`,
-              }}
-              alt={`Picture ${index}`}
-            />
-          );
-        })}
       </section>
 
       <section className="content flex flex-col items-center justify-center gap-10">

@@ -34,7 +34,11 @@ export default function Navbar() {
           return (
             <li
               key={name}
-              className={isActiveLink ? "flex place-items-center gap-2" : ""}
+              className={
+                isActiveLink
+                  ? "flex place-items-center gap-2"
+                  : "transition hover:opacity-70 cursor-pointer"
+              }
             >
               {isActiveLink && <div className="box"></div>}
               <Link href={href} className="font-secondary">
