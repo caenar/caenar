@@ -72,8 +72,19 @@ export default function AboutPage() {
   return (
     <>
       <section className="content">
-        <h5 className="page-title">/ Contact</h5>
+        <div className="mb-20">
+          <span className="page-title mb-20">/ About</span>
+        </div>
+        <h1 className="leading-[1.1] max-w-[20ch] mb-5">
+          An architect through design and systems
+        </h1>
+        <p className="opacity-60 max-w-[500px]">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore id
+          eligendi et necessitatibus officiis hic veritatis esse ad impedit nam
+          expedita tempora ex corrupti eum nemo, quisquam soluta sint autem.
+        </p>
       </section>
+
       <section className="content flex flex-col items-center justify-center gap-10">
         <div
           ref={sectionRefExperience}
@@ -100,7 +111,6 @@ export default function AboutPage() {
             </ul>
           </div>
         </div>
-
         <div
           ref={sectionRefEducation}
           className="grid grid-cols-[40%_1fr] py-20"
