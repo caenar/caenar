@@ -83,6 +83,14 @@ export default function AboutPage() {
           eligendi et necessitatibus officiis hic veritatis esse ad impedit nam
           expedita tempora ex corrupti eum nemo, quisquam soluta sint autem.
         </p>
+
+        <Image
+          alt="Picture of myself"
+          width={0}
+          height={0}
+          src="/public/self.jpg"
+          style={{ height: "500px", width: "500px" }}
+        />
       </section>
 
       <section className="content flex flex-col items-center justify-center gap-10">
