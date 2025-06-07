@@ -41,7 +41,9 @@ h6 {
   @apply text-base font-normal;
 }
 
-p {
+p,
+li,
+label {
   @apply text-lg;
 }
 
@@ -90,7 +92,7 @@ a {
 }
 
 .page-title {
-  @apply opacity-50;
+  @apply text-lg opacity-50;
 }
 
 .list-border li:not(:last-child) {
@@ -103,7 +105,7 @@ a {
 
 .form-input input,
 .form-input textarea {
-  @apply rounded p-2 bg-transparent outline-none border border-background-400 mb-4;
+  @apply p-2 bg-transparent outline-none border-b border-background-400 mb-10 text-lg;
 }
 
 .form-input textarea {
