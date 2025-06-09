@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from "react";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowDown, Code, Slice } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutPage() {
@@ -71,25 +72,84 @@ export default function AboutPage() {
 
   return (
     <>
-      <section className="content">
-        <div className="mb-20">
-          <span className="page-title mb-20">/ About</span>
+      <section className="pt-36 pb-32 mx-[10vw]">
+        <div className="mb-16">
+          <span className="page-title">/ About</span>
         </div>
-        <div className="grid grid-cols-3 grid-rows-3">
-          <div className="w-[400px] h-[500px] rounded-lg">
+        <div className="grid grid-rows-[repeat(3,_fit-content(100%))] grid-cols-[1fr_fit-content(100%)_1fr] w-full gap-16">
+          <div className="row-span-3">
+            <h2 className="leading-[1.1] max-w-[20ch] mb-8">
+              An architect through design and systems
+            </h2>
+            <p className="opacity-60 mb-5">
+              I’m a creative designer turned full-stack developer, though I
+              don’t really draw a line between the two. I love structure,
+              systems, and design with intention.
+            </p>
+            <p className="opacity-60 mb-5">
+              Most of what I know came from tinkering, rarely from tutorials,
+              mostly from curiosity, trial and error. I’ve always been that kind
+              of geek. Not into hardware, but I knew my way around software:
+              messing with YouTube, scripting random stuff in VBS, eventually
+              building tools for myself.
+            </p>
+            <p className="opacity-60 mb-5">
+              I started on Windows, jumped through distros like Arch and Alpine,
+              and eventually settled into Fedora with Hyprland, all configured
+              to my liking through Neovim (btw). Tiling window managers and
+              custom dotfiles scared me at first, but I figured it out - and
+              loved it.
+            </p>
+            <p className="opacity-60 mb-5">
+              That’s how I work. Not always pretty, but always functional,
+              intentional, and driven by whatever’s sparking my brain at the
+              moment.
+            </p>
+          </div>
+          <div className="row-span-3 w-[530px] h-[750px] rounded-lg">
             <Image
               priority
               alt="Picture of myself"
-              width={1000}
-              height={1000}
+              width={1500}
+              height={1500}
               src="/self.jpg"
               style={{
                 height: "100%",
                 width: "100%",
                 objectFit: "cover",
-                borderRadius: "10px",
+                borderRadius: "7px",
               }}
             />
+          </div>
+          <div className="col-start-3 row-start-2">
+            <h5 className="leading-[1.1] max-w-[20ch] mb-5 icon-label">
+              <Code /> PROGRAMMING
+            </h5>
+            <p className="opacity-60 max-w-[500px]">
+              I find deep fulfillment in programming, it’s a mental playground.
+              It makes me think, map out problems, and build things from scratch
+              like my own kind of architect. When I work on a project, even the
+              smallest features start to pop in my head, suddenly I’m thinking
+              about scalability, collaboration, depth. Even if it’s just a
+              simple to-do app, I can’t help but imagine what it could be.
+            </p>
+          </div>
+          <div className="col-start-3 row-start-3">
+            <h5 className="leading-[1.1] max-w-[20ch] mb-5 icon-label">
+              <Slice /> DESIGN
+            </h5>
+            <p className="opacity-60 max-w-[500px]">
+              My design work came first, driven by intuition, inspiration, and
+              bursts of creative energy. When the vision clicks, I’ll polish it
+              endlessly. But if it doesn’t, I tend to move on. That kind of
+              spark-and-sprint mentality shaped how I approach problems
+              creatively, but it also taught me the importance of structure.
+            </p>
+          </div>
+          <div className="flex justify-center row-start-4 col-span-3">
+            <span className="icon-label text-lg opacity-30">
+              <ArrowDown /> scroll for more
+            </span>
           </div>
         </div>
       </section>

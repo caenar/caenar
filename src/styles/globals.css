@@ -9,9 +9,7 @@
   font-style: normal;
 }
 
-main {
-  @apply mx-[10vw];
-}
+main {}
 
 body {
   @apply bg-background-100 text-foreground-100 text-[15px] font-body;
@@ -84,7 +82,7 @@ a {
 }
 
 .content {
-  @apply py-36;
+  @apply py-36 mx-[10vw];
 }
 
 .icon-label {
