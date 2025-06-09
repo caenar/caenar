@@ -75,22 +75,23 @@ export default function AboutPage() {
         <div className="mb-20">
           <span className="page-title mb-20">/ About</span>
         </div>
-        <h1 className="leading-[1.1] max-w-[20ch] mb-5">
-          An architect through design and systems
-        </h1>
-        <p className="opacity-60 max-w-[500px]">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore id
-          eligendi et necessitatibus officiis hic veritatis esse ad impedit nam
-          expedita tempora ex corrupti eum nemo, quisquam soluta sint autem.
-        </p>
-
-        <Image
-          alt="Picture of myself"
-          width={0}
-          height={0}
-          src="/public/self.jpg"
-          style={{ height: "500px", width: "500px" }}
-        />
+        <div className="grid grid-cols-3 grid-rows-3">
+          <div className="w-[400px] h-[500px] rounded-lg">
+            <Image
+              priority
+              alt="Picture of myself"
+              width={1000}
+              height={1000}
+              src="/self.jpg"
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+        </div>
       </section>
 
       <section className="content flex flex-col items-center justify-center gap-10">
@@ -131,6 +132,10 @@ export default function AboutPage() {
                 Bachelor of Science in Information Technology <br />
                 2023 — Present · Albay, PH
               </span>
+              <div className="line my-5"></div>
+              <span> Consistent Deans Lister, Academic Achiever</span>
+              <br />
+              <span>External Vice President in CSIT</span>
             </li>
           </ul>
         </div>
