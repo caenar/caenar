@@ -2,6 +2,8 @@
 
 import React, { useEffect } from "react";
 
+// TODO: Support JSON layout
+
 export default function ProjectPage() {
   useEffect(() => {
     console.log("rah");

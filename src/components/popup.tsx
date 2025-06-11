@@ -45,7 +45,7 @@ export default function Popup() {
     <div
       ref={backdropRef}
       tabIndex={-1}
-      className="h-full w-full fixed flex justify-center items-center backdrop-blur-sm"
+      className="h-full w-full fixed flex justify-center items-center bg-[rgba(0,0,0,0.4)] backdrop-blur-md"
       onClick={handleBackdropClick}
     >
       <div className="min-w-[450px] bg-background-100 border border-background-400 p-4 rounded-lg">

@@ -10,11 +10,38 @@ export default function AddProjectForm({ close }: { close: () => void }) {
   const [tags, setTags] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const fileInput = useRef<HTMLInputElement>(null);
 
   const addFile = () => {
     fileInput.current?.click();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const droppedFiles = Array.from(e.dataTransfer.files).filter((file) =>
+      file.type.startsWith("image/"),
+    );
+
+    if (droppedFiles.length) {
+      setImages((prev) => [...prev, ...droppedFiles]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
   };
 
   const removeFile = (index: number) => {
@@ -134,14 +161,17 @@ export default function AddProjectForm({ close }: { close: () => void }) {
           </div>
         )}
         {images.length !== 0 ? (
-          <button
+          <div
             className="w-full secondary-button icon-label !gap-1 text-[14px]"
-            type="button"
             onClick={addFile}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragOver}
+            onDragLeave={handleDragLeave}
           >
             <TbPlus size={16} />
             Add more
-          </button>
+          </div>
         ) : (
           <>
             <div className="image-upload" onClick={addFile}>
