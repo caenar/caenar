@@ -37,8 +37,13 @@ export default function Project() {
 
   return (
     <section className="content">
-      <h1 className="mb-10">Projects</h1>
+      <h2 className="mb-10">Projects</h2>
+      <div>
+        {/* NOTE: Need to create filters dynamically, or just add design and programming? */}
+      </div>
+
       {loading && <span>Loading projects..</span>}
+
       <div className="grid grid-cols-4 gap-4">
         {projects.map((project: Project, index) => {
           return (

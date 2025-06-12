@@ -31,15 +31,12 @@ export default function Navbar() {
       <ul className="flex gap-10">
         {links.map(({ name, href }) => {
           const isActiveLink = href === pathname;
+          const activeClass =
+            href === pathname
+              ? "flex place-items-center gap-2"
+              : "transition hover:opacity-70 cursor-pointer";
           return (
-            <li
-              key={name}
-              className={
-                isActiveLink
-                  ? "flex place-items-center gap-2"
-                  : "transition hover:opacity-70 cursor-pointer"
-              }
-            >
+            <li key={name} className={`${activeClass} !text-base`}>
               {isActiveLink && <div className="box"></div>}
               <Link href={href} className="font-secondary">
                 {name}

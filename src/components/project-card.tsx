@@ -40,8 +40,8 @@ export default function ProjectCard({
           {imageLink && (
             <Image
               src={imageLink}
-              width={100}
-              height={100}
+              width={1000}
+              height={1000}
               style={{
                 width: "100%",
                 height: height ? `${height}px` : "350px",
