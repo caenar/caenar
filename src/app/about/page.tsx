@@ -165,7 +165,7 @@ export default function AboutPage() {
               <h3>Creative Designer at Visual Collections</h3>
               <h4 className="opacity-60">Remote · August 2023 — July 2024</h4>
             </div>
-            <ul className="list-border grid gap-5 w-[700px] text-xl">
+            <ul className="list-border grid gap-5 w-[700px] text-lg">
               {[
                 "Worked with a New Zealand-based creative agency, producing visual content, brand identities, and promotional materials for both internal and external projects.",
                 "Created logo animations, social media graphics, and video reels for campaigns and product launches.",
@@ -185,7 +185,7 @@ export default function AboutPage() {
           className="grid grid-cols-[40%_1fr] py-20"
         >
           <h2 className="text-5xl font-bold mb-2">Education</h2>
-          <ul className="grid gap-7 w-[700px] text-2xl">
+          <ul className="grid gap-7 w-[700px] text-lg">
             <li>
               Divine Word College of Legazpi <br />
               <span className="opacity-60">

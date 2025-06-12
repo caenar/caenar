@@ -44,7 +44,7 @@ export default function Admin() {
   };
 
   return (
-    <section className="pt-[10rem]">
+    <section className="pt-[10rem] mx-[10vw]">
       <div className="flex justify-between">
         <h2>Projects</h2>
         <button

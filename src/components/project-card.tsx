@@ -58,12 +58,12 @@ export default function ProjectCard({
             <p className="text-background-200">{desc}</p>
           </div>
           <div className="line my-4"></div>
-          <ul className="flex flex-row flex-wrap px-4 pb-5 gap-x-2 items-center">
+          <ul className="flex flex-row flex-wrap px-4 pb-5 gap-x-1.5 items-center">
             {tags &&
               tags.map((tag: Tag, index: number) => {
                 return (
                   <React.Fragment key={index}>
-                    <li>{tag.name}</li>
+                    <li className="!text-[15px]">{tag.name}</li>
                     {index !== tags.length - 1 && <TbCircleFilled size={5} />}
                   </React.Fragment>
                 );
