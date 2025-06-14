@@ -92,11 +92,9 @@ export async function editProject(
   try {
     const title = formData.get("title")?.toString() ?? "";
     const desc = formData.get("desc")?.toString() ?? "";
-    const tags = formData
-      .get("tags")
-      ?.toString()
-      .split(",")
-      .map((t) => t.trim());
+    const tags = (formData.getAll("tags") as string[])
+      .map((t) => t.trim())
+      .filter(Boolean);
     const images = formData.getAll("images") as File[];
 
     const parsedProjectId = parseInt(projectId, 10);

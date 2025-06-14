@@ -16,26 +16,41 @@ export default function Admin() {
   const [projects, setProjects] = useState<Project[]>([]);
   const { openPopup, closePopup } = usePopup();
 
-  useEffect(() => {
-    async function loadProjects() {
-      try {
-        const data = await fetchProjects();
-        setProjects(data);
-      } catch (error) {
-        console.error(error);
-      }
+  const loadProjects = async () => {
+    try {
+      const data = await fetchProjects();
+      setProjects(data);
+    } catch (error) {
+      console.error(error);
     }
+  };
+
+  useEffect(() => {
     loadProjects();
   }, []);
 
   const openAddProjectPopup = () => {
-    openPopup("Add a project", <AddProjectForm close={() => closePopup()} />);
+    openPopup(
+      "Add a project",
+      <AddProjectForm
+        close={() => {
+          loadProjects();
+          closePopup();
+        }}
+      />,
+    );
   };
 
   const openEditProjectPopup = (project: Project) => {
     openPopup(
       "Edit project",
-      <EditProjectForm project={project} close={() => closePopup()} />,
+      <EditProjectForm
+        project={project}
+        close={() => {
+          loadProjects();
+          closePopup();
+        }}
+      />,
     );
   };
 
