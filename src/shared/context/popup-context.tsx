@@ -23,7 +23,9 @@ export function PopupProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
   };
 
-  const closePopup = () => setIsOpen(false);
+  const closePopup = () => {
+    setIsOpen(false);
+  };
 
   return (
     <PopupContext.Provider

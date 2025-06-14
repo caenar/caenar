@@ -65,13 +65,17 @@ h6 {
   @apply h-1.5 w-1.5 bg-foreground-100;
 }
 
+.badge {
+  @apply border px-3 py-[6px] rounded-xl;
+}
+
 .line {
   height: 1px;
   @apply bg-foreground-100 opacity-10;
 }
 
 .navbar {
-  @apply z-[99] fixed w-full px-7 py-3 flex items-center justify-between backdrop-blur-md;
+  @apply z-40 fixed w-full px-7 py-3 flex items-center justify-between backdrop-blur-md;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.151);
 }
 
@@ -97,7 +101,7 @@ h6 {
 
 .form-input input,
 .form-input textarea {
-  @apply p-2 bg-transparent outline-none border-b border-background-400 mb-10 text-lg;
+  @apply p-2 bg-transparent outline-none border-b border-background-400 mb-10;
 }
 
 .form-input textarea {

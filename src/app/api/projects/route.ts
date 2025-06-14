@@ -29,9 +29,8 @@ export async function GET() {
         id: pt.tag.id.toString(),
       })),
       project_image: project.project_image.map((img) => ({
-        ...img,
-        id: img.id.toString(),
-        project_id: img.project_id.toString(),
+        image_url: img.image_url,
+        order: img.order,
       })),
     }));
 

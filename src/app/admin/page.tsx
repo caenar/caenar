@@ -9,21 +9,11 @@ import ProjectCard from "@/components/project-card";
 
 import { IconSizes } from "@/lib/constants";
 import { TbPlus } from "react-icons/tb";
+import type { Project, Tag } from "@/lib/types";
 
 export default function Admin() {
   const [projects, setProjects] = useState<Project[]>([]);
   const { openPopup, closePopup } = usePopup();
-
-  type Tag = {
-    id: number;
-    name: string;
-  };
-
-  type Project = {
-    title: string;
-    desc: string;
-    tags: Tag[];
-  };
 
   useEffect(() => {
     async function loadProjects() {
@@ -56,7 +46,7 @@ export default function Admin() {
           Add a project
         </button>
       </div>
-      <div className="grid mt-7 grid-cols-4">
+      <div className="grid grid-cols-4 gap-4 mt-7">
         {projects.length !== 0 ? (
           <>
             {projects.map((project: Project) => {
@@ -65,6 +55,7 @@ export default function Admin() {
                   key={project.title}
                   title={project.title}
                   desc={project.desc}
+                  images={project.project_image}
                   tags={project.tags}
                 />
               );

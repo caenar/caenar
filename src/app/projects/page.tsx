@@ -18,6 +18,7 @@ export default function Project() {
         setLoading(true);
         const data = await fetchProjects();
         setProjects(data);
+        console.log(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -70,8 +71,8 @@ export default function Project() {
               <ProjectCard
                 title={project.title}
                 desc={project?.desc}
+                images={project?.project_image}
                 tags={project.tags}
-                height={300}
               />
             </motion.div>
           );
