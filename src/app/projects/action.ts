@@ -1,6 +1,5 @@
 "use server";
 
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { fail, ok, Result } from "@/lib/utils/result";
 import { revalidatePath } from "next/cache";
@@ -9,16 +8,26 @@ import type { ErrorType } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
 export async function addProject(
-  values: z.infer<typeof addProjectSchema>,
+  formData: FormData,
 ): Promise<Result<string, ErrorType, any>> {
   try {
-    const parsed = addProjectSchema.safeParse(values);
+    const rawTitle = formData.get("title")?.toString() ?? "";
+    const rawDesc = formData.get("desc")?.toString() ?? "";
+    const rawTags = formData.getAll("tags").map((tag) => tag.toString());
+    const images = formData.getAll("images") as File[];
+
+    const parsed = addProjectSchema.safeParse({
+      title: rawTitle,
+      desc: rawDesc,
+      tags: rawTags,
+    });
+
     if (!parsed.success) return fail("validation", parsed.error.format());
 
-    const { title, desc, tags, images } = parsed.data;
+    const { title, desc, tags } = parsed.data;
 
-    if (!title || !tags || !images.length)
-      return fail("validation", "Missing required fields");
+    if (!images.length)
+      return fail("validation", "At least one image is required");
 
     const project = await prisma.project.create({
       data: {
@@ -67,9 +76,9 @@ export async function addProject(
     }
 
     revalidatePath("/admin", "page");
-    return ok(`Added project ${title} successfully`);
+    return ok(`Added project "${title}" successfully`);
   } catch (err) {
-    console.log("Note creation eror: ", err);
+    console.error("Project creation error: ", err);
     return fail("server", {
       message: "Something went wrong. Please try again.",
     });

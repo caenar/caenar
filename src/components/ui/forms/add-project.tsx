@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import Image from "next/image";
 import { TbFileUpload, TbPlus, TbX } from "react-icons/tb";
@@ -13,6 +13,7 @@ import { handleResult } from "@/lib/utils/handle-result";
 import { toast } from "sonner";
 import { addProject } from "@/app/projects/action";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
@@ -25,7 +26,8 @@ import { Textarea } from "../textarea";
 export default function AddProjectForm({ close }: { close: () => void }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const addFile = () => {
     fileInput.current?.click();
@@ -56,7 +58,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
         />
         <div className="flex justify-between items-center w-full gap-4">
           <h5 className="truncate max-w-[20rem]">{name}</h5>
-          <button onClick={onRemove}>
+          <button type="button" onClick={onRemove}>
             <TbX className="text-pink-100" size={20} />
           </button>
         </div>
@@ -70,7 +72,22 @@ export default function AddProjectForm({ close }: { close: () => void }) {
   });
 
   async function onSubmit(values: z.infer<typeof addProjectSchema>) {
-    const result = await addProject(values);
+    setLoading(true);
+
+    const finalTags = tagInput
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
+
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("desc", values.desc);
+    finalTags.forEach((tag) => formData.append("tags", tag));
+    images.forEach((file) => formData.append("images", file));
+
+    const result = await addProject(formData); // assumes `addProject` handles FormData
+
+    setLoading(false);
 
     handleResult(result, {
       ok: (message: string) => {
@@ -102,12 +119,13 @@ export default function AddProjectForm({ close }: { close: () => void }) {
                   type="text"
                   placeholder="Title of the project"
                   {...field}
-                ></Input>
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="desc"
@@ -115,32 +133,25 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Keep it short and concise"
-                  {...field}
-                ></Textarea>
+                <Textarea placeholder="Keep it short and concise" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tags (seperate with comma)</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="e.g web, design, 3D"
-                  {...field}
-                ></Input>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
+        <FormItem>
+          <FormLabel>Tags (separated by comma)</FormLabel>
+          <FormControl>
+            <Input
+              type="text"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              placeholder="e.g. react, ui, web"
+            />
+          </FormControl>
+        </FormItem>
+
         <div className="form-input">
           <label>Images</label>
           {images.length !== 0 && (
@@ -164,18 +175,16 @@ export default function AddProjectForm({ close }: { close: () => void }) {
               Add more
             </div>
           ) : (
-            <>
-              <div className="image-upload" onClick={addFile}>
-                <div className="border border-background-400 rounded-full p-3">
-                  <TbFileUpload size={20} />
-                </div>
-                <span className="!text-center">
-                  Drag and drop images
-                  <br />
-                  or click this container
-                </span>
+            <div className="image-upload" onClick={addFile}>
+              <div className="border border-background-400 rounded-full p-3">
+                <TbFileUpload size={20} />
               </div>
-            </>
+              <span className="!text-center">
+                Drag and drop images
+                <br />
+                or click this container
+              </span>
+            </div>
           )}
           <input
             ref={fileInput}
@@ -189,6 +198,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             }}
           />
         </div>
+
         <div className="flex justify-end gap-4 mt-5">
           <button type="button" onClick={close}>
             Cancel
