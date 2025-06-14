@@ -9,7 +9,8 @@ import ProjectCard from "@/components/project-card";
 
 import { IconSizes } from "@/lib/constants";
 import { TbPlus } from "react-icons/tb";
-import type { Project, Tag } from "@/lib/types";
+import type { Project } from "@/lib/types";
+import EditProjectForm from "@/components/ui/forms/edit-project";
 
 export default function Admin() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -24,13 +25,18 @@ export default function Admin() {
         console.error(error);
       }
     }
-
     loadProjects();
-    console.log(projects);
   }, []);
 
   const openAddProjectPopup = () => {
     openPopup("Add a project", <AddProjectForm close={() => closePopup()} />);
+  };
+
+  const openEditProjectPopup = (project: Project) => {
+    openPopup(
+      "Edit project",
+      <EditProjectForm project={project} close={() => closePopup()} />,
+    );
   };
 
   return (
@@ -51,13 +57,18 @@ export default function Admin() {
           <>
             {projects.map((project: Project) => {
               return (
-                <ProjectCard
+                <div
                   key={project.title}
-                  title={project.title}
-                  desc={project.desc}
-                  images={project.project_image}
-                  tags={project.tags}
-                />
+                  className="cursor-pointer"
+                  onClick={() => openEditProjectPopup(project)}
+                >
+                  <ProjectCard
+                    title={project.title}
+                    desc={project.desc}
+                    images={project.project_image}
+                    tags={project.tags}
+                  />
+                </div>
               );
             })}
           </>

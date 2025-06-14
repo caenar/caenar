@@ -6,6 +6,8 @@ import { PopupProvider } from "@/shared/context/popup-context";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Popup from "@/components/popup";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 
 const ptSerif = PT_Serif({
   variable: "--font-display",
@@ -35,12 +37,20 @@ export default function RootLayout({
       <body
         className={`flex flex-col min-h-screen ${ptSerif.variable} ${inclusiveSans.variable} antialiased `}
       >
-        <PopupProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <Popup />
-        </PopupProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <PopupProvider>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <Popup />
+            <Toaster theme="dark" />
+          </PopupProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

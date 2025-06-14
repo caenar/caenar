@@ -7,6 +7,7 @@ import type { Project, Tag } from "@/lib/types";
 import ProjectCard from "@/components/project-card";
 import { useProjectFilter } from "@/lib/stores/use-project-filter.store";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 export default function Project() {
   const [projects, setProjects] = useState([]);
@@ -18,7 +19,6 @@ export default function Project() {
         setLoading(true);
         const data = await fetchProjects();
         setProjects(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -30,7 +30,7 @@ export default function Project() {
   }, []);
 
   const { filter, setFilter } = useProjectFilter();
-  const filteredProjects = projects.filter((project: any) => {
+  const filteredProjects = projects.filter((project: Project) => {
     if (filter === "all") return true;
     return project.tags.map((tag: Tag) => tag.name).includes(filter);
   });
@@ -68,12 +68,16 @@ export default function Project() {
               }}
               key={index}
             >
-              <ProjectCard
-                title={project.title}
-                desc={project?.desc}
-                images={project?.project_image}
-                tags={project.tags}
-              />
+              <Link
+                href={`/projects/${project.title.toLocaleLowerCase().replace(" ", "-")}`}
+              >
+                <ProjectCard
+                  title={project.title}
+                  desc={project?.desc}
+                  images={project?.project_image}
+                  tags={project.tags}
+                />
+              </Link>
             </motion.div>
           );
         })}
