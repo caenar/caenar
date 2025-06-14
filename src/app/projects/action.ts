@@ -84,3 +84,80 @@ export async function addProject(
     });
   }
 }
+
+export async function editProject(
+  projectId: string,
+  formData: FormData,
+): Promise<Result<string, ErrorType, any>> {
+  try {
+    const title = formData.get("title")?.toString() ?? "";
+    const desc = formData.get("desc")?.toString() ?? "";
+    const tags = formData
+      .get("tags")
+      ?.toString()
+      .split(",")
+      .map((t) => t.trim());
+    const images = formData.getAll("images") as File[];
+
+    const parsedProjectId = parseInt(projectId, 10);
+
+    await prisma.project.update({
+      where: { id: parsedProjectId },
+      data: {
+        title,
+        desc,
+      },
+    });
+
+    await prisma.project_tag.deleteMany({
+      where: { project_id: parsedProjectId },
+    });
+
+    for (const tag of tags) {
+      const existingTag = await prisma.tag.upsert({
+        where: { name: tag },
+        update: {},
+        create: { name: tag },
+      });
+
+      await prisma.project_tag.create({
+        data: {
+          project_id: parsedProjectId,
+          tag_id: existingTag.id,
+        },
+      });
+    }
+
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      const filePath = `projects/${projectId}/${Date.now()}_${image.name}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("images")
+        .upload(filePath, image);
+
+      if (uploadError) throw new Error(uploadError.message);
+
+      const { data: urlData } = supabase.storage
+        .from("images")
+        .getPublicUrl(filePath);
+
+      const imageUrl = urlData.publicUrl;
+
+      await prisma.project_image.create({
+        data: {
+          project_id: parsedProjectId,
+          image_url: imageUrl,
+        },
+      });
+    }
+
+    revalidatePath("/admin", "page");
+    return ok(`Project ${title} updated`);
+  } catch (err) {
+    console.error("Project update error: ", err);
+    return fail("server", {
+      message: "Something went wrong. Please try again.",
+    });
+  }
+}
