@@ -7,7 +7,6 @@ import Image from "next/image";
 import { TbFileUpload, TbPlus, TbX } from "react-icons/tb";
 
 import { addProjectSchema } from "@/lib/schemas/project.schema";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleResult } from "@/lib/utils/handle-result";
 import { toast } from "sonner";
@@ -22,12 +21,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
+import { z } from "zod";
 
 export default function AddProjectForm({ close }: { close: () => void }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const addFile = () => {
     fileInput.current?.click();
@@ -68,12 +67,10 @@ export default function AddProjectForm({ close }: { close: () => void }) {
 
   const form = useForm<z.infer<typeof addProjectSchema>>({
     resolver: zodResolver(addProjectSchema),
-    defaultValues: { title: "", desc: "", tags: [], images: [] },
+    defaultValues: { title: "", desc: "" },
   });
 
   async function onSubmit(values: z.infer<typeof addProjectSchema>) {
-    setLoading(true);
-
     const finalTags = tagInput
       .split(",")
       .map((tag) => tag.trim())
@@ -85,9 +82,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
     finalTags.forEach((tag) => formData.append("tags", tag));
     images.forEach((file) => formData.append("images", file));
 
-    const result = await addProject(formData); // assumes `addProject` handles FormData
-
-    setLoading(false);
+    const result = await addProject(formData);
 
     handleResult(result, {
       ok: (message: string) => {
@@ -194,7 +189,16 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             onChange={(e) => {
               if (!e.target.files) return;
               const newFiles = Array.from(e.target.files);
-              setImages((prev) => [...prev, ...newFiles]);
+              setImages((prev) => {
+                const all = [...prev, ...newFiles];
+                const unique = all.filter(
+                  (f, i, arr) =>
+                    arr.findIndex(
+                      (x) => x.name === f.name && x.size === f.size,
+                    ) === i,
+                );
+                return unique;
+              });
             }}
           />
         </div>
@@ -203,8 +207,12 @@ export default function AddProjectForm({ close }: { close: () => void }) {
           <button type="button" onClick={close}>
             Cancel
           </button>
-          <button type="submit" className="primary-button" disabled={loading}>
-            {loading ? "Uploading..." : "Create Project"}
+          <button
+            type="submit"
+            className="primary-button"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? "Uploading..." : "Create Project"}
           </button>
         </div>
       </form>

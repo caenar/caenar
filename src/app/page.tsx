@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchProjects } from "@/lib/fetch-data";
 
 import Terminal from "@/components/terminal";
 import ProjectCard from "@/components/project-card";
@@ -9,6 +8,7 @@ import ProjectCard from "@/components/project-card";
 import { IconSizes } from "@/lib/constants";
 import type { Project } from "@/lib/types/project";
 import { Component, Facebook, Github, Linkedin } from "lucide-react";
+import { fetchProjects } from "./projects/action";
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);

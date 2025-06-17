@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchProjects } from "@/lib/fetch-data";
+import { fetchProjects } from "./action";
 
 import type { Project, Tag } from "@/lib/types";
 import ProjectCard from "@/components/project-card";

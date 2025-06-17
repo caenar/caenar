@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { toast } from "sonner";
 import { editProjectSchema } from "@/lib/schemas/project.schema";
-import { editProject } from "@/app/projects/action";
+import { deleteProject, editProject } from "@/app/projects/action";
 
 import {
   Form,
@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { TbPlus, TbX } from "react-icons/tb";
 import { handleResult } from "@/lib/utils/handle-result";
+import { usePopup } from "@/shared/context/popup-context";
 
 export default function EditProjectForm({
   project,
@@ -35,7 +36,6 @@ export default function EditProjectForm({
   const [tagInput, setTagInput] = useState(
     project.tags.map((t) => t.name).join(", "),
   );
-  const [loading, setLoading] = useState(false);
 
   const [existingImages, setExistingImages] = useState(
     project.project_image.map((img) => ({ id: img.id, url: img.image_url })),
@@ -52,17 +52,32 @@ export default function EditProjectForm({
   const form = useForm<z.infer<typeof editProjectSchema>>({
     resolver: zodResolver(editProjectSchema),
     defaultValues: {
-      id: project.id,
       title: project.title ?? "",
       desc: project.desc ?? "",
-      tags: project.tags?.map((t) => t.name) ?? [],
-      images: [],
     },
   });
 
-  async function onSubmit(values: z.infer<typeof editProjectSchema>) {
-    setLoading(true);
+  const confirmDelete = () => {
+    const { showConfirm } = usePopup();
+    showConfirm();
+  };
 
+  const proceedDelete = async () => {
+    const result = await deleteProject(formData);
+
+    handleResult(result, {
+      ok: (message: string) => {
+        toast.success(message);
+        close();
+      },
+      error: {
+        validation: (details: string) => toast.warning(details),
+      },
+      fallback: () => toast.error("Something went wrong. Please try again."),
+    });
+  };
+
+  async function onSubmit(values: z.infer<typeof editProjectSchema>) {
     const finalTags = tagInput
       .split(",")
       .map((tag) => tag.trim())
@@ -70,6 +85,7 @@ export default function EditProjectForm({
 
     const formData = new FormData();
 
+    formData.append("projectId", project.id);
     formData.append("title", values.title ?? "");
     formData.append("desc", values.desc ?? "");
     finalTags.forEach((tag) => formData.append("tags", tag));
@@ -78,9 +94,7 @@ export default function EditProjectForm({
       formData.append("existingImages", img.id.toString()),
     );
 
-    const result = await editProject(project.id, formData);
-
-    setLoading(false);
+    const result = await editProject(formData);
 
     handleResult(result, {
       ok: (message: string) => {
@@ -98,7 +112,7 @@ export default function EditProjectForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid gap-1.5"
+        className="grid gap-5"
         encType="multipart/form-data"
       >
         <FormField
@@ -122,7 +136,7 @@ export default function EditProjectForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Description" {...field} />
+                <Textarea rows={4} placeholder="Description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,7 +146,7 @@ export default function EditProjectForm({
         <FormItem>
           <FormLabel>Tags (comma-separated)</FormLabel>
           <FormControl>
-            <Input
+            <Textarea
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               placeholder="e.g. react, ui, backend"
@@ -211,13 +225,22 @@ export default function EditProjectForm({
           />
         </div>
 
-        <div className="flex justify-end gap-4 mt-5">
-          <button type="button" onClick={close}>
-            Cancel
+        <div className="flex justify-between mt-5">
+          <button type="button" onClick={() => confirmDelete()}>
+            Delete project
           </button>
-          <button type="submit" className="primary-button" disabled={loading}>
-            {loading ? "Saving..." : "Save changes"}
-          </button>
+          <div className="flex gap-4">
+            <button type="button" onClick={close}>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="primary-button"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? "Saving..." : "Save changes"}
+            </button>
+          </div>
         </div>
       </form>
     </Form>

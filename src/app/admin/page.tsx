@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { usePopup } from "@/shared/context/popup-context";
-import { fetchProjects } from "@/lib/fetch-data";
 
 import AddProjectForm from "@/components/ui/forms/add-project";
 import ProjectCard from "@/components/project-card";
@@ -11,6 +10,7 @@ import { IconSizes } from "@/lib/constants";
 import { TbPlus } from "react-icons/tb";
 import type { Project } from "@/lib/types";
 import EditProjectForm from "@/components/ui/forms/edit-project";
+import { fetchProjects } from "../projects/action";
 
 export default function Admin() {
   const [projects, setProjects] = useState<Project[]>([]);
