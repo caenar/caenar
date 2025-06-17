@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 export default function AddProjectForm({ close }: { close: () => void }) {
   const fileInput = useRef<HTMLInputElement>(null);
@@ -212,7 +213,14 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             className="primary-button"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? "Uploading..." : "Create Project"}
+            {form.formState.isSubmitting ? (
+              <p className="icon-label">
+                <Loader2 className="animate-spin" size={20} />
+                Please wait
+              </p>
+            ) : (
+              "Create Project"
+            )}
           </button>
         </div>
       </form>

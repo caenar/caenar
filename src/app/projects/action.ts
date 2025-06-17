@@ -7,8 +7,18 @@ import { addProjectSchema } from "@/lib/schemas/project.schema";
 import type { ErrorType } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
+type SerializedProject = {
+  id: string;
+  title: string;
+  desc: string | null;
+  is_archived: boolean;
+  created_at: string;
+  tags: { id: string; name: string }[];
+  project_image: { image_url: string; order: number }[];
+};
+
 // read
-export async function fetchProjects(): Promise<any> {
+export async function fetchProjects(): Promise<any[]> {
   try {
     const projects = await prisma.project.findMany({
       include: {
@@ -21,26 +31,27 @@ export async function fetchProjects(): Promise<any> {
       },
     });
 
-    if (!projects) {
-      throw new Error("No projects");
+    if (projects.length === 0) {
+      return [];
     }
 
-    const serializedProjects = projects.map((project) => ({
-      ...project,
-      id: project.id.toString(),
-      created_at: project.created_at.toISOString(),
-      project_tag: undefined,
-      tags: project.project_tag.map((pt) => ({
-        ...pt.tag,
-        id: pt.tag.id.toString(),
-      })),
-      project_image: project.project_image.map((img) => ({
-        image_url: img.image_url,
-        order: img.order,
-      })),
-    }));
+    return projects.map((project) => {
+      const { id, created_at, project_tag, project_image, ...rest } = project;
 
-    return serializedProjects;
+      return {
+        ...rest,
+        id: id.toString(),
+        created_at: created_at.toISOString(),
+        tags: project_tag.map((pt) => ({
+          id: pt.tag.id.toString(),
+          name: pt.tag.name,
+        })),
+        project_image: project_image.map((img) => ({
+          image_url: img.image_url,
+          order: img.order,
+        })),
+      };
+    });
   } catch (error) {
     throw new Error(`Failed to fetch proejcts: ${error}`);
   }
@@ -139,58 +150,71 @@ export async function editProject(
       .filter(Boolean);
     const images = formData.getAll("images") as File[];
 
-    const parsedProjectId = parseInt(projectId, 10);
-
-    await prisma.project.update({
-      where: { id: parsedProjectId },
-      data: {
-        title,
-        desc,
-      },
-    });
-
-    await prisma.project_tag.deleteMany({
-      where: { project_id: parsedProjectId },
-    });
-
-    for (const tag of tags) {
-      const existingTag = await prisma.tag.upsert({
-        where: { name: tag },
-        update: {},
-        create: { name: tag },
-      });
-
-      await prisma.project_tag.create({
-        data: {
-          project_id: parsedProjectId,
-          tag_id: existingTag.id,
-        },
-      });
+    let parsedProjectId: bigint;
+    try {
+      parsedProjectId = BigInt(projectId);
+    } catch {
+      return fail("validation", "Invalid project ID");
     }
 
-    for (let i = 0; i < images.length; i++) {
-      const image = images[i];
-      const filePath = `projects/${projectId}/${Date.now()}_${image.name}`;
+    const tagUpserts = await Promise.all(
+      tags.map((tag) =>
+        prisma.tag.upsert({
+          where: { name: tag },
+          update: {},
+          create: { name: tag },
+        }),
+      ),
+    );
 
-      const { error: uploadError } = await supabase.storage
-        .from("images")
-        .upload(filePath, image);
+    const uploadedImages = await Promise.all(
+      images.map(async (image) => {
+        const filePath = `projects/${projectId}/${Date.now()}_${image.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from("images")
+          .upload(filePath, image);
 
-      if (uploadError) throw new Error(uploadError.message);
+        if (uploadError) throw new Error(uploadError.message);
 
-      const { data: urlData } = supabase.storage
-        .from("images")
-        .getPublicUrl(filePath);
+        const { data: urlData } = supabase.storage
+          .from("images")
+          .getPublicUrl(filePath);
 
-      const imageUrl = urlData.publicUrl;
+        return urlData.publicUrl;
+      }),
+    );
 
-      await prisma.project_image.create({
+    await prisma.$transaction([
+      prisma.project.update({
+        where: { id: parsedProjectId },
         data: {
-          project_id: parsedProjectId,
-          image_url: imageUrl,
+          title,
+          desc,
         },
-      });
-    }
+      }),
+
+      prisma.project_tag.deleteMany({
+        where: { project_id: parsedProjectId },
+      }),
+
+      ...tagUpserts.map((tag) =>
+        prisma.project_tag.create({
+          data: {
+            project_id: parsedProjectId,
+            tag_id: tag.id,
+          },
+        }),
+      ),
+
+      ...uploadedImages.map((url) =>
+        prisma.project_image.create({
+          data: {
+            project_id: parsedProjectId,
+            image_url: url,
+          },
+        }),
+      ),
+    ]);
 
     revalidatePath("/admin", "page");
     return ok(`Project ${title} updated`);
@@ -221,9 +245,33 @@ export async function deleteProject(
       return fail("not_found", "Project not found");
     }
 
-    await prisma.project.delete({
-      where: { id: parsedProjectId },
+    const images = await prisma.project_image.findMany({
+      where: { project_id: parsedProjectId },
     });
+
+    const imagePaths = images
+      .map((img) => img.image_url.split("/").pop())
+      .filter(Boolean)
+      .map((filename) => `projects/${parsedProjectId}/${filename}`);
+
+    if (imagePaths.length > 0) {
+      const { error: supabaseError } = await supabase.storage
+        .from("images")
+        .remove(imagePaths);
+
+      if (supabaseError) {
+        console.error("Supabase delete error:", supabaseError);
+        return fail("storage", "Error deleting project image files");
+      }
+
+      console.log("Deleted image files:", imagePaths);
+    }
+
+    await prisma.$transaction([
+      prisma.project.delete({
+        where: { id: parsedProjectId },
+      }),
+    ]);
 
     return ok(`Project deleted`);
   } catch (err) {

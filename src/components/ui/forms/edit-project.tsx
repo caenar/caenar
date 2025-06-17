@@ -1,6 +1,6 @@
 "use client";
 
-import { Project } from "@/lib/types";
+import { ConfirmData, Project } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState, useRef } from "react";
@@ -22,14 +22,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { TbPlus, TbX } from "react-icons/tb";
 import { handleResult } from "@/lib/utils/handle-result";
-import { usePopup } from "@/shared/context/popup-context";
 
 export default function EditProjectForm({
   project,
   close,
+  openConfirmPopup,
+  closeConfirmPopup,
 }: {
   project: Project;
   close: () => void;
+  openConfirmPopup: (confirmData: ConfirmData) => void;
+  closeConfirmPopup: () => void;
 }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -58,22 +61,23 @@ export default function EditProjectForm({
   });
 
   const confirmDelete = () => {
-    const { showConfirm } = usePopup();
-    showConfirm();
-  };
-
-  const proceedDelete = async () => {
-    const result = await deleteProject(formData);
-
-    handleResult(result, {
-      ok: (message: string) => {
-        toast.success(message);
-        close();
+    openConfirmPopup({
+      type: "delete",
+      action: async () => {
+        const result = await deleteProject(project.id);
+        handleResult(result, {
+          ok: (message: string) => {
+            toast.success(message);
+            closeConfirmPopup();
+            close();
+          },
+          error: {
+            validation: (details: string) => toast.warning(details),
+          },
+          fallback: () =>
+            toast.error("Something went wrong. Please try again."),
+        });
       },
-      error: {
-        validation: (details: string) => toast.warning(details),
-      },
-      fallback: () => toast.error("Something went wrong. Please try again."),
     });
   };
 
@@ -226,7 +230,11 @@ export default function EditProjectForm({
         </div>
 
         <div className="flex justify-between mt-5">
-          <button type="button" onClick={() => confirmDelete()}>
+          <button
+            type="button"
+            className="danger-button"
+            onClick={() => confirmDelete()}
+          >
             Delete project
           </button>
           <div className="flex gap-4">

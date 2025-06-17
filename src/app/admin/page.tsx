@@ -14,7 +14,8 @@ import { fetchProjects } from "../projects/action";
 
 export default function Admin() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const { openPopup, closePopup } = usePopup();
+  const { openPopup, closePopup, openConfirmPopup, closeConfirmPopup } =
+    usePopup();
 
   const loadProjects = async () => {
     try {
@@ -50,6 +51,8 @@ export default function Admin() {
           loadProjects();
           closePopup();
         }}
+        openConfirmPopup={openConfirmPopup}
+        closeConfirmPopup={closeConfirmPopup}
       />,
     );
   };
