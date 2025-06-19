@@ -10,7 +10,7 @@ import { addProjectSchema } from "@/lib/schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleResult } from "@/lib/utils/handle-result";
 import { toast } from "sonner";
-import { addProject } from "@/app/projects/action";
+import { addProject, fetchProjects } from "@/app/projects/action";
 import {
   Form,
   FormControl,
@@ -23,8 +23,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { z } from "zod";
 import Loader from "../loader";
+import { useProject } from "@/lib/stores/use-project";
 
-export default function AddProjectForm({ close }: { close: () => void }) {
+export default function AddProjectForm({
+  closeAction,
+}: {
+  closeAction: () => void;
+}) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
   const [tagInput, setTagInput] = useState("");
@@ -86,9 +91,13 @@ export default function AddProjectForm({ close }: { close: () => void }) {
     const result = await addProject(formData);
 
     handleResult(result, {
-      ok: (message: string) => {
+      ok: async (message: string) => {
         toast.success(message);
-        close();
+
+        const updated = await fetchProjects();
+        useProject.getState().setProjects(updated);
+
+        closeAction();
       },
       error: {
         validation: (details: string) => toast.warning(details),
@@ -208,7 +217,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
         </div>
 
         <div className="flex justify-end gap-4 mt-5">
-          <button type="button" onClick={close}>
+          <button type="button" onClick={() => closeAction()}>
             Cancel
           </button>
           <button

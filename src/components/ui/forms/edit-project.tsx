@@ -8,7 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { toast } from "sonner";
 import { editProjectSchema } from "@/lib/schemas/project.schema";
-import { deleteProject, editProject } from "@/app/projects/action";
+import {
+  deleteProject,
+  editProject,
+  fetchProjects,
+} from "@/app/projects/action";
 
 import {
   Form,
@@ -24,17 +28,18 @@ import { TbPlus, TbX } from "react-icons/tb";
 import { handleResult } from "@/lib/utils/handle-result";
 import { Trash } from "lucide-react";
 import Loader from "../loader";
+import { useProject } from "@/lib/stores/use-project";
 
 export default function EditProjectForm({
   project,
-  close,
-  openConfirmPopup,
-  closeConfirmPopup,
+  closeAction,
+  openConfirmPopupAction,
+  closeConfirmPopupAction,
 }: {
   project: Project;
-  close: () => void;
-  openConfirmPopup: (confirmData: ConfirmData) => void;
-  closeConfirmPopup: () => void;
+  closeAction: () => void;
+  openConfirmPopupAction: (confirmData: ConfirmData) => void;
+  closeConfirmPopupAction: () => void;
 }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -76,15 +81,19 @@ export default function EditProjectForm({
   });
 
   const confirmDelete = () => {
-    openConfirmPopup({
+    openConfirmPopupAction({
       type: "delete",
       action: async () => {
         const result = await deleteProject(project.id);
         handleResult(result, {
-          ok: (message: string) => {
+          ok: async (message: string) => {
             toast.success(message);
-            closeConfirmPopup();
-            close();
+
+            const updated = await fetchProjects();
+            useProject.getState().setProjects(updated);
+
+            closeConfirmPopupAction();
+            closeAction();
           },
           error: {
             validation: (details: string) => toast.warning(details),
@@ -122,9 +131,13 @@ export default function EditProjectForm({
     const result = await editProject(formData);
 
     handleResult(result, {
-      ok: (message: string) => {
+      ok: async (message: string) => {
         toast.success(message);
-        close();
+
+        const updated = await fetchProjects();
+        useProject.getState().setProjects(updated);
+
+        closeAction();
       },
       error: {
         validation: (details: string) => toast.warning(details),
@@ -262,7 +275,7 @@ export default function EditProjectForm({
             Delete
           </button>
           <div className="flex gap-4">
-            <button type="button" onClick={close}>
+            <button type="button" onClick={() => closeAction()}>
               Cancel
             </button>
             <button

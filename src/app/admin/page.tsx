@@ -11,13 +11,16 @@ import { TbPlus } from "react-icons/tb";
 import type { Project } from "@/lib/types";
 import EditProjectForm from "@/components/ui/forms/edit-project";
 import { fetchProjects } from "../projects/action";
+import { useProject } from "@/lib/stores/use-project";
 
 export default function Admin() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>(
+    useProject.getState().projects || [],
+  );
   const { openPopup, closePopup, openConfirmPopup, closeConfirmPopup } =
     usePopup();
 
-  const loadProjects = async () => {
+  const load = async () => {
     try {
       const data = await fetchProjects();
       setProjects(data);
@@ -27,15 +30,15 @@ export default function Admin() {
   };
 
   useEffect(() => {
-    loadProjects();
+    if (!useProject.getState().projects) load();
   }, []);
 
   const openAddProjectPopup = () => {
     openPopup(
       "Add a project",
       <AddProjectForm
-        close={() => {
-          loadProjects();
+        closeAction={() => {
+          load();
           closePopup();
         }}
       />,
@@ -47,12 +50,12 @@ export default function Admin() {
       "Edit project",
       <EditProjectForm
         project={project}
-        close={() => {
-          loadProjects();
+        closeAction={() => {
+          load();
           closePopup();
         }}
-        openConfirmPopup={openConfirmPopup}
-        closeConfirmPopup={closeConfirmPopup}
+        openConfirmPopupAction={openConfirmPopup}
+        closeConfirmPopupAction={closeConfirmPopup}
       />,
     );
   };
