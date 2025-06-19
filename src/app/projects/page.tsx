@@ -10,6 +10,7 @@ import type { Project, Tag } from "@/lib/types";
 import ProjectCard from "@/components/project-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProject } from "@/lib/stores/use-project";
+import { slugify } from "@/lib/utils/slugify";
 
 export default function Project() {
   const { projects, setProjects } = useProject();
@@ -94,9 +95,7 @@ export default function Project() {
                 }}
                 key={`${filter}-${project.id}`}
               >
-                <Link
-                  href={`/projects/${project.title.toLocaleLowerCase().replace(" ", "-")}`}
-                >
+                <Link href={`/projects/${slugify(project.title)}`}>
                   <ProjectCard
                     title={project.title}
                     desc={project?.desc}

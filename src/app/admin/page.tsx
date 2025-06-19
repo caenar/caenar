@@ -12,6 +12,7 @@ import type { Project } from "@/lib/types";
 import EditProjectForm from "@/components/ui/forms/edit-project";
 import { fetchProjects } from "../projects/action";
 import { useProject } from "@/lib/stores/use-project";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Admin() {
   const [projects, setProjects] = useState<Project[]>(
@@ -94,9 +95,11 @@ export default function Admin() {
             })}
           </>
         ) : (
-          <div>
-            <p>No projects found</p>
-          </div>
+          <>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-[450px] w-full" />
+            ))}
+          </>
         )}
       </div>
     </section>

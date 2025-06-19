@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 export async function fetchProjects(): Promise<any[]> {
   try {
     const projects = await prisma.project.findMany({
+      orderBy: [{ order: "asc" }, { created_at: "desc" }],
       include: {
         project_tag: {
           include: {

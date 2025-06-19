@@ -1,15 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useProject } from "@/lib/stores/use-project";
+import { fetchProjects } from "./projects/action";
+import { slugify } from "@/lib/utils/slugify";
+import type { Project } from "@/lib/types/project";
 
 import Terminal from "@/components/terminal";
 import ProjectCard from "@/components/project-card";
-
 import { IconSizes } from "@/lib/constants";
-import type { Project } from "@/lib/types/project";
 import { Component, Facebook, Github, Linkedin } from "lucide-react";
-import { fetchProjects } from "./projects/action";
-import { useProject } from "@/lib/stores/use-project";
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>(
@@ -84,25 +85,25 @@ export default function Home() {
             Take a look at some of highlight projects that I've done before.
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-4 gap-4">
           {loading ? (
             <p>Loading...</p>
           ) : (
-            projects
-              .sort((a, b) => a.title.localeCompare(b.title))
-              .map((project: Project) => {
-                return (
-                  <React.Fragment key={`project-${project.id}`}>
-                    <ProjectCard
-                      title={project.title}
-                      desc={project.desc}
-                      tags={project.tags}
-                      images={project.project_image}
-                      height={270}
-                    />
-                  </React.Fragment>
-                );
-              })
+            projects.map((project: Project) => {
+              return (
+                <Link
+                  key={`project-${project.id}`}
+                  href={`/projects/${slugify(project.title)}`}
+                >
+                  <ProjectCard
+                    title={project.title}
+                    desc={project.desc}
+                    tags={project.tags}
+                    images={project.project_image}
+                  />
+                </Link>
+              );
+            })
           )}
         </div>
       </section>
