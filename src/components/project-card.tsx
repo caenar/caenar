@@ -53,7 +53,7 @@ export default function ProjectCard({
         <div className="line my-4"></div>
         <ul className="flex flex-row flex-wrap px-4 pb-5 gap-2 items-center">
           {tags &&
-            tags.slice(0, 7).map((tag: Tag, index: number) => (
+            tags.slice(0, 6).map((tag: Tag, index: number) => (
               <li
                 key={index}
                 className="badge border-background-400 !text-[14px] lowercase"
@@ -61,9 +61,9 @@ export default function ProjectCard({
                 {tag.name}
               </li>
             ))}
-          {tags.length > 7 && (
+          {tags.length > 6 && (
             <li className="badge border-dashed border-background-400 !text-[14px] lowercase">
-              +{tags.length - 7} more
+              +{tags.length - 6} more
             </li>
           )}
         </ul>

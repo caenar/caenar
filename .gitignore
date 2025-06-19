@@ -30,7 +30,7 @@ bun.lock
 *.swo
 *.tmp
 *.log
-.session.vim
+session.vim
 
 # prisma
 prisma/migrations

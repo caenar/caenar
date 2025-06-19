@@ -81,11 +81,11 @@ export default function Project() {
                 animate={{ opacity: 1, y: "0px" }}
                 exit={{
                   opacity: 0,
-                  y: "60px",
+                  y: "30px",
                   transition: {
                     ease: [0, 0.55, 0.27, 1.01],
                     duration: 0.3,
-                    delay: 0 + index / 14,
+                    delay: 0 + index / 32,
                   },
                 }}
                 transition={{
