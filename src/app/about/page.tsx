@@ -112,7 +112,7 @@ export default function AboutPage() {
               alt="Picture of myself"
               width={1500}
               height={1500}
-              src="/self.jpg"
+              src="/images/self.jpg"
               style={{
                 height: "100%",
                 width: "100%",

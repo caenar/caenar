@@ -10,7 +10,7 @@ import { addProjectSchema } from "@/lib/schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleResult } from "@/lib/utils/handle-result";
 import { toast } from "sonner";
-import { addProject } from "@/app/projects/action";
+import { addProject, fetchProjects } from "@/app/projects/action";
 import {
   Form,
   FormControl,
@@ -22,9 +22,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import Loader from "../loader";
+import { useProject } from "@/lib/stores/use-project";
 
-export default function AddProjectForm({ close }: { close: () => void }) {
+export default function AddProjectForm({
+  closeAction,
+}: {
+  closeAction: () => void;
+}) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
   const [tagInput, setTagInput] = useState("");
@@ -86,9 +91,13 @@ export default function AddProjectForm({ close }: { close: () => void }) {
     const result = await addProject(formData);
 
     handleResult(result, {
-      ok: (message: string) => {
+      ok: async (message: string) => {
         toast.success(message);
-        close();
+
+        const updated = await fetchProjects();
+        useProject.getState().setProjects(updated);
+
+        closeAction();
       },
       error: {
         validation: (details: string) => toast.warning(details),
@@ -101,7 +110,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid gap-1.5"
+        className="grid gap-5"
         encType="multipart/form-data"
       >
         <FormField
@@ -129,7 +138,11 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Keep it short and concise" {...field} />
+                <Textarea
+                  rows={3}
+                  placeholder="Keep it short and concise"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,8 +152,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
         <FormItem>
           <FormLabel>Tags (separated by comma)</FormLabel>
           <FormControl>
-            <Input
-              type="text"
+            <Textarea
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               placeholder="e.g. react, ui, web"
@@ -205,7 +217,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
         </div>
 
         <div className="flex justify-end gap-4 mt-5">
-          <button type="button" onClick={close}>
+          <button type="button" onClick={() => closeAction()}>
             Cancel
           </button>
           <button
@@ -213,14 +225,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             className="primary-button"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? (
-              <p className="icon-label">
-                <Loader2 className="animate-spin" size={20} />
-                Please wait
-              </p>
-            ) : (
-              "Create Project"
-            )}
+            {form.formState.isSubmitting ? <Loader /> : "Add project"}
           </button>
         </div>
       </form>

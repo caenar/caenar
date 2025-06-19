@@ -1,39 +1,46 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { fetchProjects } from "./action";
-
-import type { Project, Tag } from "@/lib/types";
-import ProjectCard from "@/components/project-card";
-import { useProjectFilter } from "@/lib/stores/use-project-filter.store";
-import { motion } from "motion/react";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useProjectFilter } from "@/lib/stores/use-project-filter.store";
+import { AnimatePresence, motion } from "motion/react";
+import { fetchProjects } from "./action";
+import type { Project, Tag } from "@/lib/types";
+
+import ProjectCard from "@/components/project-card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useProject } from "@/lib/stores/use-project";
+import { slugify } from "@/lib/utils/slugify";
 
 export default function Project() {
-  const [projects, setProjects] = useState([]);
+  const { projects, setProjects } = useProject();
+  const [localProjects, setLocalProjects] = useState(projects || []);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function loadProjects() {
-      try {
-        setLoading(true);
-        const data = await fetchProjects();
-        setProjects(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadProjects();
-  }, []);
-
   const { filter, setFilter } = useProjectFilter();
-  const filteredProjects = projects.filter((project: Project) => {
+
+  const filteredProjects = localProjects.filter((project: Project) => {
     if (filter === "all") return true;
     return project.tags.map((tag: Tag) => tag.name).includes(filter);
   });
+
+  useEffect(() => {
+    async function load() {
+      if (!projects) {
+        try {
+          setLoading(true);
+          const data = await fetchProjects();
+          setProjects(data);
+          setLocalProjects(data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+  }, []);
 
   return (
     <section className="content">
@@ -42,7 +49,11 @@ export default function Project() {
         {["all", "programming", "design"].map((type: string) => (
           <button
             key={type}
-            onClick={() => setFilter(type)}
+            onClick={() => {
+              setTimeout(() => {
+                setFilter(type);
+              }, 300);
+            }}
             className={
               filter === type
                 ? "filter-button !border-transparent !bg-white !text-background-400"
@@ -54,33 +65,48 @@ export default function Project() {
         ))}
       </div>
 
-      {loading && <span>Loading projects..</span>}
-
       <div className="grid grid-cols-4 gap-4">
-        {filteredProjects.map((project: Project, index) => {
-          return (
-            <motion.div
-              initial={{ opacity: 0, y: "50px" }}
-              animate={{ opacity: 1, y: "0px" }}
-              transition={{
-                duration: 1,
-                ease: [0, 0.71, 0.2, 1.01],
-              }}
-              key={index}
-            >
-              <Link
-                href={`/projects/${project.title.toLocaleLowerCase().replace(" ", "-")}`}
+        {loading && (
+          <>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-[450px] w-full" />
+            ))}
+          </>
+        )}
+        <AnimatePresence mode="wait">
+          {filteredProjects.map((project: Project, index) => {
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: "60px" }}
+                animate={{ opacity: 1, y: "0px" }}
+                exit={{
+                  opacity: 0,
+                  y: "30px",
+                  transition: {
+                    ease: [0, 0.55, 0.27, 1.01],
+                    duration: 0.3,
+                    delay: 0 + index / 32,
+                  },
+                }}
+                transition={{
+                  duration: 1,
+                  ease: [0, 0.71, 0.2, 1.01],
+                  delay: 0 + index / 14,
+                }}
+                key={`${filter}-${project.id}`}
               >
-                <ProjectCard
-                  title={project.title}
-                  desc={project?.desc}
-                  images={project?.project_image}
-                  tags={project.tags}
-                />
-              </Link>
-            </motion.div>
-          );
-        })}
+                <Link href={`/projects/${slugify(project.title)}`}>
+                  <ProjectCard
+                    title={project.title}
+                    desc={project?.desc}
+                    images={project?.project_image}
+                    tags={project.tags}
+                  />
+                </Link>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
     </section>
   );

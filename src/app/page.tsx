@@ -1,25 +1,30 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useProject } from "@/lib/stores/use-project";
+import { fetchProjects } from "./projects/action";
+import { slugify } from "@/lib/utils/slugify";
+import type { Project } from "@/lib/types/project";
 
 import Terminal from "@/components/terminal";
 import ProjectCard from "@/components/project-card";
-
 import { IconSizes } from "@/lib/constants";
-import type { Project } from "@/lib/types/project";
 import { Component, Facebook, Github, Linkedin } from "lucide-react";
-import { fetchProjects } from "./projects/action";
 
 export default function Home() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>(
+    useProject.getState().projects || [],
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function loadProjects() {
+    async function load() {
       try {
         setLoading(true);
         const data = await fetchProjects();
         setProjects(data);
+        useProject.getState().setProjects(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -27,7 +32,7 @@ export default function Home() {
       }
     }
 
-    loadProjects();
+    if (!useProject.getState().projects) load();
   }, []);
 
   return (
@@ -80,24 +85,25 @@ export default function Home() {
             Take a look at some of highlight projects that I've done before.
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-4 gap-4">
           {loading ? (
             <p>Loading...</p>
           ) : (
-            projects
-              .sort((a, b) => a.title.localeCompare(b.title))
-              .map((project: Project, index: number) => {
-                return (
-                  <React.Fragment key={`${project}-${index}`}>
-                    <ProjectCard
-                      title={project.title}
-                      desc={project.desc}
-                      tags={project.tags}
-                      height={300}
-                    />
-                  </React.Fragment>
-                );
-              })
+            projects.map((project: Project) => {
+              return (
+                <Link
+                  key={`project-${project.id}`}
+                  href={`/projects/${slugify(project.title)}`}
+                >
+                  <ProjectCard
+                    title={project.title}
+                    desc={project.desc}
+                    tags={project.tags}
+                    images={project.project_image}
+                  />
+                </Link>
+              );
+            })
           )}
         </div>
       </section>

@@ -7,20 +7,10 @@ import { addProjectSchema } from "@/lib/schemas/project.schema";
 import type { ErrorType } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
-type SerializedProject = {
-  id: string;
-  title: string;
-  desc: string | null;
-  is_archived: boolean;
-  created_at: string;
-  tags: { id: string; name: string }[];
-  project_image: { image_url: string; order: number }[];
-};
-
-// read
 export async function fetchProjects(): Promise<any[]> {
   try {
     const projects = await prisma.project.findMany({
+      orderBy: [{ order: "asc" }, { created_at: "desc" }],
       include: {
         project_tag: {
           include: {
@@ -47,6 +37,7 @@ export async function fetchProjects(): Promise<any[]> {
           name: pt.tag.name,
         })),
         project_image: project_image.map((img) => ({
+          id: img.id.toString(),
           image_url: img.image_url,
           order: img.order,
         })),
@@ -105,7 +96,7 @@ export async function addProject(
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
-      const filePath = `projects/${project.id}/${Date.now()}_${image.name}`;
+      const filePath = `projects/${project.id}/${Date.now()}_${image.name.replace(" ", "-").toLowerCase()}`;
 
       const { error: uploadError } = await supabase.storage
         .from("images")
@@ -149,6 +140,8 @@ export async function editProject(
       .map((t) => t.trim())
       .filter(Boolean);
     const images = formData.getAll("images") as File[];
+    const removedImagesRaw = formData.getAll("removedImages") as string[];
+    const removedImages = removedImagesRaw.map((r) => JSON.parse(r));
 
     let parsedProjectId: bigint;
     try {
@@ -166,6 +159,31 @@ export async function editProject(
         }),
       ),
     );
+
+    const imagePaths = removedImages
+      .map((img) => img.image_url.split("/").pop())
+      .filter(Boolean)
+      .map((filename) => `projects/${parsedProjectId}/${filename}`);
+
+    if (imagePaths.length > 0) {
+      const { error: supabaseError } = await supabase.storage
+        .from("images")
+        .remove(imagePaths);
+      if (supabaseError) {
+        console.error("Supabase delete error:", supabaseError);
+        return fail("storage", "Error deleting project image files");
+      }
+
+      await prisma.project_image.deleteMany({
+        where: {
+          id: {
+            in: removedImages.map((img) => BigInt(img.id)),
+          },
+        },
+      });
+
+      console.log("Deleted image files:", imagePaths);
+    }
 
     const uploadedImages = await Promise.all(
       images.map(async (image) => {
