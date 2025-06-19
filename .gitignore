@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# bun
+bun.lock
+
 # next.js
 /.next/
 /out/
@@ -23,6 +26,20 @@
 # misc
 .DS_Store
 *.pem
+*.swp
+*.swo
+*.tmp
+*.log
+.session.vim
+
+# prisma
+prisma/migrations
+prisma/dev.db
+*.sqlite
+
+# images
+public/images/*.jpg
+public/images/*.png
 
 # debug
 npm-debug.log*
