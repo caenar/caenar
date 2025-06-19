@@ -9,17 +9,21 @@ import { IconSizes } from "@/lib/constants";
 import type { Project } from "@/lib/types/project";
 import { Component, Facebook, Github, Linkedin } from "lucide-react";
 import { fetchProjects } from "./projects/action";
+import { useProject } from "@/lib/stores/use-project";
 
 export default function Home() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>(
+    useProject.getState().projects || [],
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function loadProjects() {
+    async function load() {
       try {
         setLoading(true);
         const data = await fetchProjects();
         setProjects(data);
+        useProject.getState().setProjects(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -27,7 +31,7 @@ export default function Home() {
       }
     }
 
-    loadProjects();
+    if (!useProject.getState().projects) load();
   }, []);
 
   return (
@@ -86,14 +90,15 @@ export default function Home() {
           ) : (
             projects
               .sort((a, b) => a.title.localeCompare(b.title))
-              .map((project: Project, index: number) => {
+              .map((project: Project) => {
                 return (
-                  <React.Fragment key={`${project}-${index}`}>
+                  <React.Fragment key={`project-${project.id}`}>
                     <ProjectCard
                       title={project.title}
                       desc={project.desc}
                       tags={project.tags}
-                      height={300}
+                      images={project.project_image}
+                      height={270}
                     />
                   </React.Fragment>
                 );

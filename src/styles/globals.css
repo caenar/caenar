@@ -13,6 +13,10 @@ body {
   @apply bg-background-100 text-foreground-100 text-[15px] font-body;
 }
 
+label {
+  @apply text-sm;
+}
+
 p {
   @apply text-[16px];
 }
@@ -88,7 +92,7 @@ h6 {
 }
 
 .icon-label {
-  @apply flex flex-row gap-2.5 items-center;
+  @apply flex flex-row gap-2 items-center;
 }
 
 .page-title {
@@ -118,8 +122,7 @@ h6 {
 
 .uploads-container {
   @apply grid gap-3;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
 }
 
 #terminal * {

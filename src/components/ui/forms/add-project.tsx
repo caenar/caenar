@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import Loader from "../loader";
 
 export default function AddProjectForm({ close }: { close: () => void }) {
   const fileInput = useRef<HTMLInputElement>(null);
@@ -101,7 +101,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid gap-1.5"
+        className="grid gap-5"
         encType="multipart/form-data"
       >
         <FormField
@@ -129,7 +129,11 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Keep it short and concise" {...field} />
+                <Textarea
+                  rows={3}
+                  placeholder="Keep it short and concise"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,8 +143,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
         <FormItem>
           <FormLabel>Tags (separated by comma)</FormLabel>
           <FormControl>
-            <Input
-              type="text"
+            <Textarea
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               placeholder="e.g. react, ui, web"
@@ -213,14 +216,7 @@ export default function AddProjectForm({ close }: { close: () => void }) {
             className="primary-button"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? (
-              <p className="icon-label">
-                <Loader2 className="animate-spin" size={20} />
-                Please wait
-              </p>
-            ) : (
-              "Create Project"
-            )}
+            {form.formState.isSubmitting ? <Loader /> : "Add project"}
           </button>
         </div>
       </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfirmData, Project } from "@/lib/types";
+import { ConfirmData, Project, ProjectImage } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState, useRef } from "react";
@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { TbPlus, TbX } from "react-icons/tb";
 import { handleResult } from "@/lib/utils/handle-result";
+import { Trash } from "lucide-react";
+import Loader from "../loader";
 
 export default function EditProjectForm({
   project,
@@ -40,21 +42,34 @@ export default function EditProjectForm({
     project.tags.map((t) => t.name).join(", "),
   );
 
-  const [existingImages, setExistingImages] = useState(
-    project.project_image.map((img) => ({ id: img.id, url: img.image_url })),
+  const [existingImages, setExistingImages] = useState<ProjectImage[]>(
+    project.project_image.map((img) => ({
+      id: img.id,
+      image_url: img.image_url,
+      order: img.order,
+    })),
   );
+  const [removedImageIds, setRemovedImageIds] = useState<ProjectImage[]>([]);
 
   const addFile = () => fileInput.current?.click();
+
   const removeNewImage = (index: number) =>
     setImages((prev) => prev.filter((_, i) => i !== index));
-  const removeExistingImage = (id: number) =>
+
+  const removeExistingImage = (img: ProjectImage) => {
     setExistingImages((prev) =>
-      prev.filter((img) => parseInt(img.id, 10) !== id),
+      prev.filter((i) => parseInt(i.id, 10) !== parseInt(img.id, 10)),
     );
+    setRemovedImageIds((prev) => [
+      ...prev,
+      { id: img.id, image_url: img.image_url, order: img.order },
+    ]);
+  };
 
   const form = useForm<z.infer<typeof editProjectSchema>>({
     resolver: zodResolver(editProjectSchema),
     defaultValues: {
+      id: project.id ?? "",
       title: project.title ?? "",
       desc: project.desc ?? "",
     },
@@ -94,6 +109,12 @@ export default function EditProjectForm({
     formData.append("desc", values.desc ?? "");
     finalTags.forEach((tag) => formData.append("tags", tag));
     images.forEach((file) => formData.append("images", file));
+    removedImageIds.forEach((img) =>
+      formData.append(
+        "removedImages",
+        JSON.stringify({ id: img.id, image_url: img.image_url }),
+      ),
+    );
     existingImages.forEach((img) =>
       formData.append("existingImages", img.id.toString()),
     );
@@ -140,7 +161,7 @@ export default function EditProjectForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea rows={4} placeholder="Description" {...field} />
+                <Textarea rows={3} placeholder="Description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,24 +181,27 @@ export default function EditProjectForm({
 
         <div className="form-input">
           <label>Existing Images</label>
+          <div className="line my-1"></div>
           {existingImages.length > 0 && (
             <div className="uploads-container">
               {existingImages.map((img, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Image
-                    src={img.url}
-                    alt={`Image ${index}`}
+                    src={img.image_url}
+                    alt={`img ${index}`}
                     width={40}
                     height={40}
                     style={{ objectFit: "cover" }}
                     className="rounded-md border"
                   />
-                  <span className="truncate max-w-[10rem]">
-                    {img.url.split("/").pop()}
-                  </span>
+                  <div className="w-[350px]">
+                    <span className="block truncate break-all">
+                      {img.image_url.split("/").pop()}
+                    </span>
+                  </div>
                   <button
                     type="button"
-                    onClick={() => removeExistingImage(parseInt(img.id, 10))}
+                    onClick={() => removeExistingImage(img)}
                   >
                     <TbX className="text-pink-100" size={16} />
                   </button>
@@ -188,7 +212,6 @@ export default function EditProjectForm({
         </div>
 
         <div className="form-input">
-          <label>New Images</label>
           {images.length > 0 && (
             <div className="uploads-container">
               {images.map((img, index) => (
@@ -201,7 +224,7 @@ export default function EditProjectForm({
                     style={{ objectFit: "cover" }}
                     className="rounded-md border"
                   />
-                  <span className="truncate max-w-[10rem]">{img.name}</span>
+                  <span className="truncate w-full">{img.name}</span>
                   <button type="button" onClick={() => removeNewImage(index)}>
                     <TbX className="text-pink-100" size={16} />
                   </button>
@@ -210,11 +233,11 @@ export default function EditProjectForm({
             </div>
           )}
           <div
-            className="secondary-button icon-label !gap-1 text-[14px]"
+            className="secondary-button icon-label !gap-1 text-[14px] cursor-pointer"
             onClick={addFile}
           >
             <TbPlus size={16} />
-            Add more
+            Add more images
           </div>
           <input
             ref={fileInput}
@@ -232,10 +255,11 @@ export default function EditProjectForm({
         <div className="flex justify-between mt-5">
           <button
             type="button"
-            className="danger-button"
+            className="danger-button icon-label"
             onClick={() => confirmDelete()}
           >
-            Delete project
+            <Trash size={18} />
+            Delete
           </button>
           <div className="flex gap-4">
             <button type="button" onClick={close}>
@@ -246,7 +270,7 @@ export default function EditProjectForm({
               className="primary-button"
               disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? "Saving..." : "Save changes"}
+              {form.formState.isSubmitting ? <Loader /> : "Save changes"}
             </button>
           </div>
         </div>
