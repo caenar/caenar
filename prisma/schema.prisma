@@ -12,18 +12,16 @@ model project {
   id            BigInt          @id @default(autoincrement())
   title         String
   desc          String?
-  tags          tag[]           @relation("project_tag")
-  order         Int?
   is_archived   Boolean         @default(false)
   created_at    DateTime        @default(now()) @db.Timestamptz(6)
-  project_tag   project_tag[]
+  order         Int?
   project_image project_image[]
+  project_tag   project_tag[]
 }
 
 model tag {
   id          BigInt        @id @default(autoincrement())
   name        String        @unique
-  projects    project[]     @relation("project_tag")
   project_tag project_tag[]
 }
 
