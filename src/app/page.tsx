@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="pt-20 h-[100vh] flex flex-col gap-[5rem] items-center justify-center">
+      <section className="pt-18 h-[100vh] flex flex-col gap-[5rem] items-center justify-center">
         <div className="flex flex-col gap-10 w-[650px]">
           <div className="grid gap-5">
             <h1 className="font-body">

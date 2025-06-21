@@ -90,12 +90,12 @@ export default function Project() {
                 }}
                 transition={{
                   duration: 1,
-                  ease: [0, 0.71, 0.2, 1.01],
-                  delay: 0 + index / 14,
+                  ease: [0, 0.55, 0.27, 1.01],
+                  delay: 0 + index / 18,
                 }}
                 key={`${filter}-${project.id}`}
               >
-                <Link href={`/projects/${slugify(project.title)}`}>
+                <Link href={`/projects/${project.slug}`}>
                   <ProjectCard
                     title={project.title}
                     desc={project?.desc}
