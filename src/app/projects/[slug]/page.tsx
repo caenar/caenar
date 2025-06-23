@@ -1,5 +1,3 @@
-"use server";
-
 import { getProjectBySlug } from "@/lib/db/get-project-by-slug";
 import React from "react";
 import ProjectLayout from "./project-layout";

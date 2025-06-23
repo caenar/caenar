@@ -1,15 +1,13 @@
 "use client";
 
+import { RenderLayout } from "@/components/project/render-layout";
 import { IconSizes } from "@/lib/constants";
-import { ProjectImage, Tag } from "@/lib/types";
+import { Project, Tag } from "@/lib/types";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// NOTE: Change "any" type to proper Project type
-export default function ProjectLayout({ project }: { project: any }) {
-  console.log(project);
-
+export default function ProjectLayout({ project }: { project: Project }) {
   return (
     <>
       <section className="pt-32 pb-16 mx-[23vw]">
@@ -51,8 +49,8 @@ export default function ProjectLayout({ project }: { project: any }) {
           <Image
             priority
             src={
-              project.project_image.find((p: ProjectImage) => p.order === 0)
-                .image_url
+              project.project_image.find((p) => p.order === 0)?.image_url ??
+              "placeholder.jpg"
             }
             alt={`Hero image of project ${project.title}`}
             width={2000}
@@ -64,6 +62,7 @@ export default function ProjectLayout({ project }: { project: any }) {
       </section>
 
       {/* TODO: Create dynamic layout based on the project's JSON */}
+      <RenderLayout layout={project.layout} />
     </>
   );
 }

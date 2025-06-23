@@ -1,7 +1,8 @@
 import prisma from "../prisma";
+import { Project } from "../types";
 
-export async function getProjectBySlug(slug: string) {
-  const project = await prisma.project.findUnique({
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const rawProject = await prisma.project.findUnique({
     where: { slug },
     include: {
       project_tag: {
@@ -13,25 +14,30 @@ export async function getProjectBySlug(slug: string) {
     },
   });
 
-  if (!project) {
+  if (!rawProject) {
     return null;
   }
 
-  const serializedProject = {
-    ...project,
-    id: project.id.toString(),
-    created_at: project.created_at.toISOString(),
-    project_tag: undefined,
-    tags: project.project_tag.map((pt) => ({
+  const { project_tag, ...rest } = rawProject;
+
+  const project = {
+    ...rest,
+    id: rawProject.id.toString(),
+    created_at: rawProject.created_at.toISOString(),
+    live_link: rawProject.live_link ?? undefined,
+    code_link: rawProject.code_link ?? undefined,
+    figma_link: rawProject.figma_link ?? undefined,
+    layout: rawProject.layout ?? undefined,
+    tags: project_tag.map((pt) => ({
       id: pt.tag.id.toString(),
       name: pt.tag.name,
     })),
-    project_image: project.project_image.map((img) => ({
+    project_image: rawProject.project_image.map((img) => ({
       id: img.id.toString(),
       image_url: img.image_url,
       order: img.order,
     })),
   };
 
-  return serializedProject;
+  return project as Project;
 }

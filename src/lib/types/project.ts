@@ -1,4 +1,5 @@
 import { ProjectImage } from "./project-image";
+import { ProjectLayout } from "./project-layout";
 import { Tag } from "./tag";
 
 export type Project = {
@@ -6,12 +7,13 @@ export type Project = {
   slug: string;
   title: string;
   desc: string;
-  live_link?: string;
-  code_link?: string;
-  figma_link?: string;
-  order: number;
   is_archived: boolean;
-  layout?: ProjectLayout;
+  created_at: string;
+  order?: number;
+  live_link?: string | undefined;
+  code_link?: string | undefined;
+  figma_link?: string | undefined;
+  layout?: ProjectLayout | undefined;
   project_image: ProjectImage[];
   tags: Tag[];
 };
