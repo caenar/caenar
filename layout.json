@@ -6,7 +6,8 @@
         "type": "section",
         "items": [
           {
-            "type": "text",
+            "type": "heading",
+            "level": 1,
             "content": "Project Overview"
           },
           {
@@ -19,7 +20,8 @@
         "type": "stack",
         "items": [
           {
-            "type": "text",
+            "type": "heading",
+            "level": 2,
             "content": "Project Details"
           },
           {
@@ -46,8 +48,9 @@
     "type": "stack",
     "items": [
       {
-        "type": "text",
-        "content": "The Challenge"
+        "type": "icon-label",
+        "icon": "circle-alert",
+        "label": "The Challenge"
       },
       {
         "type": "text",
@@ -59,8 +62,9 @@
     "type": "stack",
     "items": [
       {
-        "type": "text",
-        "content": "The Solution"
+        "type": "icon-label",
+        "icon": "circle-check-big",
+        "label": "The Solution"
       },
       {
         "type": "text",

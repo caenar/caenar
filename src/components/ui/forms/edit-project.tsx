@@ -77,6 +77,7 @@ export default function EditProjectForm({
       id: project.id ?? "",
       title: project.title ?? "",
       desc: project.desc ?? "",
+      layout: JSON.stringify(project.layout, null, 2) ?? "",
     },
   });
 
@@ -150,122 +151,142 @@ export default function EditProjectForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid gap-5"
+        className="grid grid-cols-2 gap-5"
         encType="multipart/form-data"
       >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Project title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="desc"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea rows={3} placeholder="Description" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormItem>
-          <FormLabel>Tags (comma-separated)</FormLabel>
-          <FormControl>
-            <Textarea
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              placeholder="e.g. react, ui, backend"
-            />
-          </FormControl>
-        </FormItem>
-
-        <div className="form-input">
-          <label>Existing Images</label>
-          <div className="line my-1"></div>
-          {existingImages.length > 0 && (
-            <div className="uploads-container">
-              {existingImages.map((img, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Image
-                    src={img.image_url}
-                    alt={`img ${index}`}
-                    width={40}
-                    height={40}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-md border"
-                  />
-                  <div className="w-[350px]">
-                    <span className="block truncate break-all">
-                      {img.image_url.split("/").pop()}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeExistingImage(img)}
-                  >
-                    <TbX className="text-pink-100" size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="form-input">
-          {images.length > 0 && (
-            <div className="uploads-container">
-              {images.map((img, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Image
-                    src={URL.createObjectURL(img)}
-                    alt={`New Image ${index}`}
-                    width={40}
-                    height={40}
-                    style={{ objectFit: "cover" }}
-                    className="rounded-md border"
-                  />
-                  <span className="truncate w-full">{img.name}</span>
-                  <button type="button" onClick={() => removeNewImage(index)}>
-                    <TbX className="text-pink-100" size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-          <div
-            className="secondary-button icon-label !gap-1 text-[14px] cursor-pointer"
-            onClick={addFile}
-          >
-            <TbPlus size={16} />
-            Add more images
-          </div>
-          <input
-            ref={fileInput}
-            type="file"
-            hidden
-            multiple
-            onChange={(e) => {
-              if (!e.target.files) return;
-              const newFiles = Array.from(e.target.files);
-              setImages((prev) => [...prev, ...newFiles]);
-            }}
+        <div className="grid gap-3">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Project title" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
 
-        <div className="flex justify-between mt-5">
+          <FormField
+            control={form.control}
+            name="desc"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea rows={3} placeholder="Description" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormItem>
+            <FormLabel>Tags (comma-separated)</FormLabel>
+            <FormControl>
+              <Textarea
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                placeholder="e.g. react, ui, backend"
+              />
+            </FormControl>
+          </FormItem>
+
+          <div className="form-input">
+            <label>Existing Images</label>
+            <div className="line my-1"></div>
+            {existingImages.length > 0 && (
+              <div className="uploads-container">
+                {existingImages.map((img, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <Image
+                      src={img.image_url}
+                      alt={`img ${index}`}
+                      width={40}
+                      height={40}
+                      style={{ objectFit: "cover" }}
+                      className="rounded-md border"
+                    />
+                    <div className="w-[350px]">
+                      <span className="block truncate break-all">
+                        {img.image_url.split("/").pop()}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeExistingImage(img)}
+                    >
+                      <TbX className="text-pink-100" size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="form-input">
+            {images.length > 0 && (
+              <div className="uploads-container">
+                {images.map((img, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <Image
+                      src={URL.createObjectURL(img)}
+                      alt={`New Image ${index}`}
+                      width={40}
+                      height={40}
+                      style={{ objectFit: "cover" }}
+                      className="rounded-md border"
+                    />
+                    <span className="truncate w-full">{img.name}</span>
+                    <button type="button" onClick={() => removeNewImage(index)}>
+                      <TbX className="text-pink-100" size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div
+              className="secondary-button icon-label !gap-1 text-[14px] cursor-pointer"
+              onClick={addFile}
+            >
+              <TbPlus size={16} />
+              Add more images
+            </div>
+            <input
+              ref={fileInput}
+              type="file"
+              hidden
+              multiple
+              onChange={(e) => {
+                if (!e.target.files) return;
+                const newFiles = Array.from(e.target.files);
+                setImages((prev) => [...prev, ...newFiles]);
+              }}
+            />
+          </div>
+        </div>
+        <div className="grid">
+          <FormField
+            control={form.control}
+            name="layout"
+            render={({ field }) => (
+              <FormItem className="h-full">
+                <FormLabel>Layout</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="h-full"
+                    onWheel={(e) => e.stopPropagation()}
+                    placeholder="Follow project layout type"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          ></FormField>
+        </div>
+        <div className="col-span-2 flex justify-between mt-5">
           <button
             type="button"
             className="danger-button icon-label"
