@@ -22,16 +22,16 @@ export const editProjectSchema = z.object({
   id: z.string().min(1, "Project ID is required"),
   title: z.string().optional(),
   desc: z.string().optional(),
-  layout: z.string().refine(
-    (value) => {
-      try {
-        const parsed = JSON.parse(value);
-        ProjectLayoutSchema.parse(parsed);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-    { message: "Invalid layout JSON structure" },
-  ),
+  layout: z.string().superRefine((value, ctx) => {
+    try {
+      const parsed = JSON.parse(value);
+      ProjectLayoutSchema.parse(parsed);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid layout JSON structure`,
+      });
+    }
+  }),
 });

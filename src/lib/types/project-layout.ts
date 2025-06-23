@@ -31,12 +31,14 @@ export type LinkBlock = {
   type: "link";
   href: string;
   label: string;
+  icon?: string;
 };
 
 export type HeadingBlock = {
   type: "heading";
-  level: 1 | 2 | 3;
+  level: 1 | 2 | 3 | 4 | 5;
   content: string;
+  icon?: string;
 };
 
 export type IconBlock = {

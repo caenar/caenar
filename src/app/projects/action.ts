@@ -139,9 +139,11 @@ export async function editProject(
     const tags = (formData.getAll("tags") as string[])
       .map((t) => t.trim())
       .filter(Boolean);
+    const rawLayout = formData.get("layout") as string;
     const images = formData.getAll("images") as File[];
     const removedImagesRaw = formData.getAll("removedImages") as string[];
     const removedImages = removedImagesRaw.map((r) => JSON.parse(r));
+    console.log("raw layout: ", rawLayout)
 
     let parsedProjectId: bigint;
     try {
@@ -149,6 +151,8 @@ export async function editProject(
     } catch {
       return fail("validation", "Invalid project ID");
     }
+    const layout = rawLayout ? JSON.parse(rawLayout) : undefined;
+    console.log("parsed layout: ", layout)
 
     const tagUpserts = await Promise.all(
       tags.map((tag) =>
@@ -208,6 +212,7 @@ export async function editProject(
         data: {
           title,
           desc,
+          layout,
         },
       }),
 

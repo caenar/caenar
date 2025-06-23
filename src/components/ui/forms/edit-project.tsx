@@ -117,6 +117,7 @@ export default function EditProjectForm({
     formData.append("projectId", project.id);
     formData.append("title", values.title ?? "");
     formData.append("desc", values.desc ?? "");
+    formData.append("layout", values.layout ?? "");
     finalTags.forEach((tag) => formData.append("tags", tag));
     images.forEach((file) => formData.append("images", file));
     removedImageIds.forEach((img) =>
@@ -282,6 +283,7 @@ export default function EditProjectForm({
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           ></FormField>

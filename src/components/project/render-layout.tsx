@@ -54,7 +54,22 @@ function renderBlock(block: LayoutBlock, keyPrefix = ""): React.ReactNode {
 
   switch (block.type) {
     case "heading":
-      return (
+      return block.icon ? (
+        <Heading
+          as={`h${block.level}`}
+          key={keyPrefix + `h${block.level}`}
+          className="icon-label"
+        >
+          {block.icon && (
+            <DynamicIcon
+              name={block.icon as IconName}
+              color="white"
+              size={IconSizes.MEDIUM}
+            />
+          )}
+          {block.content}
+        </Heading>
+      ) : (
         <Heading as={`h${block.level}`} key={keyPrefix + `h${block.level}`}>
           {block.content}
         </Heading>
