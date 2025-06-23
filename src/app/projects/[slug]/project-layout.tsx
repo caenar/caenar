@@ -6,6 +6,7 @@ import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+// NOTE: Change "any" type to proper Project type
 export default function ProjectLayout({ project }: { project: any }) {
   console.log(project);
 
@@ -61,6 +62,8 @@ export default function ProjectLayout({ project }: { project: any }) {
           />
         </div>
       </section>
+
+      {/* TODO: Create dynamic layout based on the project's JSON */}
     </>
   );
 }
