@@ -7,6 +7,18 @@ const IconOptionsSchema = z.object({
   size: z.number().optional(),
 });
 
+const GridOptionsSchema = z.object({
+  columns: z.string().optional(),
+  gap: z.string().optional(),
+  align: z.enum(["start", "center", "end", "stretch"]).optional(),
+});
+
+const SeparatorBlockSchema = z.object({
+  type: z.literal("separator"),
+  direction: z.enum(["x", "y"]),
+  spacing: z.number().optional(),
+});
+
 const TextBlockSchema = z.object({
   type: z.literal("text"),
   content: z.string(),
@@ -34,6 +46,7 @@ const HeadingBlockSchema = z.object({
     z.literal(3),
     z.literal(4),
     z.literal(5),
+    z.literal(6),
   ]),
   content: z.string(),
   icon: IconOptionsSchema.optional(),
@@ -46,12 +59,6 @@ const IconLabelBlockSchema = z.object({
   href: z.string().url().optional(),
 });
 
-const GridOptionsSchema = z.object({
-  columns: z.string().optional(),
-  gap: z.string().optional(),
-  align: z.enum(["start", "center", "end", "stretch"]).optional(),
-});
-
 let LayoutBlockSchema: z.ZodType<LayoutBlock>;
 
 const GridLayoutGroupSchema = z.object({
@@ -59,17 +66,20 @@ const GridLayoutGroupSchema = z.object({
   items: z.lazy(() => z.array(LayoutBlockSchema)),
   card: z.boolean().optional(),
   gridOptions: GridOptionsSchema.optional(),
-  minHeight: z.number().optional(),
-  minWidth: z.number().optional(),
+  minHeight: z.string().optional(),
+  minWidth: z.string().optional(),
 });
 
 const StackOrSectionGroupSchema = z.object({
   type: z.union([z.literal("stack"), z.literal("section")]),
   items: z.lazy(() => z.array(LayoutBlockSchema)),
   card: z.boolean().optional(),
+  minHeight: z.string().optional(),
+  minWidth: z.string().optional(),
 });
 
 const BaseBlockSchema = z.discriminatedUnion("type", [
+  SeparatorBlockSchema,
   TextBlockSchema,
   ImageBlockSchema,
   LinkBlockSchema,

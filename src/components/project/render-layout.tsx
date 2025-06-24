@@ -5,6 +5,7 @@ import {
   ProjectLayout,
 } from "@/lib/types/project-layout";
 import { DynamicIcon, IconName } from "lucide-react/dynamic";
+import Heading from "./heading-block";
 
 export function RenderLayout({ layout }: { layout: ProjectLayout }) {
   return (
@@ -17,20 +18,6 @@ export function RenderLayout({ layout }: { layout: ProjectLayout }) {
 function isLayoutGroup(block: LayoutBlock): block is LayoutGroup {
   return (
     block.type === "section" || block.type === "grid" || block.type === "stack"
-  );
-}
-
-function Heading({
-  as: Tag = "h2",
-  children,
-  className,
-}: {
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <Tag className={`${className} uppercase font-mono mb-2`}>{children}</Tag>
   );
 }
 
@@ -93,26 +80,32 @@ function renderBlock(block: LayoutBlock, keyPrefix = ""): React.ReactNode {
 
   switch (block.type) {
     case "heading":
-      return block.icon ? (
+      return (
         <Heading
           as={`h${block.level}`}
           key={keyPrefix + `h${block.level}`}
-          className="icon-label"
-        >
-          {block.icon && (
-            <DynamicIcon
-              name={block.icon.name as IconName}
-              color={block.icon.color ?? "white"}
-              size={block.icon.size ?? IconSizes.MEDIUM}
-            />
-          )}
-          {block.content}
-        </Heading>
-      ) : (
-        <Heading as={`h${block.level}`} key={keyPrefix + `h${block.level}`}>
-          {block.content}
-        </Heading>
+          icon={block.icon}
+          content={block.content}
+        />
       );
+
+    case "separator":
+      switch (block.direction) {
+        case "x":
+          return (
+            <div className={block.spacing ? `my-${block.spacing}` : "my-8"}>
+              <div className="h-px w-full bg-background-400" />
+            </div>
+          );
+        case "y":
+          return (
+            <div className={block.spacing ? `mx-${block.spacing}` : "mx-8"}>
+              <div className="w-px h-full bg-background-400" />
+            </div>
+          );
+        default:
+          return null;
+      }
 
     case "text":
       return (

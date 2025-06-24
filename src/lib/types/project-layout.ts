@@ -19,17 +19,24 @@ export type LayoutGroup = {
   items: LayoutBlock[];
   card?: boolean;
   gridOptions?: GridOptions;
-  minHeight?: number;
-  minWidth?: number;
+  minHeight?: string;
+  minWidth?: string;
 };
 
 export type LayoutBlock =
   | LayoutGroup
+  | SeparatorBlock
   | HeadingBlock
   | IconLabelBlock
   | TextBlock
   | ImageBlock
   | LinkBlock;
+
+export type SeparatorBlock = {
+  type: "separator";
+  direction: "x" | "y";
+  spacing?: number;
+};
 
 export type TextBlock = {
   type: "text";
@@ -51,7 +58,7 @@ export type LinkBlock = {
 
 export type HeadingBlock = {
   type: "heading";
-  level: 1 | 2 | 3 | 4 | 5;
+  level: 1 | 2 | 3 | 4 | 5 | 6;
   content: string;
   icon?: IconOptions;
 };

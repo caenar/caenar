@@ -30,12 +30,24 @@
             "content": "Duration: 1 day"
           },
           {
+            "type": "separator",
+            "direction": "x"
+          },
+          {
             "type": "text",
             "content": "Team: Solo project"
           },
           {
+            "type": "separator",
+            "direction": "x"
+          },
+          {
             "type": "text",
             "content": "Role: Designer & Developer"
+          },
+          {
+            "type": "separator",
+            "direction": "x"
           },
           {
             "type": "text",
@@ -71,6 +83,10 @@
         ]
       },
       {
+        "type": "separator",
+        "direction": "y"
+      },
+      {
         "type": "stack",
         "items": [
           {
@@ -90,7 +106,7 @@
       }
     ],
     "gridOptions": {
-      "columns": "repeat(2, 1fr)"
+      "columns": "1fr fit-content(100%) 1fr"
     }
   }
 ]
