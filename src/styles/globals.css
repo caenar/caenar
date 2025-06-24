@@ -92,7 +92,7 @@ h6 {
 }
 
 .icon-label {
-  @apply flex flex-row gap-2 items-center;
+  @apply flex flex-row gap-3 items-center;
 }
 
 .page-title {

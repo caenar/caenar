@@ -7,21 +7,22 @@
         "items": [
           {
             "type": "heading",
-            "level": 1,
+            "level": 3,
             "content": "Project Overview"
           },
           {
             "type": "text",
-            "content": "This JSON layout is for the project Ranyak layout"
+            "content": "Ranyak is a lightweight web application deployed to the Internet Computer Protocol (ICP) network. Built during a developer event, the project explores decentralized app development using Motoko canisters and React for a simple board message feature."
           }
         ]
       },
       {
+        "card": true,
         "type": "stack",
         "items": [
           {
             "type": "heading",
-            "level": 2,
+            "level": 4,
             "content": "Project Details"
           },
           {
@@ -40,36 +41,56 @@
             "type": "text",
             "content": "Category: Web Application"
           }
+        ],
+        "minWidth": "350px"
+      }
+    ],
+    "gridOptions": {
+      "columns": "repeat(2, fit-content(100%))"
+    }
+  },
+  {
+    "type": "grid",
+    "items": [
+      {
+        "type": "stack",
+        "items": [
+          {
+            "icon": {
+              "name": "copy-x",
+              "color": "#b83e3e"
+            },
+            "type": "heading",
+            "level": 4,
+            "content": "The Challenge"
+          },
+          {
+            "type": "text",
+            "content": "Ranyak was a spontaneous project I built during a DevCon event on deploying to the Internet Computer Protocol (ICP). I had nothing prepared and had to set up DFX and tooling on Fedora, which made things tricky since most of the docs assumed Windows + WSL. While others were still setting up, I started exploring how DFX, Motoko, and canisters worked together."
+          }
+        ]
+      },
+      {
+        "type": "stack",
+        "items": [
+          {
+            "icon": {
+              "name": "lightbulb",
+              "color": "#dbc179"
+            },
+            "type": "heading",
+            "level": 4,
+            "content": "The Solution"
+          },
+          {
+            "type": "text",
+            "content": "I first explored an official Motoko starter to understand how canisters manage state. Then I created my own app using DFX with a React frontend and Motoko backend. I wrote simple logic to add, get, remove, and reset messages — all stored in the canister, no external DB. It was my first real dive into Motoko and gave me hands-on insight into how state and deployment work in the ICP ecosystem."
+          }
         ]
       }
-    ]
-  },
-  {
-    "type": "stack",
-    "items": [
-      {
-        "type": "icon-label",
-        "icon": "circle-alert",
-        "label": "The Challenge"
-      },
-      {
-        "type": "text",
-        "content": "blah blah"
-      }
-    ]
-  },
-  {
-    "type": "stack",
-    "items": [
-      {
-        "type": "icon-label",
-        "icon": "circle-check-big",
-        "label": "The Solution"
-      },
-      {
-        "type": "text",
-        "content": "blah blah"
-      }
-    ]
+    ],
+    "gridOptions": {
+      "columns": "repeat(2, 1fr)"
+    }
   }
 ]

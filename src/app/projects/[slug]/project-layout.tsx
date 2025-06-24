@@ -1,16 +1,17 @@
 "use client";
 
-import { RenderLayout } from "@/components/project/render-layout";
-import { IconSizes } from "@/lib/constants";
-import { Project, Tag } from "@/lib/types";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import type { Project, ProjectLayout, Tag } from "@/lib/types";
+import { IconSizes } from "@/lib/constants";
+import { RenderLayout } from "@/components/project/render-layout";
+import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 
 export default function ProjectLayout({ project }: { project: Project }) {
   return (
     <>
-      <section className="pt-32 pb-16 mx-[23vw]">
+      <section className="pt-32 pb-16 mx-[25vw]">
         <Link
           href="/projects"
           className="icon-label uppercase text-sm font-mono"
@@ -44,6 +45,7 @@ export default function ProjectLayout({ project }: { project: Project }) {
           </div>
         </div>
       </section>
+
       <section className="flex items-center justify-center">
         <div className="w-[55vw] rounded-lg">
           <Image
@@ -61,8 +63,8 @@ export default function ProjectLayout({ project }: { project: Project }) {
         </div>
       </section>
 
-      {/* TODO: Create dynamic layout based on the project's JSON */}
-      <RenderLayout layout={project.layout} />
+      {/* render the dynamic JSON layout */}
+      <RenderLayout layout={project.layout as ProjectLayout} />
     </>
   );
 }

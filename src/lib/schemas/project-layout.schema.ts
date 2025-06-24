@@ -1,9 +1,16 @@
 import { z } from "zod";
 import { LayoutBlock } from "../types/project-layout";
 
+const IconOptionsSchema = z.object({
+  name: z.string(),
+  color: z.string(),
+  size: z.number().optional(),
+});
+
 const TextBlockSchema = z.object({
   type: z.literal("text"),
   content: z.string(),
+  card: z.boolean().optional(),
 });
 
 const ImageBlockSchema = z.object({
@@ -16,7 +23,7 @@ const LinkBlockSchema = z.object({
   type: z.literal("link"),
   href: z.string().url(),
   label: z.string(),
-  icon: z.string().optional(),
+  icon: IconOptionsSchema.optional(),
 });
 
 const HeadingBlockSchema = z.object({
@@ -29,20 +36,37 @@ const HeadingBlockSchema = z.object({
     z.literal(5),
   ]),
   content: z.string(),
-  icon: z.string().optional(),
-});
-
-const IconBlockSchema = z.object({
-  type: z.literal("icon"),
-  name: z.string(),
-  size: z.number().optional(),
+  icon: IconOptionsSchema.optional(),
 });
 
 const IconLabelBlockSchema = z.object({
   type: z.literal("icon-label"),
-  icon: z.string(),
+  icon: IconOptionsSchema,
   label: z.string(),
   href: z.string().url().optional(),
+});
+
+const GridOptionsSchema = z.object({
+  columns: z.string().optional(),
+  gap: z.string().optional(),
+  align: z.enum(["start", "center", "end", "stretch"]).optional(),
+});
+
+let LayoutBlockSchema: z.ZodType<LayoutBlock>;
+
+const GridLayoutGroupSchema = z.object({
+  type: z.literal("grid"),
+  items: z.lazy(() => z.array(LayoutBlockSchema)),
+  card: z.boolean().optional(),
+  gridOptions: GridOptionsSchema.optional(),
+  minHeight: z.number().optional(),
+  minWidth: z.number().optional(),
+});
+
+const StackOrSectionGroupSchema = z.object({
+  type: z.union([z.literal("stack"), z.literal("section")]),
+  items: z.lazy(() => z.array(LayoutBlockSchema)),
+  card: z.boolean().optional(),
 });
 
 const BaseBlockSchema = z.discriminatedUnion("type", [
@@ -50,22 +74,13 @@ const BaseBlockSchema = z.discriminatedUnion("type", [
   ImageBlockSchema,
   LinkBlockSchema,
   HeadingBlockSchema,
-  IconBlockSchema,
   IconLabelBlockSchema,
 ]);
 
-export const LayoutBlockSchema: z.ZodType<LayoutBlock> = z.lazy(() =>
-  z.union([
-    BaseBlockSchema,
-    z.object({
-      type: z.union([
-        z.literal("grid"),
-        z.literal("stack"),
-        z.literal("section"),
-      ]),
-      items: z.array(LayoutBlockSchema),
-    }),
-  ]),
+LayoutBlockSchema = z.lazy(() =>
+  z.union([BaseBlockSchema, GridLayoutGroupSchema, StackOrSectionGroupSchema]),
 );
+
+export { LayoutBlockSchema };
 
 export const ProjectLayoutSchema = z.array(LayoutBlockSchema);
