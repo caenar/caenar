@@ -96,8 +96,8 @@ export default function Admin() {
           </>
         ) : (
           <>
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-[450px] w-full" />
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-[400px] w-full" />
             ))}
           </>
         )}

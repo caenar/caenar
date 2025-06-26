@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LayoutBlock } from "../types/project-layout";
+import type { LayoutBlock } from "../types";
 
 const IconOptionsSchema = z.object({
   name: z.string(),
@@ -11,6 +11,21 @@ const GridOptionsSchema = z.object({
   columns: z.string().optional(),
   gap: z.string().optional(),
   align: z.enum(["start", "center", "end", "stretch"]).optional(),
+});
+
+const AccordionItemSchema = z.object({
+  heading: z.object({
+    content: z.string(),
+    icon: IconOptionsSchema.optional(),
+  }),
+  body: z.object({
+    content: z.string(),
+  }),
+});
+
+const AccordionBlockSchema = z.object({
+  type: z.literal("accordion"),
+  items: z.lazy(() => z.array(AccordionItemSchema)),
 });
 
 const SeparatorBlockSchema = z.object({
@@ -38,16 +53,18 @@ const LinkBlockSchema = z.object({
   icon: IconOptionsSchema.optional(),
 });
 
+const HeadingLevelSchema = z.union([
+  z.literal(1),
+  z.literal(2),
+  z.literal(3),
+  z.literal(4),
+  z.literal(5),
+  z.literal(6),
+]);
+
 const HeadingBlockSchema = z.object({
   type: z.literal("heading"),
-  level: z.union([
-    z.literal(1),
-    z.literal(2),
-    z.literal(3),
-    z.literal(4),
-    z.literal(5),
-    z.literal(6),
-  ]),
+  level: HeadingLevelSchema,
   content: z.string(),
   icon: IconOptionsSchema.optional(),
 });
@@ -61,24 +78,33 @@ const IconLabelBlockSchema = z.object({
 
 let LayoutBlockSchema: z.ZodType<LayoutBlock>;
 
-const GridLayoutGroupSchema = z.object({
-  type: z.literal("grid"),
-  items: z.lazy(() => z.array(LayoutBlockSchema)),
-  card: z.boolean().optional(),
-  gridOptions: GridOptionsSchema.optional(),
-  minHeight: z.string().optional(),
-  minWidth: z.string().optional(),
-});
-
-const StackOrSectionGroupSchema = z.object({
-  type: z.union([z.literal("stack"), z.literal("section")]),
-  items: z.lazy(() => z.array(LayoutBlockSchema)),
-  card: z.boolean().optional(),
-  minHeight: z.string().optional(),
-  minWidth: z.string().optional(),
-});
+const LayoutGroupSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("grid"),
+    items: z.lazy(() => z.array(LayoutBlockSchema)),
+    card: z.boolean().optional(),
+    gridOptions: GridOptionsSchema.optional(),
+    minHeight: z.string().optional(),
+    minWidth: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("stack"),
+    items: z.lazy(() => z.array(LayoutBlockSchema)),
+    card: z.boolean().optional(),
+    minHeight: z.string().optional(),
+    minWidth: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("section"),
+    items: z.lazy(() => z.array(LayoutBlockSchema)),
+    card: z.boolean().optional(),
+    minHeight: z.string().optional(),
+    minWidth: z.string().optional(),
+  }),
+]);
 
 const BaseBlockSchema = z.discriminatedUnion("type", [
+  AccordionBlockSchema,
   SeparatorBlockSchema,
   TextBlockSchema,
   ImageBlockSchema,
@@ -87,9 +113,7 @@ const BaseBlockSchema = z.discriminatedUnion("type", [
   IconLabelBlockSchema,
 ]);
 
-LayoutBlockSchema = z.lazy(() =>
-  z.union([BaseBlockSchema, GridLayoutGroupSchema, StackOrSectionGroupSchema]),
-);
+LayoutBlockSchema = z.lazy(() => z.union([BaseBlockSchema, LayoutGroupSchema]));
 
 export { LayoutBlockSchema };
 

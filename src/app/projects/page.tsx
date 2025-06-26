@@ -68,8 +68,8 @@ export default function Project() {
       <div className="grid grid-cols-4 gap-4">
         {loading && (
           <>
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-[450px] w-full" />
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-[400px] w-full" />
             ))}
           </>
         )}

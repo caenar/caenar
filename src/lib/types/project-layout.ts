@@ -23,14 +23,30 @@ export type LayoutGroup = {
   minWidth?: string;
 };
 
+export type AccordionItem = {
+  heading: {
+    content: string;
+    icon?: IconOptions;
+  };
+  body: {
+    content: string;
+  };
+};
+
 export type LayoutBlock =
   | LayoutGroup
+  | AccordionBlock
   | SeparatorBlock
   | HeadingBlock
   | IconLabelBlock
   | TextBlock
   | ImageBlock
   | LinkBlock;
+
+export type AccordionBlock = {
+  type: "accordion";
+  items: AccordionItem[];
+};
 
 export type SeparatorBlock = {
   type: "separator";
