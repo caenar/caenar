@@ -3,6 +3,7 @@ import type {
   LayoutGroup,
   ProjectLayout,
 } from "@/lib/types/project-layout";
+import { ProjectImage } from "@/lib/types";
 
 import IconLabel from "./icon-label-block";
 import Separator from "./separator-block";
@@ -10,11 +11,18 @@ import Heading from "./heading-block";
 import Text from "./text-block";
 import Link from "./link-block";
 import AccordionBlock from "./accordion-block";
+import Gallery from "./gallery-block";
 
-export function RenderLayout({ layout }: { layout: ProjectLayout }) {
+export function RenderLayout({
+  images,
+  layout,
+}: {
+  images: ProjectImage[];
+  layout: ProjectLayout;
+}) {
   return (
     <section className="grid gap-24 mx-[25vw] pt-16 pb-32">
-      {layout.map((block, i) => renderBlock(block, `root-${i}-`))}
+      {layout.map((block, i) => renderBlock(images, block, `root-${i}-`))}
     </section>
   );
 }
@@ -63,7 +71,11 @@ function getLayoutGroupStyle(block: LayoutGroup): React.CSSProperties {
   return style;
 }
 
-function renderBlock(block: LayoutBlock, keyPrefix = ""): React.ReactNode {
+function renderBlock(
+  images: ProjectImage[],
+  block: LayoutBlock,
+  keyPrefix = "",
+): React.ReactNode {
   if (isLayoutGroup(block)) {
     return (
       <div
@@ -72,7 +84,7 @@ function renderBlock(block: LayoutBlock, keyPrefix = ""): React.ReactNode {
         key={keyPrefix + block.type}
       >
         {block.items.map((child, idx) =>
-          renderBlock(child, `${keyPrefix}${idx}-`),
+          renderBlock(images, child, `${keyPrefix}${idx}-`),
         )}
       </div>
     );
@@ -119,6 +131,16 @@ function renderBlock(block: LayoutBlock, keyPrefix = ""): React.ReactNode {
     case "accordion":
       return (
         <AccordionBlock key={keyPrefix + "accordion"} data={block.items} />
+      );
+
+    case "gallery":
+      return (
+        <Gallery
+          key={keyPrefix + "gallery"}
+          images={images}
+          style={block.style}
+          items={block.items}
+        />
       );
   }
 }

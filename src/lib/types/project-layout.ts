@@ -23,6 +23,12 @@ export type LayoutGroup = {
   minWidth?: string;
 };
 
+export type GalleryItem = {
+  from: string;
+  alt: string;
+  desc?: string;
+};
+
 export type AccordionItem = {
   heading: {
     content: string;
@@ -35,6 +41,7 @@ export type AccordionItem = {
 
 export type LayoutBlock =
   | LayoutGroup
+  | GalleryBlock
   | AccordionBlock
   | SeparatorBlock
   | HeadingBlock
@@ -42,6 +49,13 @@ export type LayoutBlock =
   | TextBlock
   | ImageBlock
   | LinkBlock;
+
+export type GalleryBlock = {
+  type: "gallery";
+  style: "default" | "masonry" | "featured";
+  gridOptions?: GridOptions;
+  items: GalleryItem[];
+};
 
 export type AccordionBlock = {
   type: "accordion";

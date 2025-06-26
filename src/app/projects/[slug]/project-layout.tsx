@@ -64,8 +64,10 @@ export default function ProjectLayout({ project }: { project: Project }) {
       </section>
 
       {/* render the dynamic JSON layout */}
-{/*  chore */}
-      <RenderLayout layout={project.layout as ProjectLayout} />
+      <RenderLayout
+        images={project.project_image}
+        layout={project.layout as ProjectLayout}
+      />
     </>
   );
 }

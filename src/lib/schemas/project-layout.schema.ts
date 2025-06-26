@@ -13,6 +13,12 @@ const GridOptionsSchema = z.object({
   align: z.enum(["start", "center", "end", "stretch"]).optional(),
 });
 
+const GalleryItemSchema = z.object({
+  from: z.string(),
+  alt: z.string(),
+  desc: z.string().optional(),
+});
+
 const AccordionItemSchema = z.object({
   heading: z.object({
     content: z.string(),
@@ -21,6 +27,13 @@ const AccordionItemSchema = z.object({
   body: z.object({
     content: z.string(),
   }),
+});
+
+const GalleryBlockSchema = z.object({
+  type: z.literal("gallery"),
+  style: z.enum(["default", "masonry", "featured"]),
+  gridOptions: GridOptionsSchema.optional(),
+  items: z.lazy(() => z.array(GalleryItemSchema)),
 });
 
 const AccordionBlockSchema = z.object({
@@ -104,13 +117,14 @@ const LayoutGroupSchema = z.discriminatedUnion("type", [
 ]);
 
 const BaseBlockSchema = z.discriminatedUnion("type", [
+  GalleryBlockSchema,
   AccordionBlockSchema,
   SeparatorBlockSchema,
   TextBlockSchema,
   ImageBlockSchema,
   LinkBlockSchema,
-  HeadingBlockSchema,
   IconLabelBlockSchema,
+  HeadingBlockSchema,
 ]);
 
 LayoutBlockSchema = z.lazy(() => z.union([BaseBlockSchema, LayoutGroupSchema]));
