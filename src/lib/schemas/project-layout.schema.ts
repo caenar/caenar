@@ -14,7 +14,7 @@ const GridOptionsSchema = z.object({
 });
 
 const GalleryItemSchema = z.object({
-  from: z.string(),
+  index: z.number(),
   alt: z.string(),
   desc: z.string().optional(),
 });

@@ -31,7 +31,7 @@
           },
           {
             "type": "separator",
-            "spacing": 1,
+            "spacing": 1.5,
             "direction": "x"
           },
           {
@@ -40,7 +40,7 @@
           },
           {
             "type": "separator",
-            "spacing": 1,
+            "spacing": 1.5,
             "direction": "x"
           },
           {
@@ -49,7 +49,7 @@
           },
           {
             "type": "separator",
-            "spacing": 1,
+            "spacing": 1.5,
             "direction": "x"
           },
           {
@@ -114,30 +114,71 @@
     }
   },
   {
+    "type": "gallery",
+    "items": [
+      {
+        "alt": "Homepage design",
+        "index": 1
+      },
+      {
+        "alt": "User flow diagram",
+        "index": 2
+      },
+      {
+        "alt": "User flow diagram",
+        "index": 3
+      },
+      {
+        "alt": "User flow diagram",
+        "index": 4
+      },
+      {
+        "alt": "Mobile preview",
+        "index": 5
+      },
+      {
+        "alt": "Mobile preview",
+        "index": 6
+      },
+      {
+        "alt": "Mobile preview",
+        "index": 7
+      },
+      {
+        "alt": "Mobile preview",
+        "index": 8
+      }
+    ],
+    "style": "default",
+    "gridOptions": {
+      "columns": "repeat(2, 1fr)"
+    }
+  },
+  {
     "type": "accordion",
     "items": [
       {
-        "heading": {
-          "content": "What I Learned"
-        },
         "body": {
           "content": "(To be filled) Insights, discoveries, and first-time experiences using Motoko and DFX."
+        },
+        "heading": {
+          "content": "What I Learned"
         }
       },
       {
-        "heading": {
-          "content": "The Architecture"
-        },
         "body": {
           "content": "(To be filled) How the frontend and backend communicate, and how state is managed."
+        },
+        "heading": {
+          "content": "The Architecture"
         }
       },
       {
-        "heading": {
-          "content": "Tech Stack"
-        },
         "body": {
           "content": "(To be filled) List of tools, languages, and frameworks used for both frontend and backend."
+        },
+        "heading": {
+          "content": "Tech Stack"
         }
       }
     ]

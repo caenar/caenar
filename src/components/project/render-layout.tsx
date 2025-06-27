@@ -20,6 +20,8 @@ export function RenderLayout({
   images: ProjectImage[];
   layout: ProjectLayout;
 }) {
+  console.log(layout);
+
   return (
     <section className="grid gap-24 mx-[25vw] pt-16 pb-32">
       {layout.map((block, i) => renderBlock(images, block, `root-${i}-`))}
@@ -138,6 +140,7 @@ function renderBlock(
         <Gallery
           key={keyPrefix + "gallery"}
           images={images}
+          gridOptions={block.gridOptions}
           style={block.style}
           items={block.items}
         />

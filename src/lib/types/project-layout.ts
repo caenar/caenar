@@ -24,7 +24,7 @@ export type LayoutGroup = {
 };
 
 export type GalleryItem = {
-  from: string;
+  index: number;
   alt: string;
   desc?: string;
 };

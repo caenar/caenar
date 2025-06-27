@@ -10,7 +10,9 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
           tag: true,
         },
       },
-      project_image: true,
+      project_image: {
+        orderBy: { order: "asc" },
+      },
     },
   });
 

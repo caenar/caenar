@@ -14,7 +14,7 @@ export default function Heading({
   content,
 }: HeadingProps) {
   return (
-    <Tag className={`${icon ? "icon-label" : ""} uppercase font-mono mb-2`}>
+    <Tag className={`${icon ? "icon-label" : ""} mb-2`}>
       {icon && (
         <DynamicIcon
           name={icon.name as IconName}
