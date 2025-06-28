@@ -1,7 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
-  return (
-    <footer className="py-3 w-full flex items-center justify-center">
-      <p className="text-xs">Made with &lt;3 by Caenar Arteta</p>
-    </footer>
-  );
+  return <footer className="mx-[10vw] pb-32"></footer>;
 }

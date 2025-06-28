@@ -23,7 +23,7 @@ export function RenderLayout({
   console.log(layout);
 
   return (
-    <section className="grid gap-24 mx-[25vw] pt-16 pb-32">
+    <section className="grid gap-24 mx-[25vw] pt-16">
       {layout.map((block, i) => renderBlock(images, block, `root-${i}-`))}
     </section>
   );

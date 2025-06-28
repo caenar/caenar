@@ -86,7 +86,7 @@ export default function Gallery({
       });
 
       return (
-        <div className={wrapperClass}>
+        <div className={getWrapperClass()}>
           {columnItems.map((col, colIndex) => (
             <div key={`col-${colIndex}`} className="flex flex-col gap-4">
               {col.map((item, i) => {

@@ -6,7 +6,7 @@ import Link from "next/link";
 import type { Project, ProjectLayout, Tag } from "@/lib/types";
 import { IconSizes } from "@/lib/constants";
 import { RenderLayout } from "@/components/project/render-layout";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 
 export default function ProjectLayout({ project }: { project: Project }) {
   return (
@@ -68,6 +68,13 @@ export default function ProjectLayout({ project }: { project: Project }) {
         images={project.project_image}
         layout={project.layout as ProjectLayout}
       />
+
+      <section className="flex justify-center py-32 mx-[25vw]">
+        <Link className="icon-label font-mono uppercase text-3xl" href="/">
+          Next project
+          <ArrowRight size={IconSizes.XL} />
+        </Link>
+      </section>
     </>
   );
 }
