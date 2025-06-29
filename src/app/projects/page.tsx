@@ -108,5 +108,7 @@ export default function Project() {
         </AnimatePresence>
       </div>
     </section>
+
+    // NOTE: just delete me later
   );
 }
