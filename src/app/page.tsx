@@ -35,8 +35,6 @@ export default function Home() {
     if (!useProject.getState().projects) load();
   }, []);
 
-  // FIX: just remove this later, commit streak
-
   return (
     <>
       <section className="pt-18 h-[100vh] flex flex-col gap-[5rem] items-center justify-center">
