@@ -1,16 +1,16 @@
 ```json
 {
    "name": "profile",
-   "version": "4.0.0",
-   "description": "An introspective mind that brings both clarity and chaos",
+   "version": "4.1.0",
+   "description": "A bit of this, a bit of that.",
    "author": "Caenar Arteta",
    "languages": {
-      "programming": ["JS/TS", "Dart", "Rust", "Python", "Java", "PHP"],
-      "markup": ["HTML", "CSS", "SVG", "Markdown", "XML", "YML"],
-      "real": ["English", "Tagalog"]
+      "programming": ["JavaScript", "TypeScript", "PHP", "Python", "Java", "Dart"],
+      "markup": ["HTML", "CSS", "SVG", "Markdown", "XML", "YAML"],
+      "spoken": ["English", "Tagalog"]
    },
-   "interests:": ["coding", "biking"],
-   "currentProjects": "caenar",
-   "goal": "Peace of mind above everything."
+   "interests": ["coding", "systems", "learning", "problem-solving"],
+   "currentProject": "orgbit",
+   "goal": "Planted a seed that I hope to see bloom one day."
 }
 ```
