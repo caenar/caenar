@@ -39,7 +39,7 @@ export default function Project() {
     }
 
     load();
-  }, []);
+  }, [projects, setProjects]);
 
   return (
     <section className="content">

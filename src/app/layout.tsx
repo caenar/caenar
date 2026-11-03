@@ -8,7 +8,7 @@ import Footer from "@/components/footer";
 import Popup from "@/components/popup";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { ReactLenis } from "lenis/react";
+import SmoothScroll from "@/components/scroll-smooth";
 
 const ptSerif = PT_Serif({
   variable: "--font-display",
@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <ReactLenis root />
+      <SmoothScroll />
       <body
         className={`flex flex-col min-h-screen ${ptSerif.variable} ${inclusiveSans.variable} antialiased `}
       >

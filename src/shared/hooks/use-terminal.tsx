@@ -69,11 +69,11 @@ function help(): JSX.Element {
     {
       name: "whoami",
       flags: [
-        { alias: "", desc: "Display a short description about myself" },
-        { alias: "-v", desc: "Display a verbose description of myself" },
-        { alias: "-ps", desc: "Display programming skills" },
-        { alias: "-ds", desc: "Display design skills" },
-        { alias: "-m", desc: "Display my mantra in life" },
+        { alias: "", desc: "A short description about me" },
+        { alias: "-v", desc: "The verbose version" },
+        { alias: "-ps", desc: "Programming skills" },
+        { alias: "-ds", desc: "Design skills" },
+        { alias: "-m", desc: "Mantra in life" },
       ],
     },
     {
@@ -89,19 +89,31 @@ function help(): JSX.Element {
   return (
     <>
       {commands.map((cmd, index) => (
-        <div key={index} className="grid grid-cols-[15%_85%]">
-          <div>
-            <p>{cmd.name}</p>
-          </div>
-          <div className="grid grid-cols-[5%_95%]">
-            {cmd.flags.length > 0
-              ? cmd.flags.map((flag, flagIndex) => (
-                <React.Fragment key={flagIndex}>
-                  <p className="opacity-50">{flag.alias}</p>
-                  <p>{flag.desc}</p>
-                </React.Fragment>
+        <div key={index} className="flex flex-col">
+          {/* 1. Command Name */}
+          <p className="font-semibold text-violet-300">{cmd.name}</p>
+
+          {/* 2. Command description / Flags container */}
+          <div className="flex flex-col ml-4">
+            {cmd.flags.length > 0 ? (
+              cmd.flags.map((flag, flagIndex) => (
+                <div key={flagIndex} className="flex gap-4 items-start">
+                  {flag.alias ? (
+                    <>
+                      {/* Fixed width for the flag alias so it never stretches to 50% */}
+                      <span className="opacity-50 w-[30px] shrink-0 font-mono">
+                        {flag.alias}
+                      </span>
+                      <p className="break-words">{flag.desc}</p>
+                    </>
+                  ) : (
+                    <p className="break-words opacity-90">{flag.desc}</p>
+                  )}
+                </div>
               ))
-              : null}
+            ) : (
+              <p className="opacity-50 italic">No description available</p>
+            )}
           </div>
         </div>
       ))}

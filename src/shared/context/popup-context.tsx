@@ -1,7 +1,14 @@
 "use client";
 
 import { ConfirmData } from "@/lib/types";
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 type PopupContextType = {
   isOpen: boolean;
@@ -13,7 +20,7 @@ type PopupContextType = {
   confirmData: ConfirmData;
   openConfirmPopup: (confirmData: ConfirmData) => void;
   closeConfirmPopup: () => void;
-  setConfirmData: (confirmData: ConfirmData) => void;
+  setConfirmData: Dispatch<SetStateAction<ConfirmData>>;
 };
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined);

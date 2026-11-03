@@ -2,12 +2,18 @@
 
 import { JSX, KeyboardEvent, useEffect, useRef, useState } from "react";
 import TERMINAL_COMMANDS from "@/shared/hooks/use-terminal";
+import React from "react";
 
 export default function Terminal() {
   const [history, setHistory] = useState<
-    { command: string; output: JSX.Element | string; index: number }[]
+    {
+      command: string;
+      output: JSX.Element | string;
+      isError: boolean;
+      index: number;
+    }[]
   >([]);
-  const [keyIndex, setKeyIndex] = useState(0);
+  const [, setKeyIndex] = useState(0);
 
   const terminalContainer = useRef<HTMLDivElement>(null);
   const terminalInput = useRef<HTMLInputElement>(null);
@@ -21,51 +27,70 @@ export default function Terminal() {
       event.preventDefault();
 
       const value = event.currentTarget.value;
-      const args = value.trim().split(/\s+/); // get the flags only
-      const command = args.shift()?.toLowerCase(); // type safety
-      if (!command) return; // return if input empty
+      const args = value.trim().split(/\s+/);
+      const command = args.shift()?.toLowerCase();
+      if (!command) return;
 
-      const commandFunc = TERMINAL_COMMANDS[command]; // get appropriate function
+      const commandFunc = TERMINAL_COMMANDS[command];
 
-      if (commandFunc.name === "clear") return setHistory([]);
+      if (commandFunc?.name === "clear") {
+        setHistory([]);
+        event.currentTarget.value = "";
+        return;
+      }
 
-      setHistory((prev) => {
-        const newHistory = [
-          ...prev,
-          {
-            command: value,
-            output: commandFunc ? (
-              commandFunc(args)
-            ) : (
-              <p>Command not found: {value}</p>
-            ),
-            index: prev.length,
-          },
-        ];
-        return newHistory;
+      setHistory((prev) => [
+        ...prev,
+        {
+          command: value,
+          output: commandFunc ? (
+            commandFunc(args)
+          ) : (
+            <p>Command not found: {value}</p>
+          ),
+          isError: !commandFunc,
+          index: prev.length,
+        },
+      ]);
+
+      event.currentTarget.value = "";
+      setKeyIndex(0);
+
+      // Handle Arrow Up (Older history)
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (history.length === 0) return;
+
+      setKeyIndex((prev) => {
+        const nextIndex = Math.min(prev + 1, history.length);
+        const targetCommand = history[history.length - nextIndex]?.command;
+        if (targetCommand !== undefined && event.currentTarget) {
+          event.currentTarget.value = targetCommand;
+        }
+        return nextIndex;
       });
 
-      event.currentTarget.value = ""; // reset input
-      setKeyIndex(0); // refresh history
-
-      // handle arrow key up
-    } else if (event.key === "ArrowUp") {
-      if (history.length === 0) return;
-
-      setKeyIndex((prev) => Math.min(prev + 1, history.length - 1));
-      event.currentTarget.value =
-        history[history.length - 1 - keyIndex].command;
-
-      // handle arrow key down
+      // Handle Arrow Down (Newer history)
     } else if (event.key === "ArrowDown") {
+      event.preventDefault();
       if (history.length === 0) return;
 
-      setKeyIndex((prev) => Math.max(prev - 1, 0));
-      event.currentTarget.value =
-        history[history.length - 1 - keyIndex].command;
+      setKeyIndex((prev) => {
+        const nextIndex = Math.max(prev - 1, 0);
+        if (nextIndex === 0) {
+          if (event.currentTarget) event.currentTarget.value = "";
+        } else {
+          const targetCommand = history[history.length - nextIndex]?.command;
+          if (targetCommand !== undefined && event.currentTarget) {
+            event.currentTarget.value = targetCommand;
+          }
+        }
+        return nextIndex;
+      });
     }
   };
 
+  // Auto-scroll to bottom on new history entry
   useEffect(() => {
     if (terminalContainer.current) {
       terminalContainer.current.scrollTop =
@@ -73,21 +98,41 @@ export default function Terminal() {
     }
   }, [history]);
 
+  // Prevent scroll chaining
+  useEffect(() => {
+    const element = terminalContainer.current;
+    if (!element) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const { scrollTop, scrollHeight, clientHeight } = element;
+
+      // If the content isn't tall enough to scroll yet, do nothing and let the page scroll normally
+      if (scrollHeight <= clientHeight) return;
+
+      const isAtTop = scrollTop === 0;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+
+      if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+        e.preventDefault();
+      }
+    };
+
+    return () => element.removeEventListener("wheel", handleWheel);
+  }, []);
+
   return (
     <div
-      className="min-w-[55vw] h-[35vh] overflow-scroll card p-4 cursor-pointer"
+      className="terminal-scroll w-[55vw] h-[40vh] overflow-y-auto overflow-x-hidden overscroll-y-contain card p-4 cursor-pointer"
       onClick={focusTerminal}
       ref={terminalContainer}
     >
       {history.map((entry, index) => (
-        <div key={index}>
-          <div className="terminal-input">
+        <React.Fragment key={index}>
+          <div className="terminal-input mb-3">
             <p>
               ╭─<span className="text-violet-100">[</span>~
               <span className="text-violet-100">]</span>─
-              <span className="text-violet-100">[</span>caenar@fedora
-              <span className="text-violet-100">]</span>─
-              <span className="text-violet-100">[</span>0
+              <span className="text-violet-100">[</span>caenar@fsociety
               <span className="text-violet-100">]</span>─
               <span className="text-violet-100">[</span>
               {entry.index}
@@ -96,22 +141,24 @@ export default function Terminal() {
             <p>
               ╰─
               <span className="text-violet-600">
-                [<span className="text-pink-300">:)</span>]
+                [
+                <span className={entry.isError ? "text-pink-500" : "text-green-500"}>
+                  :{entry.isError ? "(" : ")"}
+                </span>
+                ]
               </span>{" "}
               % {entry.command}
             </p>
           </div>
-          <div className="grid gap-2 ml-4">{entry.output}</div>
-        </div>
+          <div className="flex flex-col gap-2 ml-4 mb-3">{entry.output}</div>
+        </React.Fragment>
       ))}
 
       <div className="terminal-input">
         <p>
           ╭─<span className="text-violet-100">[</span>~
           <span className="text-violet-100">]</span>─
-          <span className="text-violet-100">[</span>caenar@fedora
-          <span className="text-violet-100">]</span>─
-          <span className="text-violet-100">[</span>0
+          <span className="text-violet-100">[</span>caenar@fsociety
           <span className="text-violet-100">]</span>─
           <span className="text-violet-100">[</span>
           {history.length}
@@ -128,7 +175,7 @@ export default function Terminal() {
             ref={terminalInput}
             onKeyDown={handleCommand}
             placeholder={
-              history.length <= 0 ? "Type help to see available commands" : ""
+              history.length <= 0 ? `Type "help" to see available commands` : ""
             }
           />
         </p>

@@ -32,7 +32,7 @@ export default function Popup() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, showConfirm]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -49,7 +49,7 @@ export default function Popup() {
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
-  }, [isOpen, closePopup, closeConfirmPopup]);
+  }, [isOpen, showConfirm, closePopup, closeConfirmPopup]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -130,7 +130,7 @@ export default function Popup() {
                     <button
                       className="danger-button capitalize"
                       onClick={async () => {
-                        if (!confirmData) return;
+                        if (!confirmData?.action) return;
 
                         setConfirmData(
                           (prev) => prev && { ...prev, loading: true },

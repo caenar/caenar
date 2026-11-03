@@ -1,8 +1,9 @@
 import { create } from "zustand";
+import type { Project } from "@/lib/types";
 
 interface ProjectStore {
-  projects: any[] | null;
-  setProjects: (projects: any[]) => void;
+  projects: Project[] | null;
+  setProjects: (projects: Project[]) => void;
 }
 
 export const useProject = create<ProjectStore>((set) => ({

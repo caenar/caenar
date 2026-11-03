@@ -1,12 +1,7 @@
 "use client";
 
-import { ProjectImage } from "@/lib/types";
+import { ProjectImage, Tag } from "@/lib/types";
 import Image from "next/image";
-
-type Tag = {
-  id: number;
-  name: string;
-};
 
 export type ProjectCardProps = {
   title: string;

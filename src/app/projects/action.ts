@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { fail, ok, Result } from "@/lib/utils/result";
 import { revalidatePath } from "next/cache";
 import { addProjectSchema } from "@/lib/schemas/project.schema";
-import type { ErrorType } from "@/lib/types";
+import type { ErrorType, Project } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
-export async function fetchProjects(): Promise<any[]> {
+export async function fetchProjects(): Promise<Project[]> {
   try {
     const projects = await prisma.project.findMany({
       orderBy: [{ order: "asc" }, { created_at: "desc" }],
@@ -32,6 +32,12 @@ export async function fetchProjects(): Promise<any[]> {
         ...rest,
         id: id.toString(),
         created_at: created_at.toISOString(),
+        desc: project.desc ?? "",
+        order: project.order ?? undefined,
+        live_link: project.live_link ?? undefined,
+        code_link: project.code_link ?? undefined,
+        figma_link: project.figma_link ?? undefined,
+        layout: (project.layout ?? undefined) as Project["layout"],
         tags: project_tag.map((pt) => ({
           id: pt.tag.id.toString(),
           name: pt.tag.name,
@@ -51,7 +57,7 @@ export async function fetchProjects(): Promise<any[]> {
 // create
 export async function addProject(
   formData: FormData,
-): Promise<Result<string, ErrorType, any>> {
+): Promise<Result<string, ErrorType, string>> {
   try {
     const rawTitle = formData.get("title")?.toString() ?? "";
     const rawDesc = formData.get("desc")?.toString() ?? "";
@@ -63,7 +69,11 @@ export async function addProject(
       desc: rawDesc,
     });
 
-    if (!parsed.success) return fail("validation", parsed.error.format());
+    if (!parsed.success)
+      return fail(
+        "validation",
+        parsed.error.issues[0]?.message ?? "Invalid project data",
+      );
 
     const { title, desc } = parsed.data;
 
@@ -122,16 +132,14 @@ export async function addProject(
     return ok(`Added project "${title}" successfully`);
   } catch (err) {
     console.error("Project creation error: ", err);
-    return fail("server", {
-      message: "Something went wrong. Please try again.",
-    });
+    return fail("server", "Something went wrong. Please try again.");
   }
 }
 
 // put
 export async function editProject(
   formData: FormData,
-): Promise<Result<string, ErrorType, any>> {
+): Promise<Result<string, ErrorType, string>> {
   try {
     const projectId = formData.get("projectId")?.toString() ?? "";
     const title = formData.get("title")?.toString() ?? "";
@@ -243,16 +251,14 @@ export async function editProject(
     return ok(`Project ${title} updated`);
   } catch (err) {
     console.error("Project update error: ", err);
-    return fail("server", {
-      message: "Something went wrong. Please try again.",
-    });
+    return fail("server", "Something went wrong. Please try again.");
   }
 }
 
 // delete
 export async function deleteProject(
   projectId: string,
-): Promise<Result<string, ErrorType, any>> {
+): Promise<Result<string, ErrorType, string>> {
   try {
     const parsedProjectId = parseInt(projectId, 10);
 
@@ -299,8 +305,6 @@ export async function deleteProject(
     return ok(`Project deleted`);
   } catch (err) {
     console.error("Project deletion error: ", err);
-    return fail("server", {
-      message: "Something went wrong. Please try again",
-    });
+    return fail("server", "Something went wrong. Please try again");
   }
 }

@@ -89,7 +89,16 @@ const IconLabelBlockSchema = z.object({
   href: z.string().url().optional(),
 });
 
-let LayoutBlockSchema: z.ZodType<LayoutBlock>;
+const BaseBlockSchema = z.discriminatedUnion("type", [
+  GalleryBlockSchema,
+  AccordionBlockSchema,
+  SeparatorBlockSchema,
+  TextBlockSchema,
+  ImageBlockSchema,
+  LinkBlockSchema,
+  IconLabelBlockSchema,
+  HeadingBlockSchema,
+]);
 
 const LayoutGroupSchema = z.discriminatedUnion("type", [
   z.object({
@@ -116,18 +125,9 @@ const LayoutGroupSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
-const BaseBlockSchema = z.discriminatedUnion("type", [
-  GalleryBlockSchema,
-  AccordionBlockSchema,
-  SeparatorBlockSchema,
-  TextBlockSchema,
-  ImageBlockSchema,
-  LinkBlockSchema,
-  IconLabelBlockSchema,
-  HeadingBlockSchema,
-]);
-
-LayoutBlockSchema = z.lazy(() => z.union([BaseBlockSchema, LayoutGroupSchema]));
+const LayoutBlockSchema: z.ZodType<LayoutBlock> = z.lazy(() =>
+  z.union([BaseBlockSchema, LayoutGroupSchema]),
+);
 
 export { LayoutBlockSchema };
 

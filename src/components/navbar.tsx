@@ -5,30 +5,38 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const links = [
-    { name: "Home", href: "/" },
-    { name: "Projects", href: "/projects" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
-    { name: "Admin", href: "/admin" },
-  ];
-
   const pathname = usePathname();
 
+  const links = (
+    [
+      { name: "Home", href: "/" },
+      { name: "Projects", href: "/projects" },
+      { name: "About", href: "/about" },
+      { name: "Contact", href: "/contact" },
+      process.env.NODE_ENV === "development" && {
+        name: "Admin",
+        href: "/admin",
+      },
+    ] as const
+  ).filter((link): link is { name: string; href: string } => Boolean(link));
+
+  
+
   return (
-    <nav className="navbar">
-      <a href="/">
-        <div className="h-12 w-12 flex items-center content-center">
-          <Image
-            priority
-            src="/logo.svg"
-            alt="Caenar's pretty cool logo"
-            className="invert"
-            width={45}
-            height={45}
-          />
-        </div>
-      </a>
+    <nav
+      className="z-40 fixed w-full px-[15vw] py-3 flex items-center justify-between backdrop-blur-md
+  border-b border-[rgba(255,_255,_255,_0.151)]"
+    >
+      <Link href="/">
+        <Image
+          priority
+          src="/logo.svg"
+          alt="Caenar's pretty cool logo"
+          className="invert"
+          width={35}
+          height={35}
+        />
+      </Link>
       <ul className="flex gap-10">
         {links.map(({ name, href }) => {
           const isActiveLink = href === pathname;
