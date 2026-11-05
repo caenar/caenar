@@ -2,15 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Koluta";
-  src: url("/fonts/Koluta.ttf") format("ttf");
-  font-weight: 400;
-  font-style: normal;
-}
-
 body {
-  @apply bg-background-100 text-foreground-100 text-[15px] font-body;
+  @apply bg-background-100 text-foreground-100 text-[15px] font-normal;
 }
 
 label {
@@ -46,7 +39,7 @@ h6 {
 }
 
 button {
-  @apply  transition-all duration-200 ease-in-out hover:brightness-[0.9] active:scale-[0.98];
+  @apply border border-foreground-100/20 transition-all duration-200 ease-in-out hover:brightness-[0.9] active:scale-[0.98];
 }
 
 .primary-button {
@@ -70,7 +63,7 @@ button {
 }
 
 .card {
-  @apply rounded-lg border border-background-400;
+  @apply rounded-lg border border-background-400/70;
 }
 
 .box {
@@ -125,7 +118,7 @@ button {
 }
 
 #terminal * {
-  @apply font-secondary text-base;
+  @apply font-mono text-base;
 }
 
 @layer base {

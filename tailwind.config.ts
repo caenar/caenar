@@ -66,8 +66,8 @@ export default {
         },
       },
       fontFamily: {
-        body: ["Inclusive Sans", "sans-serif"],
-        secondary: ["Koluta", "monospace"],
+        normal: ["Inclusive Sans", "sans-serif"],
+        mono: ["Google Sans Code", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",

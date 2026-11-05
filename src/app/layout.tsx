@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import { PT_Serif, Inclusive_Sans } from "next/font/google";
+import { Inclusive_Sans, Google_Sans_Code } from "next/font/google";
 import type { Metadata } from "next";
 import { PopupProvider } from "@/shared/context/popup-context";
 
@@ -10,16 +10,17 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import SmoothScroll from "@/components/scroll-smooth";
 
-const ptSerif = PT_Serif({
-  variable: "--font-display",
+const inclusiveSans = Inclusive_Sans({
+  variable: "--font-normal",
   subsets: ["latin"],
-  weight: "700",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const inclusiveSans = Inclusive_Sans({
-  variable: "--font-body",
+const googleSansCode = Google_Sans_Code({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "700"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -37,7 +38,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <SmoothScroll />
       <body
-        className={`flex flex-col min-h-screen ${ptSerif.variable} ${inclusiveSans.variable} antialiased `}
+        className={`flex flex-col min-h-screen ${googleSansCode.variable} ${inclusiveSans.variable} antialiased `}
       >
         <ThemeProvider
           attribute="class"

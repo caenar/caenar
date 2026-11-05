@@ -1,8 +1,10 @@
 "use client";
 
+import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -20,12 +22,26 @@ export default function Navbar() {
     ] as const
   ).filter((link): link is { name: string; href: string } => Boolean(link));
 
-  
+  const [viewportHeight, setViewportHeight] = useState(1);
+  const { scrollY } = useScroll();
+
+  useEffect(() => {
+    setViewportHeight(window.innerHeight);
+
+    const onResize = () => setViewportHeight(window.innerHeight);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const blur = useTransform(scrollY, [0, viewportHeight], [0, 12]);
+  const borderAlpha = useTransform(scrollY, [0, viewportHeight], [0, 0.151]);
+  const borderColor = useMotionTemplate`rgba(255, 255, 255, ${borderAlpha})`;
+  const backdropFilter = useMotionTemplate`blur(${blur}px)`;
 
   return (
-    <nav
-      className="z-40 fixed w-full px-[15vw] py-3 flex items-center justify-between backdrop-blur-md
-  border-b border-[rgba(255,_255,_255,_0.151)]"
+    <motion.nav
+      className="z-40 fixed w-full px-[15vw] py-4 flex items-center justify-between border-b"
+      style={{ borderColor, backdropFilter }}
     >
       <Link href="/">
         <Image
@@ -40,20 +56,19 @@ export default function Navbar() {
       <ul className="flex gap-10">
         {links.map(({ name, href }) => {
           const isActiveLink = href === pathname;
-          const activeClass =
-            href === pathname
-              ? "flex place-items-center gap-2"
-              : "transition hover:opacity-70 cursor-pointer";
+          const activeClass = isActiveLink
+            ? "flex place-items-center gap-2"
+            : "transition hover:opacity-70 cursor-pointer";
           return (
-            <li key={name} className={`${activeClass} uppercase !text-sm`}>
+            <li key={name} className={`${activeClass} uppercase text-xs`}>
               {isActiveLink && <div className="box"></div>}
-              <Link href={href} className="font-secondary">
+              <Link href={href} className="font-mono">
                 {name}
               </Link>
             </li>
           );
         })}
       </ul>
-    </nav>
+    </motion.nav>
   );
 }

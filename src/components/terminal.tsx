@@ -122,7 +122,7 @@ export default function Terminal() {
 
   return (
     <div
-      className="terminal-scroll w-[55vw] h-[40vh] overflow-y-auto overflow-x-hidden overscroll-y-contain card p-4 cursor-pointer"
+      className="terminal-scroll bg-background-100/60 backdrop-blur-3xl w-[55vw] h-[40vh] overflow-y-auto overflow-x-hidden overscroll-y-contain card p-4 cursor-pointer"
       onClick={focusTerminal}
       ref={terminalContainer}
     >
