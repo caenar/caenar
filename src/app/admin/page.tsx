@@ -10,7 +10,7 @@ import { IconSizes } from "@/lib/constants";
 import { TbPlus } from "react-icons/tb";
 import type { Project } from "@/lib/types";
 import EditProjectForm from "@/components/ui/forms/edit-project";
-import { fetchProjects } from "../projects/action";
+import { fetchProjects } from "../work/action";
 import { useProject } from "@/lib/stores/use-project";
 import { Skeleton } from "@/components/ui/skeleton";
 

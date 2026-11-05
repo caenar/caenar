@@ -6,7 +6,7 @@ export default function Contact() {
   return (
     <section className="content">
       <div className="mb-20">
-        <span className="page-title">/ Contact</span>
+        <span className="page-title">Contact</span>
       </div>
 
       <div className="flex justify-between">

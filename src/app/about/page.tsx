@@ -1,80 +1,70 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
-
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { ArrowDown, Code, Slice } from "lucide-react";
-gsap.registerPlugin(ScrollTrigger);
+
+const EXPERIENCE_ITEMS = [
+  "Worked with a New Zealand-based creative agency, producing visual content, brand identities, and promotional materials for both internal and external projects.",
+  "Created logo animations, social media graphics, and video reels for campaigns and product launches.",
+  "Assisted in developing visual guidelines and moodboards for client pitches and branding decks.",
+  "Designed timetables, illustration-based ads, and promotional posters for events and digital use.",
+  "Communicated directly with supervisors to revise and iterate designs quickly based on feedback.",
+];
+
+function ExperienceItem({
+  text,
+  index,
+  total,
+  progress,
+}: {
+  text: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const step = 0.7 / Math.max(total - 1, 1);
+  const start = index * step;
+  const end = Math.min(start + 0.45, 1);
+  const y = useTransform(progress, [start, end], [90 * index, 0]);
+  const opacity = useTransform(progress, [start, end], [0, 1]);
+
+  return (
+    <motion.li style={{ y, opacity }}>
+      {text}
+    </motion.li>
+  );
+}
 
 export default function AboutPage() {
-  const sectionRefExperience = useRef(null);
-  const sectionRefEducation = useRef(null);
+  const experienceRef = useRef<HTMLDivElement | null>(null);
+  const educationRef = useRef<HTMLDivElement | null>(null);
 
-  const listRef = useRef<HTMLLIElement[]>([]);
+  const { scrollYProgress: experienceProgress } = useScroll({
+    target: experienceRef,
+    offset: ["start 0.8", "0.8 end"],
+  });
+  const experienceY = useTransform(experienceProgress, [0, 1], [100, 0]);
+  const experienceOpacity = useTransform(experienceProgress, [0, 1], [0, 1]);
 
-  const itemsRef = (el: HTMLLIElement) => {
-    if (el && !listRef.current.includes(el)) {
-      listRef.current.push(el);
-    }
-  };
+  const { scrollYProgress: experienceItemsProgress } = useScroll({
+    target: experienceRef,
+    offset: ["start end", "start start"],
+  });
 
-  useEffect(() => {
-    listRef.current.forEach((item, index) => {
-      gsap.fromTo(
-        item,
-        { y: 90 * index, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: sectionRefExperience.current,
-            start: "top bottom",
-            end: "top top",
-            scrub: 1.5,
-          },
-          delay: 0.7 * index,
-        },
-      );
-    });
-
-    gsap.fromTo(
-      sectionRefExperience.current,
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        scrollTrigger: {
-          trigger: sectionRefExperience.current,
-          start: "top 80%",
-          end: "80% bottom",
-          scrub: 1.5,
-        },
-      },
-    );
-
-    gsap.fromTo(
-      sectionRefEducation.current,
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        scrollTrigger: {
-          trigger: sectionRefEducation.current,
-          start: "-80% 80%",
-          end: "bottom bottom",
-          scrub: 1.5,
-        },
-      },
-    );
-  }, []);
+  const { scrollYProgress: educationProgress } = useScroll({
+    target: educationRef,
+    offset: ["start 0.9", "end end"],
+  });
+  const educationY = useTransform(educationProgress, [0, 1], [100, 0]);
+  const educationOpacity = useTransform(educationProgress, [0, 1], [0, 1]);
 
   return (
     <>
-      <section className="pt-36 pb-32 mx-[10vw]">
+      <section className="content">
         <div className="mb-16">
-          <span className="page-title">/ About</span>
+          <span className="page-title">About</span>
         </div>
         <div className="grid grid-rows-[repeat(3,_fit-content(100%))] grid-cols-[1fr_fit-content(100%)_1fr] w-full gap-16">
           <div className="row-span-3">
@@ -155,9 +145,10 @@ export default function AboutPage() {
       </section>
 
       <section className="content flex flex-col items-center justify-center gap-10">
-        <div
-          ref={sectionRefExperience}
+        <motion.div
+          ref={experienceRef}
           className="grid grid-cols-[40%_1fr] py-20"
+          style={{ y: experienceY, opacity: experienceOpacity }}
         >
           <h2 className="text-5xl font-bold mb-2">Experience</h2>
           <div className="grid gap-14">
@@ -166,23 +157,22 @@ export default function AboutPage() {
               <h4 className="opacity-60">Remote · August 2023 — July 2024</h4>
             </div>
             <ul className="list-border grid gap-5 w-[700px] text-lg">
-              {[
-                "Worked with a New Zealand-based creative agency, producing visual content, brand identities, and promotional materials for both internal and external projects.",
-                "Created logo animations, social media graphics, and video reels for campaigns and product launches.",
-                "Assisted in developing visual guidelines and moodboards for client pitches and branding decks.",
-                "Designed timetables, illustration-based ads, and promotional posters for events and digital use.",
-                "Communicated directly with supervisors to revise and iterate designs quickly based on feedback.",
-              ].map((text, index) => (
-                <li key={index} ref={itemsRef}>
-                  {text}
-                </li>
+              {EXPERIENCE_ITEMS.map((text, index) => (
+                <ExperienceItem
+                  key={text}
+                  text={text}
+                  index={index}
+                  total={EXPERIENCE_ITEMS.length}
+                  progress={experienceItemsProgress}
+                />
               ))}
             </ul>
           </div>
-        </div>
-        <div
-          ref={sectionRefEducation}
+        </motion.div>
+        <motion.div
+          ref={educationRef}
           className="grid grid-cols-[40%_1fr] py-20"
+          style={{ y: educationY, opacity: educationOpacity }}
         >
           <h2 className="text-5xl font-bold mb-2">Education</h2>
           <ul className="grid gap-7 w-[700px] text-lg">
@@ -198,7 +188,7 @@ export default function AboutPage() {
               <span>External Vice President in CSIT</span>
             </li>
           </ul>
-        </div>
+        </motion.div>
       </section>
     </>
   );

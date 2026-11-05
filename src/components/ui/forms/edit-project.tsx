@@ -12,7 +12,7 @@ import {
   deleteProject,
   editProject,
   fetchProjects,
-} from "@/app/projects/action";
+} from "@/app/work/action";
 
 import {
   Form,

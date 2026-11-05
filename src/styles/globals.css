@@ -66,8 +66,14 @@ button {
   @apply rounded-lg border border-background-400/70;
 }
 
-.box {
-  @apply h-1.5 w-1.5 bg-foreground-100;
+@keyframes terminal-caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.terminal-caret {
+  animation: terminal-caret-blink 1s step-end infinite;
 }
 
 .badge {
@@ -88,7 +94,7 @@ button {
 }
 
 .page-title {
-  @apply text-lg opacity-50;
+  @apply before:content-['/'] before:mr-3 font-mono uppercase opacity-50;
 }
 
 .list-border li:not(:last-child) {
@@ -115,10 +121,6 @@ button {
 .uploads-container {
   @apply grid gap-3;
   grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
-}
-
-#terminal * {
-  @apply font-mono text-base;
 }
 
 @layer base {

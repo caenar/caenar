@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useProject } from "@/lib/stores/use-project";
-import { fetchProjects } from "./projects/action";
+import { fetchProjects } from "./work/action";
 import { slugify } from "@/lib/utils/slugify";
 import type { Project } from "@/lib/types/project";
 
@@ -14,8 +14,9 @@ import ProjectCard from "@/components/project-card";
 import ScrambleText from "@/components/scramble-text";
 import FadeInLines from "@/components/fade-in-lines";
 import FadeIn from "@/components/fade-in";
+import CuriosityFlow from "@/components/curiosity-flow";
 import { IconSizes } from "@/lib/constants";
-import { Component, Facebook, Github, Linkedin } from "lucide-react";
+import {  Component, Facebook, Github, Linkedin } from "lucide-react";
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>(
@@ -84,7 +85,7 @@ export default function Home() {
         <div className="sticky top-0 h-[100vh] flex flex-col items-center justify-center overflow-visible">
           {/* Final state: headline (upper) + terminal (just below) centered as a group.
               On scroll, both rise independently from shifted-down initial positions. */}
-          <div className="flex flex-col items-center gap-[4rem] z-10">
+          <div className="flex flex-col items-center gap-[3.5rem] z-10">
             <motion.div
               className="flex flex-col max-w-[49ch] gap-6"
               style={{ y: headlineY }}
@@ -112,7 +113,7 @@ export default function Home() {
                 className="flex gap-5 justify-center items-center"
               >
                 <button type="button" className="primary-button">
-                  See my resume
+                  View resume
                 </button>
                 <div className="flex gap-3">
                   {socials.map((social, i) => (
@@ -146,6 +147,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <CuriosityFlow />
 
       <section className="content grid gap-10">
         <div className="grid gap-2">

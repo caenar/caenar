@@ -10,7 +10,7 @@ import { addProjectSchema } from "@/lib/schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleResult } from "@/lib/utils/handle-result";
 import { toast } from "sonner";
-import { addProject, fetchProjects } from "@/app/projects/action";
+import { addProject, fetchProjects } from "@/app/work/action";
 import {
   Form,
   FormControl,
