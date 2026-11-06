@@ -1,12 +1,14 @@
 "use client";
 
 import {
+  AnimatePresence,
   motion,
   useAnimationControls,
   useMotionTemplate,
   useScroll,
   useTransform,
 } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,6 +28,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
   const [indicatorReady, setIndicatorReady] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const listRef = useRef<HTMLUListElement | null>(null);
   const itemRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
@@ -43,6 +46,19 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
+
   const blur = useTransform(scrollY, [0, viewportHeight * 5], [0, 12]);
   const borderAlpha = useTransform(scrollY, [0, viewportHeight * 15], [0, 0.151]);
   const borderColor = useMotionTemplate`rgba(255, 255, 255, ${borderAlpha})`;
@@ -58,6 +74,7 @@ export default function Navbar() {
       if (!item) return null;
       const listRect = listRef.current.getBoundingClientRect();
       const itemRect = item.getBoundingClientRect();
+      if (listRect.width === 0 || itemRect.width === 0) return null;
       return {
         x: itemRect.left - listRect.left,
         y: itemRect.top - listRect.top + itemRect.height / 2 - 3,
@@ -72,6 +89,10 @@ export default function Navbar() {
     }
 
     const syncPosition = (animate: boolean) => {
+      if (typeof window !== "undefined" && !window.matchMedia("(min-width: 768px)").matches) {
+        setIndicatorReady(false);
+        return;
+      }
       const pos = getIndicatorPosition(targetHref);
       if (!pos) return;
       setIndicatorReady(true);
@@ -120,55 +141,103 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="z-40 fixed w-full px-[15vw] py-4 flex items-center justify-between border-b"
+      className="z-40 fixed w-full px-4 sm:px-6 md:px-[15vw] py-4 border-b"
       style={{ borderColor, backdropFilter }}
     >
-      <Link href="/">
-        <Image
-          priority
-          src="/logo.svg"
-          alt="Caenar's pretty cool logo"
-          className="invert"
-          width={30}
-          height={30}
-        />
-      </Link>
-      <ul
-        ref={listRef}
-        className="relative flex gap-10"
-        onMouseLeave={() => setHoveredHref(null)}
-      >
-        {indicatorReady && (
-          <motion.div
-            className="pointer-events-none absolute left-0 top-0 size-1.5 bg-violet-200"
-            animate={indicatorControls}
-            initial={false}
+      <div className="flex items-center justify-between">
+        <Link href="/" onClick={() => setMobileOpen(false)}>
+          <Image
+            priority
+            src="/logo.svg"
+            alt="Caenar's pretty cool logo"
+            className="invert"
+            width={30}
+            height={30}
           />
-        )}
-        {NAV_LINKS.map(({ name, href }) => {
-          const isActiveLink = href === pathname;
-          return (
-            <li
-              key={name}
-              ref={(el) => {
-                itemRefs.current[href] = el;
-              }}
-              className="flex items-center gap-2 uppercase text-xs select-none"
-              onMouseEnter={() => setHoveredHref(href)}
-            >
-              <span className="size-1.5 shrink-0" aria-hidden />
-              <Link
-                href={href}
-                className={`font-mono transition ${
-                  isActiveLink ? "" : "hover:opacity-80"
-                }`}
+        </Link>
+
+        <ul
+          ref={listRef}
+          className="relative hidden md:flex gap-10"
+          onMouseLeave={() => setHoveredHref(null)}
+        >
+          {indicatorReady && (
+            <motion.div
+              className="pointer-events-none absolute left-0 top-0 size-1.5 bg-violet-200"
+              animate={indicatorControls}
+              initial={false}
+            />
+          )}
+          {NAV_LINKS.map(({ name, href }) => {
+            const isActiveLink = href === pathname;
+            return (
+              <li
+                key={name}
+                ref={(el) => {
+                  itemRefs.current[href] = el;
+                }}
+                className="flex items-center gap-2 uppercase text-xs select-none"
+                onMouseEnter={() => setHoveredHref(href)}
               >
-                {name}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                <span className="size-1.5 shrink-0" aria-hidden />
+                <Link
+                  href={href}
+                  className={`font-mono transition ${
+                    isActiveLink ? "" : "hover:opacity-80"
+                  }`}
+                >
+                  {name}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <button
+          type="button"
+          className="md:hidden inline-flex items-center justify-center rounded-md border border-foreground-100/20 p-2 text-foreground-100"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav-menu"
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-nav-menu"
+            className="md:hidden mt-4 border-t border-white/10 pt-4"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <ul className="flex flex-col gap-1">
+              {NAV_LINKS.map(({ name, href }) => {
+                const isActiveLink = href === pathname;
+                return (
+                  <li key={name}>
+                    <Link
+                      href={href}
+                      className={`block rounded-md px-3 py-3 font-mono text-xs uppercase transition ${
+                        isActiveLink
+                          ? "bg-white/10 text-foreground-100"
+                          : "text-foreground-100/80 hover:bg-white/5 hover:text-foreground-100"
+                      }`}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }

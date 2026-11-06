@@ -210,7 +210,7 @@ export default function EditProjectForm({
                       style={{ objectFit: "cover" }}
                       className="rounded-md border"
                     />
-                    <div className="w-[350px]">
+                    <div className="w-full max-w-[350px]">
                       <span className="block truncate break-all">
                         {img.image_url.split("/").pop()}
                       </span>

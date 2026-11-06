@@ -9,10 +9,10 @@ export default function Contact() {
         <span className="page-title">Contact</span>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-16">
         <div className="flex flex-col gap-10">
-          <h1 className="text-7xl font-bold mb-5">
-            Why not <br /> say hello?
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5">
+            Why not <br className="hidden sm:block" /> say hello?
           </h1>
           <div>
             <h6 className="font-bold uppercase mb-3">
@@ -65,8 +65,8 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <form className="w-[900px]">
+        <div className="flex flex-col w-full lg:w-auto">
+          <form className="w-full lg:w-[min(900px,55vw)]">
             <div className="form-input">
               <label htmlFor="name">Full name</label>
               <input type="text" placeholder="Juan Dela Cruz" />

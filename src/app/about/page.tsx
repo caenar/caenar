@@ -66,8 +66,8 @@ export default function AboutPage() {
         <div className="mb-16">
           <span className="page-title">About</span>
         </div>
-        <div className="grid grid-rows-[repeat(3,_fit-content(100%))] grid-cols-[1fr_fit-content(100%)_1fr] w-full gap-16">
-          <div className="row-span-3">
+        <div className="grid w-full gap-10 lg:gap-16 lg:grid-rows-[repeat(3,_fit-content(100%))] lg:grid-cols-[1fr_fit-content(100%)_1fr]">
+          <div className="lg:row-span-3">
             <h2 className="leading-[1.1] max-w-[20ch] mb-8">
               An architect through design and systems
             </h2>
@@ -96,7 +96,7 @@ export default function AboutPage() {
               moment.
             </p>
           </div>
-          <div className="row-span-3 w-[530px] h-[750px] rounded-lg">
+          <div className="w-full max-w-[530px] mx-auto lg:mx-0 lg:row-span-3 lg:w-[530px] aspect-[53/75] lg:h-[750px] lg:aspect-auto rounded-lg overflow-hidden">
             <Image
               priority
               alt="Picture of myself"
@@ -111,7 +111,7 @@ export default function AboutPage() {
               }}
             />
           </div>
-          <div className="col-start-3 row-start-2">
+          <div className="lg:col-start-3 lg:row-start-2">
             <h5 className="leading-[1.1] max-w-[20ch] mb-5 icon-label">
               <Code /> PROGRAMMING
             </h5>
@@ -124,7 +124,7 @@ export default function AboutPage() {
               simple to-do app, I can’t help but imagine what it could be.
             </p>
           </div>
-          <div className="col-start-3 row-start-3">
+          <div className="lg:col-start-3 lg:row-start-3">
             <h5 className="leading-[1.1] max-w-[20ch] mb-5 icon-label">
               <Slice /> DESIGN
             </h5>
@@ -136,7 +136,7 @@ export default function AboutPage() {
               creatively, but it also taught me the importance of structure.
             </p>
           </div>
-          <div className="flex justify-center row-start-4 col-span-3">
+          <div className="flex justify-center lg:row-start-4 lg:col-span-3">
             <span className="icon-label text-lg opacity-30">
               <ArrowDown /> scroll for more
             </span>
@@ -147,16 +147,16 @@ export default function AboutPage() {
       <section className="content flex flex-col items-center justify-center gap-10">
         <motion.div
           ref={experienceRef}
-          className="grid grid-cols-[40%_1fr] py-20"
+          className="grid grid-cols-1 md:grid-cols-[40%_1fr] gap-6 md:gap-0 py-12 md:py-20"
           style={{ y: experienceY, opacity: experienceOpacity }}
         >
-          <h2 className="text-5xl font-bold mb-2">Experience</h2>
-          <div className="grid gap-14">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">Experience</h2>
+          <div className="grid gap-8 md:gap-14">
             <div>
               <h3>Creative Designer at Visual Collections</h3>
               <h4 className="opacity-60">Remote · August 2023 — July 2024</h4>
             </div>
-            <ul className="list-border grid gap-5 w-[700px] text-lg">
+            <ul className="list-border grid gap-5 w-full max-w-[700px] text-base md:text-lg">
               {EXPERIENCE_ITEMS.map((text, index) => (
                 <ExperienceItem
                   key={text}
@@ -171,11 +171,11 @@ export default function AboutPage() {
         </motion.div>
         <motion.div
           ref={educationRef}
-          className="grid grid-cols-[40%_1fr] py-20"
+          className="grid grid-cols-1 md:grid-cols-[40%_1fr] gap-6 md:gap-0 py-12 md:py-20"
           style={{ y: educationY, opacity: educationOpacity }}
         >
-          <h2 className="text-5xl font-bold mb-2">Education</h2>
-          <ul className="grid gap-7 w-[700px] text-lg">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">Education</h2>
+          <ul className="grid gap-7 w-full max-w-[700px] text-base md:text-lg">
             <li>
               Divine Word College of Legazpi <br />
               <span className="opacity-60">

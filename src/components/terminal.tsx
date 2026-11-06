@@ -176,7 +176,7 @@ export default function Terminal() {
 
   return (
     <div
-      className={`terminal-scroll font-mono text-sm [&_p]:text-sm [&_input]:text-sm bg-background-100/60 backdrop-blur-3xl w-[55vw] h-[40vh] overflow-y-auto overflow-x-hidden ${
+      className={`terminal-scroll font-mono text-sm [&_p]:text-sm [&_input]:text-sm bg-background-100/60 backdrop-blur-3xl w-[calc(100vw-2rem)] md:w-[55vw] max-w-full h-[40vh] overflow-y-auto overflow-x-hidden ${
         isInputFocused ? "overscroll-y-contain" : "overscroll-auto"
       } card p-4 cursor-pointer`}
       onClick={focusTerminal}

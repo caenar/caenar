@@ -62,8 +62,8 @@ export default function Admin() {
   };
 
   return (
-    <section className="pt-[10rem] py-36 mx-[10vw]">
-      <div className="flex justify-between">
+    <section className="pt-28 md:pt-[10rem] pb-16 md:py-36 px-4 sm:px-6 md:px-[10vw]">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <h2>Projects</h2>
         <button
           type="button"
@@ -74,7 +74,7 @@ export default function Admin() {
           Add a project
         </button>
       </div>
-      <div className="grid grid-cols-4 gap-4 mt-7">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-7">
         {projects.length !== 0 ? (
           <>
             {projects.map((project: Project) => {

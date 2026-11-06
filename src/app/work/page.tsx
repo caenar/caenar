@@ -44,7 +44,7 @@ export default function Project() {
   return (
     <section className="content">
       <h2 className="mb-5">Projects</h2>
-      <div className="flex gap-1.5 mb-10">
+      <div className="flex flex-wrap gap-1.5 mb-10">
         {["all", "programming", "design"].map((type: string) => (
           <button
             key={type}
@@ -64,7 +64,7 @@ export default function Project() {
         ))}
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {loading && (
           <>
             {Array.from({ length: 8 }).map((_, i) => (
