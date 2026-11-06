@@ -37,10 +37,6 @@ prisma/migrations
 prisma/dev.db
 *.sqlite
 
-# images
-public/images/*.jpg
-public/images/*.png
-
 # debug
 npm-debug.log*
 yarn-debug.log*
