@@ -1,107 +1,21 @@
-"use client";
+import { fetchAdminProjects } from "./action";
+import AdminClient from "./admin-client";
 
-import React, { useEffect, useState } from "react";
-import { usePopup } from "@/shared/context/popup-context";
+export const dynamic = "force-dynamic";
 
-import AddProjectForm from "@/components/ui/forms/add-project";
-import ProjectCard from "@/components/project-card";
-
-import { IconSizes } from "@/lib/constants";
-import { TbPlus } from "react-icons/tb";
-import type { Project } from "@/lib/types";
-import EditProjectForm from "@/components/ui/forms/edit-project";
-import { fetchProjects } from "../work/action";
-import { useProject } from "@/lib/stores/use-project";
-import { Skeleton } from "@/components/ui/skeleton";
-
-export default function Admin() {
-  const [projects, setProjects] = useState<Project[]>(
-    useProject.getState().projects || [],
-  );
-  const { openPopup, closePopup, openConfirmPopup, closeConfirmPopup } =
-    usePopup();
-
-  const load = async () => {
-    try {
-      const data = await fetchProjects();
-      setProjects(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!useProject.getState().projects) load();
-  }, []);
-
-  const openAddProjectPopup = () => {
-    openPopup(
-      "Add a project",
-      <AddProjectForm
-        closeAction={() => {
-          load();
-          closePopup();
-        }}
-      />,
-    );
-  };
-
-  const openEditProjectPopup = (project: Project) => {
-    openPopup(
-      "Edit project",
-      <EditProjectForm
-        project={project}
-        closeAction={() => {
-          load();
-          closePopup();
-        }}
-        openConfirmPopupAction={openConfirmPopup}
-        closeConfirmPopupAction={closeConfirmPopup}
-      />,
-    );
-  };
+export default async function AdminPage() {
+  const result = await fetchAdminProjects();
+  const initialProjects = result.success ? result.data : [];
+  const initialError = result.success
+    ? null
+    : typeof result.error.details === "string"
+      ? result.error.details
+      : "Failed to load published projects.";
 
   return (
-    <section className="pt-28 md:pt-[10rem] pb-16 md:py-36 px-4 sm:px-6 md:px-[10vw]">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <h2>Projects</h2>
-        <button
-          type="button"
-          className="primary-button icon-label"
-          onClick={() => openAddProjectPopup()}
-        >
-          <TbPlus size={IconSizes.SMALL} />
-          Add a project
-        </button>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-7">
-        {projects.length !== 0 ? (
-          <>
-            {projects.map((project: Project) => {
-              return (
-                <div
-                  key={project.title}
-                  className="cursor-pointer"
-                  onClick={() => openEditProjectPopup(project)}
-                >
-                  <ProjectCard
-                    title={project.title}
-                    desc={project.desc}
-                    images={project.project_image}
-                    tags={project.tags}
-                  />
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-[400px] w-full" />
-            ))}
-          </>
-        )}
-      </div>
-    </section>
+    <AdminClient
+      initialProjects={initialProjects}
+      initialError={initialError}
+    />
   );
 }

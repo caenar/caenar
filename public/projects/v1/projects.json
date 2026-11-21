@@ -1,0 +1,3082 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-21T00:00:00.000Z",
+  "projects": [
+    {
+      "id": "12",
+      "slug": "green-thumb",
+      "title": "Green Thumb",
+      "desc": "Designed for Green Thumb Gardens, a cool spot led by horticulturist Michael Green. They offer a great mix of flowers, plants, and gardening gear, all from local growers. Whether you’re a pro or just starting out, their friendly team’s got you covered with fresh picks and expert tips.",
+      "is_archived": false,
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "order": 0,
+      "industry": "Gardening",
+      "year": 2024,
+      "layout": [
+        {
+          "type": "text",
+          "content": "Designed for Green Thumb Gardens, a cool spot led by horticulturist Michael Green. They offer a great mix of flowers, plants, and gardening gear, all from local growers. Whether you’re a pro or just starting out, their friendly team’s got you covered with fresh picks and expert tips."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Green Thumb — 1"
+            },
+            {
+              "index": 2,
+              "alt": "Green Thumb — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Green Thumb — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Green Thumb — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Green Thumb — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Green Thumb — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Green Thumb — c1"
+            },
+            {
+              "index": 8,
+              "alt": "Green Thumb — c2"
+            },
+            {
+              "index": 9,
+              "alt": "Green Thumb — c3"
+            },
+            {
+              "index": 10,
+              "alt": "Green Thumb — c4"
+            },
+            {
+              "index": 11,
+              "alt": "Green Thumb — c5"
+            },
+            {
+              "index": 12,
+              "alt": "Green Thumb — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-12-1",
+          "path": "assets/green-thumb/1.webp",
+          "image_url": "/projects/v1/assets/green-thumb/1.webp",
+          "alt": "Green Thumb — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-12-3",
+          "path": "assets/green-thumb/3.webp",
+          "image_url": "/projects/v1/assets/green-thumb/3.webp",
+          "alt": "Green Thumb — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-12-4",
+          "path": "assets/green-thumb/4.webp",
+          "image_url": "/projects/v1/assets/green-thumb/4.webp",
+          "alt": "Green Thumb — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-12-5",
+          "path": "assets/green-thumb/5.webp",
+          "image_url": "/projects/v1/assets/green-thumb/5.webp",
+          "alt": "Green Thumb — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-12-6",
+          "path": "assets/green-thumb/6.webp",
+          "image_url": "/projects/v1/assets/green-thumb/6.webp",
+          "alt": "Green Thumb — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-12-7",
+          "path": "assets/green-thumb/7.webp",
+          "image_url": "/projects/v1/assets/green-thumb/7.webp",
+          "alt": "Green Thumb — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-12-c1",
+          "path": "assets/green-thumb/c1.webp",
+          "image_url": "/projects/v1/assets/green-thumb/c1.webp",
+          "alt": "Green Thumb — c1",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-12-c2",
+          "path": "assets/green-thumb/c2.webp",
+          "image_url": "/projects/v1/assets/green-thumb/c2.webp",
+          "alt": "Green Thumb — c2",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-12-c3",
+          "path": "assets/green-thumb/c3.webp",
+          "image_url": "/projects/v1/assets/green-thumb/c3.webp",
+          "alt": "Green Thumb — c3",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-12-c4",
+          "path": "assets/green-thumb/c4.webp",
+          "image_url": "/projects/v1/assets/green-thumb/c4.webp",
+          "alt": "Green Thumb — c4",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-12-c5",
+          "path": "assets/green-thumb/c5.webp",
+          "image_url": "/projects/v1/assets/green-thumb/c5.webp",
+          "alt": "Green Thumb — c5",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-12-thumbnail",
+          "path": "assets/green-thumb/thumbnail.webp",
+          "image_url": "/projects/v1/assets/green-thumb/thumbnail.webp",
+          "alt": "Green Thumb — thumbnail",
+          "role": "gallery",
+          "order": 12
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "slug": "spark-labs",
+      "title": "Spark Labs",
+      "desc": "A computer store that hooks you up with top-quality PC parts from trusted brands. They’re all about making sure you get great gear and quick, helpful tech support for a seamless gaming experience.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 1,
+      "industry": "Coding Solutions",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A computer store that hooks you up with top-quality PC parts from trusted brands. They’re all about making sure you get great gear and quick, helpful tech support for a seamless gaming experience."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Spark Labs — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Spark Labs — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Spark Labs — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Spark Labs — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Spark Labs — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Spark Labs — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Spark Labs — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Spark Labs — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Spark Labs — c1"
+            },
+            {
+              "index": 9,
+              "alt": "Spark Labs — c2"
+            },
+            {
+              "index": 10,
+              "alt": "Spark Labs — c3"
+            },
+            {
+              "index": 11,
+              "alt": "Spark Labs — c4"
+            },
+            {
+              "index": 12,
+              "alt": "Spark Labs — c5"
+            },
+            {
+              "index": 13,
+              "alt": "Spark Labs — c6"
+            },
+            {
+              "index": 14,
+              "alt": "Spark Labs — c8"
+            },
+            {
+              "index": 15,
+              "alt": "Spark Labs — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-13-1",
+          "path": "assets/spark-labs/1.webp",
+          "image_url": "/projects/v1/assets/spark-labs/1.webp",
+          "alt": "Spark Labs — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-13-2",
+          "path": "assets/spark-labs/2.webp",
+          "image_url": "/projects/v1/assets/spark-labs/2.webp",
+          "alt": "Spark Labs — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-13-3",
+          "path": "assets/spark-labs/3.webp",
+          "image_url": "/projects/v1/assets/spark-labs/3.webp",
+          "alt": "Spark Labs — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-13-4",
+          "path": "assets/spark-labs/4.webp",
+          "image_url": "/projects/v1/assets/spark-labs/4.webp",
+          "alt": "Spark Labs — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-13-5",
+          "path": "assets/spark-labs/5.webp",
+          "image_url": "/projects/v1/assets/spark-labs/5.webp",
+          "alt": "Spark Labs — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-13-6",
+          "path": "assets/spark-labs/6.webp",
+          "image_url": "/projects/v1/assets/spark-labs/6.webp",
+          "alt": "Spark Labs — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-13-7",
+          "path": "assets/spark-labs/7.webp",
+          "image_url": "/projects/v1/assets/spark-labs/7.webp",
+          "alt": "Spark Labs — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-13-8",
+          "path": "assets/spark-labs/8.webp",
+          "image_url": "/projects/v1/assets/spark-labs/8.webp",
+          "alt": "Spark Labs — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-13-c1",
+          "path": "assets/spark-labs/c1.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c1.webp",
+          "alt": "Spark Labs — c1",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-13-c2",
+          "path": "assets/spark-labs/c2.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c2.webp",
+          "alt": "Spark Labs — c2",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-13-c3",
+          "path": "assets/spark-labs/c3.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c3.webp",
+          "alt": "Spark Labs — c3",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-13-c4",
+          "path": "assets/spark-labs/c4.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c4.webp",
+          "alt": "Spark Labs — c4",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-13-c5",
+          "path": "assets/spark-labs/c5.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c5.webp",
+          "alt": "Spark Labs — c5",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-13-c6",
+          "path": "assets/spark-labs/c6.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c6.webp",
+          "alt": "Spark Labs — c6",
+          "role": "gallery",
+          "order": 13
+        },
+        {
+          "id": "legacy-13-c8",
+          "path": "assets/spark-labs/c8.webp",
+          "image_url": "/projects/v1/assets/spark-labs/c8.webp",
+          "alt": "Spark Labs — c8",
+          "role": "gallery",
+          "order": 14
+        },
+        {
+          "id": "legacy-13-thumbnail",
+          "path": "assets/spark-labs/thumbnail.webp",
+          "image_url": "/projects/v1/assets/spark-labs/thumbnail.webp",
+          "alt": "Spark Labs — thumbnail",
+          "role": "gallery",
+          "order": 15
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "slug": "pixel-perfect",
+      "title": "Pixel Perfect",
+      "desc": "A photography studio that delivers amazing portraits and event photos. With a skilled team, the latest gear, and a focus on capturing perfect moments, they shine in everything from weddings to family reunions. Each shot lives up to the name—pixel perfect.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 2,
+      "industry": "Photography",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A photography studio that delivers amazing portraits and event photos. With a skilled team, the latest gear, and a focus on capturing perfect moments, they shine in everything from weddings to family reunions. Each shot lives up to the name—pixel perfect."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Pixel Perfect — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Pixel Perfect — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Pixel Perfect — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Pixel Perfect — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Pixel Perfect — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Pixel Perfect — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Pixel Perfect — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Pixel Perfect — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Pixel Perfect — c1"
+            },
+            {
+              "index": 9,
+              "alt": "Pixel Perfect — c2"
+            },
+            {
+              "index": 10,
+              "alt": "Pixel Perfect — c3"
+            },
+            {
+              "index": 11,
+              "alt": "Pixel Perfect — c4"
+            },
+            {
+              "index": 12,
+              "alt": "Pixel Perfect — c5"
+            },
+            {
+              "index": 13,
+              "alt": "Pixel Perfect — c6"
+            },
+            {
+              "index": 14,
+              "alt": "Pixel Perfect — c7"
+            },
+            {
+              "index": 15,
+              "alt": "Pixel Perfect — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-14-1",
+          "path": "assets/pixel-perfect/1.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/1.webp",
+          "alt": "Pixel Perfect — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-14-2",
+          "path": "assets/pixel-perfect/2.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/2.webp",
+          "alt": "Pixel Perfect — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-14-3",
+          "path": "assets/pixel-perfect/3.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/3.webp",
+          "alt": "Pixel Perfect — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-14-4",
+          "path": "assets/pixel-perfect/4.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/4.webp",
+          "alt": "Pixel Perfect — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-14-5",
+          "path": "assets/pixel-perfect/5.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/5.webp",
+          "alt": "Pixel Perfect — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-14-6",
+          "path": "assets/pixel-perfect/6.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/6.webp",
+          "alt": "Pixel Perfect — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-14-7",
+          "path": "assets/pixel-perfect/7.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/7.webp",
+          "alt": "Pixel Perfect — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-14-8",
+          "path": "assets/pixel-perfect/8.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/8.webp",
+          "alt": "Pixel Perfect — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-14-c1",
+          "path": "assets/pixel-perfect/c1.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c1.webp",
+          "alt": "Pixel Perfect — c1",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-14-c2",
+          "path": "assets/pixel-perfect/c2.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c2.webp",
+          "alt": "Pixel Perfect — c2",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-14-c3",
+          "path": "assets/pixel-perfect/c3.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c3.webp",
+          "alt": "Pixel Perfect — c3",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-14-c4",
+          "path": "assets/pixel-perfect/c4.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c4.webp",
+          "alt": "Pixel Perfect — c4",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-14-c5",
+          "path": "assets/pixel-perfect/c5.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c5.webp",
+          "alt": "Pixel Perfect — c5",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-14-c6",
+          "path": "assets/pixel-perfect/c6.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c6.webp",
+          "alt": "Pixel Perfect — c6",
+          "role": "gallery",
+          "order": 13
+        },
+        {
+          "id": "legacy-14-c7",
+          "path": "assets/pixel-perfect/c7.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/c7.webp",
+          "alt": "Pixel Perfect — c7",
+          "role": "gallery",
+          "order": 14
+        },
+        {
+          "id": "legacy-14-thumbnail",
+          "path": "assets/pixel-perfect/thumbnail.webp",
+          "image_url": "/projects/v1/assets/pixel-perfect/thumbnail.webp",
+          "alt": "Pixel Perfect — thumbnail",
+          "role": "gallery",
+          "order": 15
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "slug": "radiant",
+      "title": "Radiant",
+      "desc": "A skincare and beauty brand that focuses on high-quality, all-natural products. They’re known for their commitment to authenticity and well-being, making them a go-to for anyone wanting to enhance their beauty with natural ingredients.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 3,
+      "industry": "Skincare",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A skincare and beauty brand that focuses on high-quality, all-natural products. They’re known for their commitment to authenticity and well-being, making them a go-to for anyone wanting to enhance their beauty with natural ingredients."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 1,
+              "alt": "Radiant — 1"
+            },
+            {
+              "index": 2,
+              "alt": "Radiant — 2"
+            },
+            {
+              "index": 3,
+              "alt": "Radiant — 3"
+            },
+            {
+              "index": 4,
+              "alt": "Radiant — 4"
+            },
+            {
+              "index": 5,
+              "alt": "Radiant — 5"
+            },
+            {
+              "index": 6,
+              "alt": "Radiant — 6"
+            },
+            {
+              "index": 7,
+              "alt": "Radiant — c1"
+            },
+            {
+              "index": 8,
+              "alt": "Radiant — c2"
+            },
+            {
+              "index": 9,
+              "alt": "Radiant — c3"
+            },
+            {
+              "index": 10,
+              "alt": "Radiant — c4"
+            },
+            {
+              "index": 11,
+              "alt": "Radiant — c5"
+            },
+            {
+              "index": 12,
+              "alt": "Radiant — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-16-1",
+          "path": "assets/radiant/1.webp",
+          "image_url": "/projects/v1/assets/radiant/1.webp",
+          "alt": "Radiant — 1",
+          "role": "cover",
+          "order": 1
+        },
+        {
+          "id": "legacy-16-2",
+          "path": "assets/radiant/2.webp",
+          "image_url": "/projects/v1/assets/radiant/2.webp",
+          "alt": "Radiant — 2",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-16-3",
+          "path": "assets/radiant/3.webp",
+          "image_url": "/projects/v1/assets/radiant/3.webp",
+          "alt": "Radiant — 3",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-16-4",
+          "path": "assets/radiant/4.webp",
+          "image_url": "/projects/v1/assets/radiant/4.webp",
+          "alt": "Radiant — 4",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-16-5",
+          "path": "assets/radiant/5.webp",
+          "image_url": "/projects/v1/assets/radiant/5.webp",
+          "alt": "Radiant — 5",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-16-6",
+          "path": "assets/radiant/6.webp",
+          "image_url": "/projects/v1/assets/radiant/6.webp",
+          "alt": "Radiant — 6",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-16-c1",
+          "path": "assets/radiant/c1.webp",
+          "image_url": "/projects/v1/assets/radiant/c1.webp",
+          "alt": "Radiant — c1",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-16-c2",
+          "path": "assets/radiant/c2.webp",
+          "image_url": "/projects/v1/assets/radiant/c2.webp",
+          "alt": "Radiant — c2",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-16-c3",
+          "path": "assets/radiant/c3.webp",
+          "image_url": "/projects/v1/assets/radiant/c3.webp",
+          "alt": "Radiant — c3",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-16-c4",
+          "path": "assets/radiant/c4.webp",
+          "image_url": "/projects/v1/assets/radiant/c4.webp",
+          "alt": "Radiant — c4",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-16-c5",
+          "path": "assets/radiant/c5.webp",
+          "image_url": "/projects/v1/assets/radiant/c5.webp",
+          "alt": "Radiant — c5",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-16-thumbnail",
+          "path": "assets/radiant/thumbnail.webp",
+          "image_url": "/projects/v1/assets/radiant/thumbnail.webp",
+          "alt": "Radiant — thumbnail",
+          "role": "gallery",
+          "order": 12
+        }
+      ],
+      "tags": [
+        {
+          "id": "3",
+          "name": "Animation"
+        },
+        {
+          "id": "11",
+          "name": "Logo Design"
+        },
+        {
+          "id": "13",
+          "name": "Packaging Design"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "slug": "tim-dean",
+      "title": "Tim Dean",
+      "desc": "A personal trainer based in Auckland, New Zealand, is all about a well-rounded approach to fitness and well-being. With loads of experience under his belt, he crafts personalized programs and offers various packages to suit different fitness levels.",
+      "is_archived": false,
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "order": 4,
+      "industry": "Personal Trainer",
+      "year": 2024,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A personal trainer based in Auckland, New Zealand, is all about a well-rounded approach to fitness and well-being. With loads of experience under his belt, he crafts personalized programs and offers various packages to suit different fitness levels."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Tim Dean — 1"
+            },
+            {
+              "index": 2,
+              "alt": "Tim Dean — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Tim Dean — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Tim Dean — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Tim Dean — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Tim Dean — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Tim Dean — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Tim Dean — 9"
+            },
+            {
+              "index": 9,
+              "alt": "Tim Dean — c1"
+            },
+            {
+              "index": 10,
+              "alt": "Tim Dean — c2"
+            },
+            {
+              "index": 11,
+              "alt": "Tim Dean — c3"
+            },
+            {
+              "index": 12,
+              "alt": "Tim Dean — c4"
+            },
+            {
+              "index": 13,
+              "alt": "Tim Dean — c5"
+            },
+            {
+              "index": 14,
+              "alt": "Tim Dean — c6"
+            },
+            {
+              "index": 15,
+              "alt": "Tim Dean — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-17-1",
+          "path": "assets/tim-dean/1.webp",
+          "image_url": "/projects/v1/assets/tim-dean/1.webp",
+          "alt": "Tim Dean — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-17-3",
+          "path": "assets/tim-dean/3.webp",
+          "image_url": "/projects/v1/assets/tim-dean/3.webp",
+          "alt": "Tim Dean — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-17-4",
+          "path": "assets/tim-dean/4.webp",
+          "image_url": "/projects/v1/assets/tim-dean/4.webp",
+          "alt": "Tim Dean — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-17-5",
+          "path": "assets/tim-dean/5.webp",
+          "image_url": "/projects/v1/assets/tim-dean/5.webp",
+          "alt": "Tim Dean — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-17-6",
+          "path": "assets/tim-dean/6.webp",
+          "image_url": "/projects/v1/assets/tim-dean/6.webp",
+          "alt": "Tim Dean — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-17-7",
+          "path": "assets/tim-dean/7.webp",
+          "image_url": "/projects/v1/assets/tim-dean/7.webp",
+          "alt": "Tim Dean — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-17-8",
+          "path": "assets/tim-dean/8.webp",
+          "image_url": "/projects/v1/assets/tim-dean/8.webp",
+          "alt": "Tim Dean — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-17-9",
+          "path": "assets/tim-dean/9.webp",
+          "image_url": "/projects/v1/assets/tim-dean/9.webp",
+          "alt": "Tim Dean — 9",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-17-c1",
+          "path": "assets/tim-dean/c1.webp",
+          "image_url": "/projects/v1/assets/tim-dean/c1.webp",
+          "alt": "Tim Dean — c1",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-17-c2",
+          "path": "assets/tim-dean/c2.webp",
+          "image_url": "/projects/v1/assets/tim-dean/c2.webp",
+          "alt": "Tim Dean — c2",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-17-c3",
+          "path": "assets/tim-dean/c3.webp",
+          "image_url": "/projects/v1/assets/tim-dean/c3.webp",
+          "alt": "Tim Dean — c3",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-17-c4",
+          "path": "assets/tim-dean/c4.webp",
+          "image_url": "/projects/v1/assets/tim-dean/c4.webp",
+          "alt": "Tim Dean — c4",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-17-c5",
+          "path": "assets/tim-dean/c5.webp",
+          "image_url": "/projects/v1/assets/tim-dean/c5.webp",
+          "alt": "Tim Dean — c5",
+          "role": "gallery",
+          "order": 13
+        },
+        {
+          "id": "legacy-17-c6",
+          "path": "assets/tim-dean/c6.webp",
+          "image_url": "/projects/v1/assets/tim-dean/c6.webp",
+          "alt": "Tim Dean — c6",
+          "role": "gallery",
+          "order": 14
+        },
+        {
+          "id": "legacy-17-thumbnail",
+          "path": "assets/tim-dean/thumbnail.webp",
+          "image_url": "/projects/v1/assets/tim-dean/thumbnail.webp",
+          "alt": "Tim Dean — thumbnail",
+          "role": "gallery",
+          "order": 15
+        }
+      ],
+      "tags": [
+        {
+          "id": "3",
+          "name": "Animation"
+        },
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "slug": "sagemind",
+      "title": "Sagemind",
+      "desc": "Sagemind was created by a team of dedicated educators to transform online learning. They offer flexible, engaging courses led by experts from various fields, making it easy for anyone to advance their skills, career, or hobbies. Their aim is to be the top choice for lifelong learning and personal growth.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 5,
+      "industry": "Education",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "Sagemind was created by a team of dedicated educators to transform online learning. They offer flexible, engaging courses led by experts from various fields, making it easy for anyone to advance their skills, career, or hobbies. Their aim is to be the top choice for lifelong learning and personal growth."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Sagemind — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Sagemind — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Sagemind — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Sagemind — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Sagemind — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Sagemind — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Sagemind — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Sagemind — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Sagemind — c1"
+            },
+            {
+              "index": 9,
+              "alt": "Sagemind — c2"
+            },
+            {
+              "index": 10,
+              "alt": "Sagemind — c3"
+            },
+            {
+              "index": 11,
+              "alt": "Sagemind — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-18-1",
+          "path": "assets/sagemind/1.webp",
+          "image_url": "/projects/v1/assets/sagemind/1.webp",
+          "alt": "Sagemind — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-18-2",
+          "path": "assets/sagemind/2.webp",
+          "image_url": "/projects/v1/assets/sagemind/2.webp",
+          "alt": "Sagemind — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-18-3",
+          "path": "assets/sagemind/3.webp",
+          "image_url": "/projects/v1/assets/sagemind/3.webp",
+          "alt": "Sagemind — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-18-4",
+          "path": "assets/sagemind/4.webp",
+          "image_url": "/projects/v1/assets/sagemind/4.webp",
+          "alt": "Sagemind — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-18-5",
+          "path": "assets/sagemind/5.webp",
+          "image_url": "/projects/v1/assets/sagemind/5.webp",
+          "alt": "Sagemind — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-18-6",
+          "path": "assets/sagemind/6.webp",
+          "image_url": "/projects/v1/assets/sagemind/6.webp",
+          "alt": "Sagemind — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-18-7",
+          "path": "assets/sagemind/7.webp",
+          "image_url": "/projects/v1/assets/sagemind/7.webp",
+          "alt": "Sagemind — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-18-8",
+          "path": "assets/sagemind/8.webp",
+          "image_url": "/projects/v1/assets/sagemind/8.webp",
+          "alt": "Sagemind — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-18-c1",
+          "path": "assets/sagemind/c1.webp",
+          "image_url": "/projects/v1/assets/sagemind/c1.webp",
+          "alt": "Sagemind — c1",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-18-c2",
+          "path": "assets/sagemind/c2.webp",
+          "image_url": "/projects/v1/assets/sagemind/c2.webp",
+          "alt": "Sagemind — c2",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-18-c3",
+          "path": "assets/sagemind/c3.webp",
+          "image_url": "/projects/v1/assets/sagemind/c3.webp",
+          "alt": "Sagemind — c3",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-18-thumbnail",
+          "path": "assets/sagemind/thumbnail.webp",
+          "image_url": "/projects/v1/assets/sagemind/thumbnail.webp",
+          "alt": "Sagemind — thumbnail",
+          "role": "gallery",
+          "order": 11
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        },
+        {
+          "id": "17",
+          "name": "UI/UX Design"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "slug": "studioline",
+      "title": "Studioline",
+      "desc": "An art studio founded by artist and educator Eleanor Foster. It’s a welcoming space for artists of all ages and skill levels, aiming to spark creativity and build a strong community. With art classes, workshops, and local exhibitions.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 6,
+      "industry": "Art Studio",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "An art studio founded by artist and educator Eleanor Foster. It’s a welcoming space for artists of all ages and skill levels, aiming to spark creativity and build a strong community. With art classes, workshops, and local exhibitions."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Studioline — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Studioline — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Studioline — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Studioline — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Studioline — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Studioline — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Studioline — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Studioline — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Studioline — c1"
+            },
+            {
+              "index": 9,
+              "alt": "Studioline — c2"
+            },
+            {
+              "index": 10,
+              "alt": "Studioline — c3"
+            },
+            {
+              "index": 11,
+              "alt": "Studioline — c4"
+            },
+            {
+              "index": 12,
+              "alt": "Studioline — c5"
+            },
+            {
+              "index": 13,
+              "alt": "Studioline — c6"
+            },
+            {
+              "index": 14,
+              "alt": "Studioline — c7"
+            },
+            {
+              "index": 15,
+              "alt": "Studioline — c8"
+            },
+            {
+              "index": 16,
+              "alt": "Studioline — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-19-1",
+          "path": "assets/studioline/1.webp",
+          "image_url": "/projects/v1/assets/studioline/1.webp",
+          "alt": "Studioline — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-19-2",
+          "path": "assets/studioline/2.webp",
+          "image_url": "/projects/v1/assets/studioline/2.webp",
+          "alt": "Studioline — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-19-3",
+          "path": "assets/studioline/3.webp",
+          "image_url": "/projects/v1/assets/studioline/3.webp",
+          "alt": "Studioline — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-19-4",
+          "path": "assets/studioline/4.webp",
+          "image_url": "/projects/v1/assets/studioline/4.webp",
+          "alt": "Studioline — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-19-5",
+          "path": "assets/studioline/5.webp",
+          "image_url": "/projects/v1/assets/studioline/5.webp",
+          "alt": "Studioline — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-19-6",
+          "path": "assets/studioline/6.webp",
+          "image_url": "/projects/v1/assets/studioline/6.webp",
+          "alt": "Studioline — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-19-7",
+          "path": "assets/studioline/7.webp",
+          "image_url": "/projects/v1/assets/studioline/7.webp",
+          "alt": "Studioline — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-19-8",
+          "path": "assets/studioline/8.webp",
+          "image_url": "/projects/v1/assets/studioline/8.webp",
+          "alt": "Studioline — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-19-c1",
+          "path": "assets/studioline/c1.webp",
+          "image_url": "/projects/v1/assets/studioline/c1.webp",
+          "alt": "Studioline — c1",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-19-c2",
+          "path": "assets/studioline/c2.webp",
+          "image_url": "/projects/v1/assets/studioline/c2.webp",
+          "alt": "Studioline — c2",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-19-c3",
+          "path": "assets/studioline/c3.webp",
+          "image_url": "/projects/v1/assets/studioline/c3.webp",
+          "alt": "Studioline — c3",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-19-c4",
+          "path": "assets/studioline/c4.webp",
+          "image_url": "/projects/v1/assets/studioline/c4.webp",
+          "alt": "Studioline — c4",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-19-c5",
+          "path": "assets/studioline/c5.webp",
+          "image_url": "/projects/v1/assets/studioline/c5.webp",
+          "alt": "Studioline — c5",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-19-c6",
+          "path": "assets/studioline/c6.webp",
+          "image_url": "/projects/v1/assets/studioline/c6.webp",
+          "alt": "Studioline — c6",
+          "role": "gallery",
+          "order": 13
+        },
+        {
+          "id": "legacy-19-c7",
+          "path": "assets/studioline/c7.webp",
+          "image_url": "/projects/v1/assets/studioline/c7.webp",
+          "alt": "Studioline — c7",
+          "role": "gallery",
+          "order": 14
+        },
+        {
+          "id": "legacy-19-c8",
+          "path": "assets/studioline/c8.webp",
+          "image_url": "/projects/v1/assets/studioline/c8.webp",
+          "alt": "Studioline — c8",
+          "role": "gallery",
+          "order": 15
+        },
+        {
+          "id": "legacy-19-thumbnail",
+          "path": "assets/studioline/thumbnail.webp",
+          "image_url": "/projects/v1/assets/studioline/thumbnail.webp",
+          "alt": "Studioline — thumbnail",
+          "role": "gallery",
+          "order": 16
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "slug": "zephyr",
+      "title": "Zephyr",
+      "desc": "A fixie bike retailer created by avid cyclists to make urban commuting easy and stylish. They offer a curated selection of premium bikes that blend sleek design with top performance, inspired by the simplicity of fixed-gear cycling. The name \"Zephyr\" evokes the freedom of riding through the city.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 7,
+      "industry": "Bike Retailer",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A fixie bike retailer created by avid cyclists to make urban commuting easy and stylish. They offer a curated selection of premium bikes that blend sleek design with top performance, inspired by the simplicity of fixed-gear cycling. The name \"Zephyr\" evokes the freedom of riding through the city."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Zephyr — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Zephyr — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Zephyr — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Zephyr — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Zephyr — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Zephyr — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Zephyr — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Zephyr — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Zephyr — c1"
+            },
+            {
+              "index": 9,
+              "alt": "Zephyr — c2"
+            },
+            {
+              "index": 10,
+              "alt": "Zephyr — c3"
+            },
+            {
+              "index": 11,
+              "alt": "Zephyr — c4"
+            },
+            {
+              "index": 12,
+              "alt": "Zephyr — c5"
+            },
+            {
+              "index": 13,
+              "alt": "Zephyr — c7"
+            },
+            {
+              "index": 14,
+              "alt": "Zephyr — c8"
+            },
+            {
+              "index": 15,
+              "alt": "Zephyr — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-20-1",
+          "path": "assets/zephyr/1.webp",
+          "image_url": "/projects/v1/assets/zephyr/1.webp",
+          "alt": "Zephyr — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-20-2",
+          "path": "assets/zephyr/2.webp",
+          "image_url": "/projects/v1/assets/zephyr/2.webp",
+          "alt": "Zephyr — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-20-3",
+          "path": "assets/zephyr/3.webp",
+          "image_url": "/projects/v1/assets/zephyr/3.webp",
+          "alt": "Zephyr — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-20-4",
+          "path": "assets/zephyr/4.webp",
+          "image_url": "/projects/v1/assets/zephyr/4.webp",
+          "alt": "Zephyr — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-20-5",
+          "path": "assets/zephyr/5.webp",
+          "image_url": "/projects/v1/assets/zephyr/5.webp",
+          "alt": "Zephyr — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-20-6",
+          "path": "assets/zephyr/6.webp",
+          "image_url": "/projects/v1/assets/zephyr/6.webp",
+          "alt": "Zephyr — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-20-7",
+          "path": "assets/zephyr/7.webp",
+          "image_url": "/projects/v1/assets/zephyr/7.webp",
+          "alt": "Zephyr — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-20-8",
+          "path": "assets/zephyr/8.webp",
+          "image_url": "/projects/v1/assets/zephyr/8.webp",
+          "alt": "Zephyr — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-20-c1",
+          "path": "assets/zephyr/c1.webp",
+          "image_url": "/projects/v1/assets/zephyr/c1.webp",
+          "alt": "Zephyr — c1",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-20-c2",
+          "path": "assets/zephyr/c2.webp",
+          "image_url": "/projects/v1/assets/zephyr/c2.webp",
+          "alt": "Zephyr — c2",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-20-c3",
+          "path": "assets/zephyr/c3.webp",
+          "image_url": "/projects/v1/assets/zephyr/c3.webp",
+          "alt": "Zephyr — c3",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-20-c4",
+          "path": "assets/zephyr/c4.webp",
+          "image_url": "/projects/v1/assets/zephyr/c4.webp",
+          "alt": "Zephyr — c4",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-20-c5",
+          "path": "assets/zephyr/c5.webp",
+          "image_url": "/projects/v1/assets/zephyr/c5.webp",
+          "alt": "Zephyr — c5",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-20-c7",
+          "path": "assets/zephyr/c7.webp",
+          "image_url": "/projects/v1/assets/zephyr/c7.webp",
+          "alt": "Zephyr — c7",
+          "role": "gallery",
+          "order": 13
+        },
+        {
+          "id": "legacy-20-c8",
+          "path": "assets/zephyr/c8.webp",
+          "image_url": "/projects/v1/assets/zephyr/c8.webp",
+          "alt": "Zephyr — c8",
+          "role": "gallery",
+          "order": 14
+        },
+        {
+          "id": "legacy-20-thumbnail",
+          "path": "assets/zephyr/thumbnail.webp",
+          "image_url": "/projects/v1/assets/zephyr/thumbnail.webp",
+          "alt": "Zephyr — thumbnail",
+          "role": "gallery",
+          "order": 15
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "slug": "aegis",
+      "title": "Aegis",
+      "desc": "A personal development agency all about helping people grow and thrive. Their team of experienced life coaches and mentors provides the guidance, tools, and strategies you need to tackle life's challenges and unlock your full potential. Their goal is to support your well-being, boost your resilience, and help you move toward a brighter, more fulfilling future.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 8,
+      "industry": "Personal Development Agency",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A personal development agency all about helping people grow and thrive. Their team of experienced life coaches and mentors provides the guidance, tools, and strategies you need to tackle life's challenges and unlock your full potential. Their goal is to support your well-being, boost your resilience, and help you move toward a brighter, more fulfilling future."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Aegis — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Aegis — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Aegis — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Aegis — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Aegis — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Aegis — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Aegis — c1"
+            },
+            {
+              "index": 7,
+              "alt": "Aegis — c2"
+            },
+            {
+              "index": 8,
+              "alt": "Aegis — c3"
+            },
+            {
+              "index": 9,
+              "alt": "Aegis — c4"
+            },
+            {
+              "index": 10,
+              "alt": "Aegis — c5"
+            },
+            {
+              "index": 11,
+              "alt": "Aegis — c6"
+            },
+            {
+              "index": 12,
+              "alt": "Aegis — c7"
+            },
+            {
+              "index": 13,
+              "alt": "Aegis — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-21-1",
+          "path": "assets/aegis/1.webp",
+          "image_url": "/projects/v1/assets/aegis/1.webp",
+          "alt": "Aegis — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-21-2",
+          "path": "assets/aegis/2.webp",
+          "image_url": "/projects/v1/assets/aegis/2.webp",
+          "alt": "Aegis — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-21-3",
+          "path": "assets/aegis/3.webp",
+          "image_url": "/projects/v1/assets/aegis/3.webp",
+          "alt": "Aegis — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-21-4",
+          "path": "assets/aegis/4.webp",
+          "image_url": "/projects/v1/assets/aegis/4.webp",
+          "alt": "Aegis — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-21-5",
+          "path": "assets/aegis/5.webp",
+          "image_url": "/projects/v1/assets/aegis/5.webp",
+          "alt": "Aegis — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-21-6",
+          "path": "assets/aegis/6.webp",
+          "image_url": "/projects/v1/assets/aegis/6.webp",
+          "alt": "Aegis — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-21-c1",
+          "path": "assets/aegis/c1.webp",
+          "image_url": "/projects/v1/assets/aegis/c1.webp",
+          "alt": "Aegis — c1",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-21-c2",
+          "path": "assets/aegis/c2.webp",
+          "image_url": "/projects/v1/assets/aegis/c2.webp",
+          "alt": "Aegis — c2",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-21-c3",
+          "path": "assets/aegis/c3.webp",
+          "image_url": "/projects/v1/assets/aegis/c3.webp",
+          "alt": "Aegis — c3",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-21-c4",
+          "path": "assets/aegis/c4.webp",
+          "image_url": "/projects/v1/assets/aegis/c4.webp",
+          "alt": "Aegis — c4",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-21-c5",
+          "path": "assets/aegis/c5.webp",
+          "image_url": "/projects/v1/assets/aegis/c5.webp",
+          "alt": "Aegis — c5",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-21-c6",
+          "path": "assets/aegis/c6.webp",
+          "image_url": "/projects/v1/assets/aegis/c6.webp",
+          "alt": "Aegis — c6",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-21-c7",
+          "path": "assets/aegis/c7.webp",
+          "image_url": "/projects/v1/assets/aegis/c7.webp",
+          "alt": "Aegis — c7",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-21-thumbnail",
+          "path": "assets/aegis/thumbnail.webp",
+          "image_url": "/projects/v1/assets/aegis/thumbnail.webp",
+          "alt": "Aegis — thumbnail",
+          "role": "gallery",
+          "order": 13
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "22",
+      "slug": "byteblock",
+      "title": "Byteblock",
+      "desc": "A team of experienced coders who excel in creating custom software, web, and mobile solutions. Known for their innovation and success, they stand out with their optimistic and straightforward approach to turning visions into reality.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 9,
+      "industry": "Software Development Agency",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A team of experienced coders who excel in creating custom software, web, and mobile solutions. Known for their innovation and success, they stand out with their optimistic and straightforward approach to turning visions into reality."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 1,
+              "alt": "Byteblock — 1"
+            },
+            {
+              "index": 2,
+              "alt": "Byteblock — 2"
+            },
+            {
+              "index": 3,
+              "alt": "Byteblock — 3"
+            },
+            {
+              "index": 4,
+              "alt": "Byteblock — 4"
+            },
+            {
+              "index": 5,
+              "alt": "Byteblock — 5"
+            },
+            {
+              "index": 6,
+              "alt": "Byteblock — 6"
+            },
+            {
+              "index": 7,
+              "alt": "Byteblock — 7"
+            },
+            {
+              "index": 8,
+              "alt": "Byteblock — 8"
+            },
+            {
+              "index": 9,
+              "alt": "Byteblock — c1"
+            },
+            {
+              "index": 10,
+              "alt": "Byteblock — c2"
+            },
+            {
+              "index": 11,
+              "alt": "Byteblock — c3"
+            },
+            {
+              "index": 12,
+              "alt": "Byteblock — c4"
+            },
+            {
+              "index": 13,
+              "alt": "Byteblock — c5"
+            },
+            {
+              "index": 14,
+              "alt": "Byteblock — c6"
+            },
+            {
+              "index": 15,
+              "alt": "Byteblock — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-22-1",
+          "path": "assets/byteblock/1.webp",
+          "image_url": "/projects/v1/assets/byteblock/1.webp",
+          "alt": "Byteblock — 1",
+          "role": "cover",
+          "order": 1
+        },
+        {
+          "id": "legacy-22-2",
+          "path": "assets/byteblock/2.webp",
+          "image_url": "/projects/v1/assets/byteblock/2.webp",
+          "alt": "Byteblock — 2",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-22-3",
+          "path": "assets/byteblock/3.webp",
+          "image_url": "/projects/v1/assets/byteblock/3.webp",
+          "alt": "Byteblock — 3",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-22-4",
+          "path": "assets/byteblock/4.webp",
+          "image_url": "/projects/v1/assets/byteblock/4.webp",
+          "alt": "Byteblock — 4",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-22-5",
+          "path": "assets/byteblock/5.webp",
+          "image_url": "/projects/v1/assets/byteblock/5.webp",
+          "alt": "Byteblock — 5",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-22-6",
+          "path": "assets/byteblock/6.webp",
+          "image_url": "/projects/v1/assets/byteblock/6.webp",
+          "alt": "Byteblock — 6",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-22-7",
+          "path": "assets/byteblock/7.webp",
+          "image_url": "/projects/v1/assets/byteblock/7.webp",
+          "alt": "Byteblock — 7",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-22-8",
+          "path": "assets/byteblock/8.webp",
+          "image_url": "/projects/v1/assets/byteblock/8.webp",
+          "alt": "Byteblock — 8",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-22-c1",
+          "path": "assets/byteblock/c1.webp",
+          "image_url": "/projects/v1/assets/byteblock/c1.webp",
+          "alt": "Byteblock — c1",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-22-c2",
+          "path": "assets/byteblock/c2.webp",
+          "image_url": "/projects/v1/assets/byteblock/c2.webp",
+          "alt": "Byteblock — c2",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-22-c3",
+          "path": "assets/byteblock/c3.webp",
+          "image_url": "/projects/v1/assets/byteblock/c3.webp",
+          "alt": "Byteblock — c3",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-22-c4",
+          "path": "assets/byteblock/c4.webp",
+          "image_url": "/projects/v1/assets/byteblock/c4.webp",
+          "alt": "Byteblock — c4",
+          "role": "gallery",
+          "order": 12
+        },
+        {
+          "id": "legacy-22-c5",
+          "path": "assets/byteblock/c5.webp",
+          "image_url": "/projects/v1/assets/byteblock/c5.webp",
+          "alt": "Byteblock — c5",
+          "role": "gallery",
+          "order": 13
+        },
+        {
+          "id": "legacy-22-c6",
+          "path": "assets/byteblock/c6.webp",
+          "image_url": "/projects/v1/assets/byteblock/c6.webp",
+          "alt": "Byteblock — c6",
+          "role": "gallery",
+          "order": 14
+        },
+        {
+          "id": "legacy-22-thumbnail",
+          "path": "assets/byteblock/thumbnail.webp",
+          "image_url": "/projects/v1/assets/byteblock/thumbnail.webp",
+          "alt": "Byteblock — thumbnail",
+          "role": "gallery",
+          "order": 15
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "23",
+      "slug": "nourify",
+      "title": "Nourify",
+      "desc": "A brand that focuses on energy bar snacks, perfect for those looking for a mix of convenience and nutrition. They take pride in using carefully chosen natural ingredients and offer a variety of flavors that balance taste and healthy nutrition.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 10,
+      "industry": "Nutrition Snacks",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A brand that focuses on energy bar snacks, perfect for those looking for a mix of convenience and nutrition. They take pride in using carefully chosen natural ingredients and offer a variety of flavors that balance taste and healthy nutrition."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Nourify — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Nourify — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Nourify — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Nourify — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Nourify — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Nourify — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Nourify — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Nourify — c1"
+            },
+            {
+              "index": 8,
+              "alt": "Nourify — c2"
+            },
+            {
+              "index": 9,
+              "alt": "Nourify — c3"
+            },
+            {
+              "index": 10,
+              "alt": "Nourify — c4"
+            },
+            {
+              "index": 11,
+              "alt": "Nourify — c5"
+            },
+            {
+              "index": 12,
+              "alt": "Nourify — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-23-1",
+          "path": "assets/nourify/1.webp",
+          "image_url": "/projects/v1/assets/nourify/1.webp",
+          "alt": "Nourify — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-23-2",
+          "path": "assets/nourify/2.webp",
+          "image_url": "/projects/v1/assets/nourify/2.webp",
+          "alt": "Nourify — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-23-3",
+          "path": "assets/nourify/3.webp",
+          "image_url": "/projects/v1/assets/nourify/3.webp",
+          "alt": "Nourify — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-23-4",
+          "path": "assets/nourify/4.webp",
+          "image_url": "/projects/v1/assets/nourify/4.webp",
+          "alt": "Nourify — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-23-5",
+          "path": "assets/nourify/5.webp",
+          "image_url": "/projects/v1/assets/nourify/5.webp",
+          "alt": "Nourify — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-23-6",
+          "path": "assets/nourify/6.webp",
+          "image_url": "/projects/v1/assets/nourify/6.webp",
+          "alt": "Nourify — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-23-7",
+          "path": "assets/nourify/7.webp",
+          "image_url": "/projects/v1/assets/nourify/7.webp",
+          "alt": "Nourify — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-23-c1",
+          "path": "assets/nourify/c1.webp",
+          "image_url": "/projects/v1/assets/nourify/c1.webp",
+          "alt": "Nourify — c1",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-23-c2",
+          "path": "assets/nourify/c2.webp",
+          "image_url": "/projects/v1/assets/nourify/c2.webp",
+          "alt": "Nourify — c2",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-23-c3",
+          "path": "assets/nourify/c3.webp",
+          "image_url": "/projects/v1/assets/nourify/c3.webp",
+          "alt": "Nourify — c3",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-23-c4",
+          "path": "assets/nourify/c4.webp",
+          "image_url": "/projects/v1/assets/nourify/c4.webp",
+          "alt": "Nourify — c4",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-23-c5",
+          "path": "assets/nourify/c5.webp",
+          "image_url": "/projects/v1/assets/nourify/c5.webp",
+          "alt": "Nourify — c5",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-23-thumbnail",
+          "path": "assets/nourify/thumbnail.webp",
+          "image_url": "/projects/v1/assets/nourify/thumbnail.webp",
+          "alt": "Nourify — thumbnail",
+          "role": "gallery",
+          "order": 12
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "slug": "cynosure",
+      "title": "Cynosure",
+      "desc": "Known for its dynamic and creative campaigns. With a strong focus on results, they craft memorable stories that cut through the noise and make a lasting impression. Their approach helps brands stand out and leave a significant impact in a crowded market.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 11,
+      "industry": "Marketing & Advertising",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "Known for its dynamic and creative campaigns. With a strong focus on results, they craft memorable stories that cut through the noise and make a lasting impression. Their approach helps brands stand out and leave a significant impact in a crowded market."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Cynosure — 1"
+            },
+            {
+              "index": 2,
+              "alt": "Cynosure — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Cynosure — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Cynosure — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Cynosure — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Cynosure — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Cynosure — 8"
+            },
+            {
+              "index": 8,
+              "alt": "Cynosure — c1"
+            },
+            {
+              "index": 9,
+              "alt": "Cynosure — c2"
+            },
+            {
+              "index": 10,
+              "alt": "Cynosure — c3"
+            },
+            {
+              "index": 11,
+              "alt": "Cynosure — c4"
+            },
+            {
+              "index": 12,
+              "alt": "Cynosure — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-24-1",
+          "path": "assets/cynosure/1.webp",
+          "image_url": "/projects/v1/assets/cynosure/1.webp",
+          "alt": "Cynosure — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-24-3",
+          "path": "assets/cynosure/3.webp",
+          "image_url": "/projects/v1/assets/cynosure/3.webp",
+          "alt": "Cynosure — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-24-4",
+          "path": "assets/cynosure/4.webp",
+          "image_url": "/projects/v1/assets/cynosure/4.webp",
+          "alt": "Cynosure — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-24-5",
+          "path": "assets/cynosure/5.webp",
+          "image_url": "/projects/v1/assets/cynosure/5.webp",
+          "alt": "Cynosure — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-24-6",
+          "path": "assets/cynosure/6.webp",
+          "image_url": "/projects/v1/assets/cynosure/6.webp",
+          "alt": "Cynosure — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-24-7",
+          "path": "assets/cynosure/7.webp",
+          "image_url": "/projects/v1/assets/cynosure/7.webp",
+          "alt": "Cynosure — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-24-8",
+          "path": "assets/cynosure/8.webp",
+          "image_url": "/projects/v1/assets/cynosure/8.webp",
+          "alt": "Cynosure — 8",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-24-c1",
+          "path": "assets/cynosure/c1.webp",
+          "image_url": "/projects/v1/assets/cynosure/c1.webp",
+          "alt": "Cynosure — c1",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-24-c2",
+          "path": "assets/cynosure/c2.webp",
+          "image_url": "/projects/v1/assets/cynosure/c2.webp",
+          "alt": "Cynosure — c2",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-24-c3",
+          "path": "assets/cynosure/c3.webp",
+          "image_url": "/projects/v1/assets/cynosure/c3.webp",
+          "alt": "Cynosure — c3",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-24-c4",
+          "path": "assets/cynosure/c4.webp",
+          "image_url": "/projects/v1/assets/cynosure/c4.webp",
+          "alt": "Cynosure — c4",
+          "role": "gallery",
+          "order": 11
+        },
+        {
+          "id": "legacy-24-thumbnail",
+          "path": "assets/cynosure/thumbnail.webp",
+          "image_url": "/projects/v1/assets/cynosure/thumbnail.webp",
+          "alt": "Cynosure — thumbnail",
+          "role": "gallery",
+          "order": 12
+        }
+      ],
+      "tags": [
+        {
+          "id": "3",
+          "name": "Animation"
+        },
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "25",
+      "slug": "empowerment",
+      "title": "Empowerment",
+      "desc": "A disability company dedicated to uplifting its community based in Australia. Their mission is to enhance the well-being of everyone involved—patients, staff, and stakeholders. More than just a company, Empowerment is a dynamic force committed to making the health journey smoother for all.",
+      "is_archived": false,
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "order": 12,
+      "industry": "Healthcare",
+      "year": 2024,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A disability company dedicated to uplifting its community based in Australia. Their mission is to enhance the well-being of everyone involved—patients, staff, and stakeholders. More than just a company, Empowerment is a dynamic force committed to making the health journey smoother for all."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Empowerment — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Empowerment — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Empowerment — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Empowerment — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Empowerment — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Empowerment — c1"
+            },
+            {
+              "index": 6,
+              "alt": "Empowerment — c2"
+            },
+            {
+              "index": 7,
+              "alt": "Empowerment — c3"
+            },
+            {
+              "index": 8,
+              "alt": "Empowerment — c4"
+            },
+            {
+              "index": 9,
+              "alt": "Empowerment — c5"
+            },
+            {
+              "index": 10,
+              "alt": "Empowerment — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-25-1",
+          "path": "assets/empowerment/1.webp",
+          "image_url": "/projects/v1/assets/empowerment/1.webp",
+          "alt": "Empowerment — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-25-2",
+          "path": "assets/empowerment/2.webp",
+          "image_url": "/projects/v1/assets/empowerment/2.webp",
+          "alt": "Empowerment — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-25-3",
+          "path": "assets/empowerment/3.webp",
+          "image_url": "/projects/v1/assets/empowerment/3.webp",
+          "alt": "Empowerment — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-25-4",
+          "path": "assets/empowerment/4.webp",
+          "image_url": "/projects/v1/assets/empowerment/4.webp",
+          "alt": "Empowerment — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-25-5",
+          "path": "assets/empowerment/5.webp",
+          "image_url": "/projects/v1/assets/empowerment/5.webp",
+          "alt": "Empowerment — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-25-c1",
+          "path": "assets/empowerment/c1.webp",
+          "image_url": "/projects/v1/assets/empowerment/c1.webp",
+          "alt": "Empowerment — c1",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-25-c2",
+          "path": "assets/empowerment/c2.webp",
+          "image_url": "/projects/v1/assets/empowerment/c2.webp",
+          "alt": "Empowerment — c2",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-25-c3",
+          "path": "assets/empowerment/c3.webp",
+          "image_url": "/projects/v1/assets/empowerment/c3.webp",
+          "alt": "Empowerment — c3",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-25-c4",
+          "path": "assets/empowerment/c4.webp",
+          "image_url": "/projects/v1/assets/empowerment/c4.webp",
+          "alt": "Empowerment — c4",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-25-c5",
+          "path": "assets/empowerment/c5.webp",
+          "image_url": "/projects/v1/assets/empowerment/c5.webp",
+          "alt": "Empowerment — c5",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-25-thumbnail",
+          "path": "assets/empowerment/thumbnail.webp",
+          "image_url": "/projects/v1/assets/empowerment/thumbnail.webp",
+          "alt": "Empowerment — thumbnail",
+          "role": "gallery",
+          "order": 10
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "36",
+      "slug": "mimic",
+      "title": "Mimic",
+      "desc": "A horror game where you're trapped with a shadowy mimic that mirrors your every move. Solve clues to escape, but lose or tie, and it's game over. Featuring mind-bending puzzles and three possible endings, this game offers a chilling, cryptid-inspired experience.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 13,
+      "industry": "Indie Game",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A horror game where you're trapped with a shadowy mimic that mirrors your every move. Solve clues to escape, but lose or tie, and it's game over. Featuring mind-bending puzzles and three possible endings, this game offers a chilling, cryptid-inspired experience."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 1,
+              "alt": "Mimic — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-36-thumbnail",
+          "path": "assets/mimic/thumbnail.webp",
+          "image_url": "/projects/v1/assets/mimic/thumbnail.webp",
+          "alt": "Mimic — thumbnail",
+          "role": "cover",
+          "order": 1
+        }
+      ],
+      "tags": [
+        {
+          "id": "9",
+          "name": "Video Editing"
+        }
+      ]
+    },
+    {
+      "id": "37",
+      "slug": "visual-collections",
+      "title": "Visual Collections",
+      "desc": "A design agency that’s all about creating cool, unique logos that really make a brand pop. They mix creativity with a pro touch, making sure every design feels just right for the brand.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 14,
+      "industry": "Creative Agency",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A design agency that’s all about creating cool, unique logos that really make a brand pop. They mix creativity with a pro touch, making sure every design feels just right for the brand."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 8,
+              "alt": "Visual Collections — c8"
+            },
+            {
+              "index": 9,
+              "alt": "Visual Collections — c9"
+            },
+            {
+              "index": 10,
+              "alt": "Visual Collections — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-37-c8",
+          "path": "assets/visual-collections/c8.webp",
+          "image_url": "/projects/v1/assets/visual-collections/c8.webp",
+          "alt": "Visual Collections — c8",
+          "role": "cover",
+          "order": 8
+        },
+        {
+          "id": "legacy-37-c9",
+          "path": "assets/visual-collections/c9.webp",
+          "image_url": "/projects/v1/assets/visual-collections/c9.webp",
+          "alt": "Visual Collections — c9",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-37-thumbnail",
+          "path": "assets/visual-collections/thumbnail.webp",
+          "image_url": "/projects/v1/assets/visual-collections/thumbnail.webp",
+          "alt": "Visual Collections — thumbnail",
+          "role": "gallery",
+          "order": 10
+        }
+      ],
+      "tags": [
+        {
+          "id": "10",
+          "name": "Social Media Ads"
+        },
+        {
+          "id": "9",
+          "name": "Video Editing"
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "slug": "voltique",
+      "title": "Voltique",
+      "desc": "A recreational basketball league for players of all skill levels. It’s all about having fun, improving your game, and enjoying the sport in a relaxed, friendly setting.",
+      "is_archived": false,
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "order": 15,
+      "industry": "Sports",
+      "year": 2024,
+      "layout": [
+        {
+          "type": "text",
+          "content": "A recreational basketball league for players of all skill levels. It’s all about having fun, improving your game, and enjoying the sport in a relaxed, friendly setting."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Voltique — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Voltique — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Voltique — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Voltique — 4"
+            },
+            {
+              "index": 4,
+              "alt": "Voltique — 5"
+            },
+            {
+              "index": 5,
+              "alt": "Voltique — 6"
+            },
+            {
+              "index": 6,
+              "alt": "Voltique — 7"
+            },
+            {
+              "index": 7,
+              "alt": "Voltique — c1"
+            },
+            {
+              "index": 8,
+              "alt": "Voltique — c2"
+            },
+            {
+              "index": 9,
+              "alt": "Voltique — c3"
+            },
+            {
+              "index": 10,
+              "alt": "Voltique — c4"
+            },
+            {
+              "index": 11,
+              "alt": "Voltique — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-38-1",
+          "path": "assets/voltique/1.webp",
+          "image_url": "/projects/v1/assets/voltique/1.webp",
+          "alt": "Voltique — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-38-2",
+          "path": "assets/voltique/2.webp",
+          "image_url": "/projects/v1/assets/voltique/2.webp",
+          "alt": "Voltique — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-38-3",
+          "path": "assets/voltique/3.webp",
+          "image_url": "/projects/v1/assets/voltique/3.webp",
+          "alt": "Voltique — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-38-4",
+          "path": "assets/voltique/4.webp",
+          "image_url": "/projects/v1/assets/voltique/4.webp",
+          "alt": "Voltique — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-38-5",
+          "path": "assets/voltique/5.webp",
+          "image_url": "/projects/v1/assets/voltique/5.webp",
+          "alt": "Voltique — 5",
+          "role": "gallery",
+          "order": 4
+        },
+        {
+          "id": "legacy-38-6",
+          "path": "assets/voltique/6.webp",
+          "image_url": "/projects/v1/assets/voltique/6.webp",
+          "alt": "Voltique — 6",
+          "role": "gallery",
+          "order": 5
+        },
+        {
+          "id": "legacy-38-7",
+          "path": "assets/voltique/7.webp",
+          "image_url": "/projects/v1/assets/voltique/7.webp",
+          "alt": "Voltique — 7",
+          "role": "gallery",
+          "order": 6
+        },
+        {
+          "id": "legacy-38-c1",
+          "path": "assets/voltique/c1.webp",
+          "image_url": "/projects/v1/assets/voltique/c1.webp",
+          "alt": "Voltique — c1",
+          "role": "gallery",
+          "order": 7
+        },
+        {
+          "id": "legacy-38-c2",
+          "path": "assets/voltique/c2.webp",
+          "image_url": "/projects/v1/assets/voltique/c2.webp",
+          "alt": "Voltique — c2",
+          "role": "gallery",
+          "order": 8
+        },
+        {
+          "id": "legacy-38-c3",
+          "path": "assets/voltique/c3.webp",
+          "image_url": "/projects/v1/assets/voltique/c3.webp",
+          "alt": "Voltique — c3",
+          "role": "gallery",
+          "order": 9
+        },
+        {
+          "id": "legacy-38-c4",
+          "path": "assets/voltique/c4.webp",
+          "image_url": "/projects/v1/assets/voltique/c4.webp",
+          "alt": "Voltique — c4",
+          "role": "gallery",
+          "order": 10
+        },
+        {
+          "id": "legacy-38-thumbnail",
+          "path": "assets/voltique/thumbnail.webp",
+          "image_url": "/projects/v1/assets/voltique/thumbnail.webp",
+          "alt": "Voltique — thumbnail",
+          "role": "gallery",
+          "order": 11
+        }
+      ],
+      "tags": [
+        {
+          "id": "11",
+          "name": "Logo Design"
+        }
+      ]
+    },
+    {
+      "id": "35",
+      "slug": "bni",
+      "title": "BNI",
+      "desc": "BNI (Business Network International) is known for its focus on helping professionals grow their businesses through a structured referral marketing program and networking opportunities.",
+      "is_archived": false,
+      "created_at": "2023-01-01T00:00:00.000Z",
+      "order": 16,
+      "industry": "Business Networking ",
+      "year": 2023,
+      "layout": [
+        {
+          "type": "text",
+          "content": "BNI (Business Network International) is known for its focus on helping professionals grow their businesses through a structured referral marketing program and networking opportunities."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 5,
+              "alt": "BNI — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-35-thumbnail",
+          "path": "assets/bni/thumbnail.webp",
+          "image_url": "/projects/v1/assets/bni/thumbnail.webp",
+          "alt": "BNI — thumbnail",
+          "role": "cover",
+          "order": 5
+        }
+      ],
+      "tags": [
+        {
+          "id": "9",
+          "name": "Video Editing"
+        }
+      ]
+    },
+    {
+      "id": "48",
+      "slug": "caenar",
+      "title": "Caenar",
+      "desc": "Just a bonus. Some stuff I did back then like school projects or personal projects.",
+      "is_archived": false,
+      "created_at": "2022-01-01T00:00:00.000Z",
+      "order": 17,
+      "industry": "Design",
+      "year": 2022,
+      "layout": [
+        {
+          "type": "text",
+          "content": "Just a bonus. Some stuff I did back then like school projects or personal projects."
+        },
+        {
+          "type": "gallery",
+          "style": "default",
+          "gridOptions": {
+            "columns": "repeat(2, 1fr)"
+          },
+          "items": [
+            {
+              "index": 0,
+              "alt": "Caenar — 1"
+            },
+            {
+              "index": 1,
+              "alt": "Caenar — 2"
+            },
+            {
+              "index": 2,
+              "alt": "Caenar — 3"
+            },
+            {
+              "index": 3,
+              "alt": "Caenar — 4"
+            },
+            {
+              "index": 7,
+              "alt": "Caenar — thumbnail"
+            }
+          ]
+        }
+      ],
+      "project_image": [
+        {
+          "id": "legacy-48-1",
+          "path": "assets/caenar/1.webp",
+          "image_url": "/projects/v1/assets/caenar/1.webp",
+          "alt": "Caenar — 1",
+          "role": "cover",
+          "order": 0
+        },
+        {
+          "id": "legacy-48-2",
+          "path": "assets/caenar/2.webp",
+          "image_url": "/projects/v1/assets/caenar/2.webp",
+          "alt": "Caenar — 2",
+          "role": "gallery",
+          "order": 1
+        },
+        {
+          "id": "legacy-48-3",
+          "path": "assets/caenar/3.webp",
+          "image_url": "/projects/v1/assets/caenar/3.webp",
+          "alt": "Caenar — 3",
+          "role": "gallery",
+          "order": 2
+        },
+        {
+          "id": "legacy-48-4",
+          "path": "assets/caenar/4.webp",
+          "image_url": "/projects/v1/assets/caenar/4.webp",
+          "alt": "Caenar — 4",
+          "role": "gallery",
+          "order": 3
+        },
+        {
+          "id": "legacy-48-thumbnail",
+          "path": "assets/caenar/thumbnail.webp",
+          "image_url": "/projects/v1/assets/caenar/thumbnail.webp",
+          "alt": "Caenar — thumbnail",
+          "role": "gallery",
+          "order": 7
+        }
+      ],
+      "tags": [
+        {
+          "id": "17",
+          "name": "UI/UX Design"
+        },
+        {
+          "id": "15",
+          "name": "Web Development"
+        }
+      ]
+    }
+  ]
+}

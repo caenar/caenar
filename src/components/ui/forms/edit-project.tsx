@@ -8,11 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { toast } from "sonner";
 import { editProjectSchema } from "@/lib/schemas/project.schema";
-import {
-  deleteProject,
-  editProject,
-  fetchProjects,
-} from "@/app/work/action";
+import { deleteProject, editProject } from "@/app/admin/action";
 
 import {
   Form,
@@ -28,7 +24,6 @@ import { TbPlus, TbX } from "react-icons/tb";
 import { handleResult } from "@/lib/utils/handle-result";
 import { Trash } from "lucide-react";
 import Loader from "../loader";
-import { useProject } from "@/lib/stores/use-project";
 
 export default function EditProjectForm({
   project,
@@ -47,28 +42,57 @@ export default function EditProjectForm({
     project.tags.map((t) => t.name).join(", "),
   );
 
-  const [existingImages, setExistingImages] = useState<ProjectImage[]>(
-    project.project_image.map((img) => ({
+  const [existingImages, setExistingImages] = useState<ProjectImage[]>(() => {
+    const sorted = [...project.project_image].sort(
+      (a, b) => (a.order ?? 0) - (b.order ?? 0),
+    );
+    const coverIndex = sorted.findIndex((image) => image.role === "cover");
+
+    if (coverIndex > 0) {
+      const [cover] = sorted.splice(coverIndex, 1);
+      sorted.unshift(cover);
+    }
+
+    return sorted.map((img, index) => ({
       id: img.id,
+      path: img.path,
       image_url: img.image_url,
-      order: img.order,
-    })),
-  );
-  const [removedImageIds, setRemovedImageIds] = useState<ProjectImage[]>([]);
+      alt: img.alt,
+      role: index === 0 ? "cover" : "gallery",
+      order: index,
+    }));
+  });
 
   const addFile = () => fileInput.current?.click();
 
   const removeNewImage = (index: number) =>
     setImages((prev) => prev.filter((_, i) => i !== index));
 
+  const setAsCover = (imgId: string) => {
+    setExistingImages((prev) => {
+      const idx = prev.findIndex((i) => i.id === imgId);
+      if (idx <= 0) return prev;
+      const next = [...prev];
+      const [picked] = next.splice(idx, 1);
+      next.unshift(picked);
+      return next.map((img, index) => ({
+        ...img,
+        order: index,
+        role: index === 0 ? "cover" : "gallery",
+      }));
+    });
+  };
+
   const removeExistingImage = (img: ProjectImage) => {
     setExistingImages((prev) =>
-      prev.filter((i) => parseInt(i.id, 10) !== parseInt(img.id, 10)),
+      prev
+        .filter((i) => i.id !== img.id)
+        .map((image, index) => ({
+          ...image,
+          order: index,
+          role: index === 0 ? "cover" : "gallery",
+        })),
     );
-    setRemovedImageIds((prev) => [
-      ...prev,
-      { id: img.id, image_url: img.image_url, order: img.order },
-    ]);
   };
 
   const form = useForm<z.infer<typeof editProjectSchema>>({
@@ -87,17 +111,14 @@ export default function EditProjectForm({
       action: async () => {
         const result = await deleteProject(project.id);
         handleResult(result, {
-          ok: async (message: string) => {
+          ok: (message: string) => {
             toast.success(message);
-
-            const updated = await fetchProjects();
-            useProject.getState().setProjects(updated);
-
             closeConfirmPopupAction();
             closeAction();
           },
           error: {
             validation: (details: string) => toast.warning(details),
+            conflict: (details: string) => toast.warning(details),
           },
           fallback: () =>
             toast.error("Something went wrong. Please try again."),
@@ -120,12 +141,6 @@ export default function EditProjectForm({
     formData.append("layout", values.layout ?? "");
     finalTags.forEach((tag) => formData.append("tags", tag));
     images.forEach((file) => formData.append("images", file));
-    removedImageIds.forEach((img) =>
-      formData.append(
-        "removedImages",
-        JSON.stringify({ id: img.id, image_url: img.image_url }),
-      ),
-    );
     existingImages.forEach((img) =>
       formData.append("existingImages", img.id.toString()),
     );
@@ -133,16 +148,13 @@ export default function EditProjectForm({
     const result = await editProject(formData);
 
     handleResult(result, {
-      ok: async (message: string) => {
+      ok: (message: string) => {
         toast.success(message);
-
-        const updated = await fetchProjects();
-        useProject.getState().setProjects(updated);
-
         closeAction();
       },
       error: {
         validation: (details: string) => toast.warning(details),
+        conflict: (details: string) => toast.warning(details),
       },
       fallback: () => toast.error("Something went wrong. Please try again."),
     });
@@ -152,7 +164,7 @@ export default function EditProjectForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-2 gap-5"
+        className="grid grid-cols-1 md:grid-cols-2 gap-5"
         encType="multipart/form-data"
       >
         <div className="grid gap-3">
@@ -201,26 +213,40 @@ export default function EditProjectForm({
             {existingImages.length > 0 && (
               <div className="uploads-container">
                 {existingImages.map((img, index) => (
-                  <div key={index} className="flex items-center gap-2">
+                  <div key={img.id} className="flex items-center gap-2">
                     <Image
-                      src={img.image_url}
-                      alt={`img ${index}`}
+                      src={img.image_url || "/placeholder.svg"}
+                      alt={img.alt || `img ${index}`}
                       width={40}
                       height={40}
                       style={{ objectFit: "cover" }}
                       className="rounded-md border"
                     />
-                    <div className="w-full max-w-[350px]">
-                      <span className="block truncate break-all">
-                        {img.image_url.split("/").pop()}
+                    <div className="w-full min-w-0 max-w-[350px]">
+                      <span className="block truncate break-all text-sm">
+                        {img.path?.split("/").pop() || img.image_url.split("/").pop() || "image"}
                       </span>
+                      {index === 0 && (
+                        <span className="text-[11px] uppercase opacity-60">Cover</span>
+                      )}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => removeExistingImage(img)}
-                    >
-                      <TbX className="text-pink-100" size={16} />
-                    </button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {index !== 0 && (
+                        <button
+                          type="button"
+                          className="text-xs opacity-70 hover:opacity-100"
+                          onClick={() => setAsCover(img.id)}
+                        >
+                          Cover
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeExistingImage(img)}
+                      >
+                        <TbX className="text-pink-100" size={16} />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -259,6 +285,7 @@ export default function EditProjectForm({
               ref={fileInput}
               type="file"
               hidden
+              accept="image/*"
               multiple
               onChange={(e) => {
                 if (!e.target.files) return;
@@ -288,7 +315,7 @@ export default function EditProjectForm({
             )}
           ></FormField>
         </div>
-        <div className="col-span-2 flex justify-between mt-5">
+        <div className="md:col-span-2 flex flex-col-reverse sm:flex-row justify-between gap-3 mt-5">
           <button
             type="button"
             className="danger-button icon-label"

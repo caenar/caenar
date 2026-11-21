@@ -10,7 +10,7 @@ import { addProjectSchema } from "@/lib/schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleResult } from "@/lib/utils/handle-result";
 import { toast } from "sonner";
-import { addProject, fetchProjects } from "@/app/work/action";
+import { addProject } from "@/app/admin/action";
 import {
   Form,
   FormControl,
@@ -23,7 +23,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { z } from "zod";
 import Loader from "../loader";
-import { useProject } from "@/lib/stores/use-project";
 
 export default function AddProjectForm({
   closeAction,
@@ -91,16 +90,13 @@ export default function AddProjectForm({
     const result = await addProject(formData);
 
     handleResult(result, {
-      ok: async (message: string) => {
+      ok: (message: string) => {
         toast.success(message);
-
-        const updated = await fetchProjects();
-        useProject.getState().setProjects(updated);
-
         closeAction();
       },
       error: {
         validation: (details: string) => toast.warning(details),
+        conflict: (details: string) => toast.warning(details),
       },
       fallback: () => toast.error("Something went wrong. Please try again."),
     });
@@ -198,6 +194,7 @@ export default function AddProjectForm({
             ref={fileInput}
             type="file"
             hidden
+            accept="image/*"
             multiple
             onChange={(e) => {
               if (!e.target.files) return;

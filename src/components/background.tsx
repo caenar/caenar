@@ -67,7 +67,7 @@ export default function Background() {
   }, []);
 
   const gradientY = useTransform(scrollY, [0, viewportHeight], [0, 500]);
-  const logoY = useTransform(scrollY, [0, viewportHeight], [150, 1100]);
+  const logoY = useTransform(scrollY, [0, viewportHeight], [150, 1000]);
 
   const gradientFade = useTransform(
     scrollY,

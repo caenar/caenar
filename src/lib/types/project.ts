@@ -10,10 +10,12 @@ export type Project = {
   is_archived: boolean;
   created_at: string;
   order?: number;
-  live_link?: string | undefined;
-  code_link?: string | undefined;
-  figma_link?: string | undefined;
-  layout?: ProjectLayout | undefined;
+  live_link?: string;
+  code_link?: string;
+  figma_link?: string;
+  industry?: string;
+  year?: number;
+  layout?: ProjectLayout;
   project_image: ProjectImage[];
   tags: Tag[];
 };

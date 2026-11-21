@@ -16,8 +16,6 @@ export default function Gallery({
   items,
 }: GalleryProps) {
   function getWrapperClass() {
-    console.log(gridOptions);
-
     if (style === "default") {
       const columns = gridOptions?.columns ? "" : "grid-cols-2";
       const gap = gridOptions?.gap ? `[gap:${gridOptions.gap}]` : "gap-4";
@@ -55,10 +53,10 @@ export default function Gallery({
               <div key={`gallery-item-${i}`}>
                 <Image
                   priority
-                  src={image.image_url}
+                  src={image.image_url || "/placeholder.svg"}
                   width={2000}
                   height={2000}
-                  alt={item.alt}
+                  alt={item.alt || "Project image"}
                   className="rounded-md object-cover"
                 />
                 {item.desc && (
@@ -97,10 +95,10 @@ export default function Gallery({
                   <React.Fragment key={`gallery-item-${i}`}>
                     <Image
                       priority
-                      src={image.image_url}
+                      src={image.image_url || "/placeholder.svg"}
                       width={2000}
                       height={2000}
-                      alt={item.alt}
+                      alt={item.alt || "Project image"}
                       className="h-auto max-w-full rounded-lg object-cover"
                     />
                     {item.desc && (

@@ -1,12 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  images: {
-    domains: [
-      "nmekcqfyrditqzlrmlqa.supabase.co",
-      "xdttqrvbmxjcmbwazjqi.supabase.co",
-    ],
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

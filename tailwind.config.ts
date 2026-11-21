@@ -66,7 +66,8 @@ export default {
         },
       },
       fontFamily: {
-        normal: ["Inclusive Sans", "sans-serif"],
+        display: ["Mozilla Headline", "sans-serif"],
+        text: ["Mozilla Text", "sans-serif"],
         mono: ["Google Sans Code", "monospace"],
       },
       borderRadius: {

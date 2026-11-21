@@ -2,18 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
-
-import type { Project, ProjectLayout, Tag } from "@/lib/types";
-import { IconSizes } from "@/lib/constants";
-import { RenderLayout } from "@/components/project/render-layout";
 import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 
-export default function ProjectLayout({ project }: { project: Project }) {
+import { RenderLayout } from "@/components/project/render-layout";
+import { IconSizes } from "@/lib/constants";
+import type { Project, Tag } from "@/lib/types";
+
+export default function ProjectLayout({
+  project,
+  nextProject,
+}: {
+  project: Project;
+  nextProject?: Pick<Project, "slug" | "title">;
+}) {
+  const externalLinks = [
+    project.live_link
+      ? {
+          href: project.live_link,
+          label: "Live demo",
+          icon: <ExternalLink size={IconSizes.SMALL} />,
+        }
+      : null,
+    project.code_link
+      ? {
+          href: project.code_link,
+          label: "View code",
+          icon: <Github size={IconSizes.SMALL} />,
+        }
+      : null,
+  ].filter((link): link is NonNullable<typeof link> => link !== null);
+
   return (
     <>
       <section className="pt-32 pb-16 mx-[25vw]">
         <Link
-          href="/projects"
+          href="/work"
           className="icon-label uppercase text-sm font-mono"
         >
           <ArrowLeft size={IconSizes.SMALL} className="mb-1" />
@@ -33,16 +56,22 @@ export default function ProjectLayout({ project }: { project: Project }) {
           </div>
           <h1 className="font-bold">{project.title}</h1>
           <p className="text-lg opacity-60">{project.desc}</p>
-          <div className="button-container !gap-5">
-            <button type="button" className="primary-button icon-label">
-              <ExternalLink size={IconSizes.SMALL} />
-              Live demo
-            </button>
-            <button type="button" className="icon-label">
-              <Github size={IconSizes.SMALL} />
-              View code
-            </button>
-          </div>
+          {externalLinks.length > 0 && (
+            <div className="button-container !gap-5">
+              {externalLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="primary-button icon-label"
+                >
+                  {link.icon}
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -51,8 +80,12 @@ export default function ProjectLayout({ project }: { project: Project }) {
           <Image
             priority
             src={
-              project.project_image.find((p) => p.order === 0)?.image_url ??
-              "placeholder.jpg"
+              project.project_image.find((image) => image.role === "cover")
+                ?.image_url ??
+              project.project_image.find((image) => image.order === 0)
+                ?.image_url ??
+              project.project_image[0]?.image_url ??
+              "/placeholder.svg"
             }
             alt={`Hero image of project ${project.title}`}
             width={2000}
@@ -63,15 +96,14 @@ export default function ProjectLayout({ project }: { project: Project }) {
         </div>
       </section>
 
-      {/* render the dynamic JSON layout */}
-      <RenderLayout
-        images={project.project_image}
-        layout={project.layout as ProjectLayout}
-      />
+      <RenderLayout images={project.project_image} layout={project.layout} />
 
       <section className="flex justify-center py-32 mx-[25vw]">
-        <Link className="icon-label font-mono uppercase text-3xl" href="/">
-          Next project
+        <Link
+          className="icon-label font-mono uppercase text-3xl"
+          href={nextProject ? `/work/${nextProject.slug}` : "/work"}
+        >
+          Next project{nextProject ? `: ${nextProject.title}` : ""}
           <ArrowRight size={IconSizes.XL} />
         </Link>
       </section>

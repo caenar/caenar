@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import type {
   LayoutBlock,
   LayoutGroup,
@@ -18,13 +20,15 @@ export function RenderLayout({
   layout,
 }: {
   images: ProjectImage[];
-  layout: ProjectLayout;
+  layout?: ProjectLayout;
 }) {
-  console.log(layout);
+  const safeLayout = layout ?? [];
 
   return (
     <section className="grid gap-24 mx-[25vw] pt-16">
-      {layout.map((block, i) => renderBlock(images, block, `root-${i}-`))}
+      {safeLayout.map((block, i) =>
+        renderBlock(images, block, `root-${i}-`),
+      )}
     </section>
   );
 }
@@ -134,6 +138,23 @@ function renderBlock(
       return (
         <AccordionBlock key={keyPrefix + "accordion"} data={block.items} />
       );
+
+    case "image": {
+      const image = images.find((item) => item.order === block.order);
+      if (!image) return null;
+
+      return (
+        <figure key={keyPrefix + "image"}>
+          <Image
+            src={image.image_url || "/placeholder.svg"}
+            alt={image.alt ?? block.from ?? "Project image"}
+            width={2000}
+            height={1400}
+            className="h-auto w-full rounded-lg"
+          />
+        </figure>
+      );
+    }
 
     case "gallery":
       return (

@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import { Inclusive_Sans, Google_Sans_Code } from "next/font/google";
+import { Mozilla_Headline, Mozilla_Text, Google_Sans_Code } from "next/font/google";
 import type { Metadata } from "next";
 import { PopupProvider } from "@/shared/context/popup-context";
 
@@ -10,11 +10,20 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import SmoothScroll from "@/components/scroll-smooth";
 
-const inclusiveSans = Inclusive_Sans({
-  variable: "--font-normal",
+const mozillaHeadline = Mozilla_Headline({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+  adjustFontFallback: false,
 });
+
+const mozillaText = Mozilla_Text({
+  variable: "--font-text",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+  adjustFontFallback: false,
+});
+
 
 const googleSansCode = Google_Sans_Code({
   variable: "--font-mono",
@@ -38,7 +47,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <SmoothScroll />
       <body
-        className={`flex flex-col min-h-screen ${googleSansCode.variable} ${inclusiveSans.variable} antialiased `}
+        className={`flex flex-col min-h-screen ${googleSansCode.variable} ${mozillaHeadline.variable} ${mozillaText.variable} antialiased `}
       >
         <ThemeProvider
           attribute="class"

@@ -24,8 +24,10 @@ export default function ProjectCard({
         {images && (
           <Image
             src={
+              images.find((img: ProjectImage) => img?.role === "cover")?.image_url ||
               images.find((img: ProjectImage) => img?.order === 0)?.image_url ||
-              "/placeholder.jpg"
+              images[0]?.image_url ||
+              "/placeholder.svg"
             }
             width={2000}
             height={2000}
@@ -48,9 +50,9 @@ export default function ProjectCard({
         <div className="line my-4"></div>
         <ul className="flex flex-row flex-wrap px-4 pb-5 gap-2 items-center">
           {tags &&
-            tags.slice(0, 3).map((tag: Tag, index: number) => (
+            tags.slice(0, 3).map((tag: Tag) => (
               <li
-                key={index}
+                key={tag.id}
                 className="badge border-background-400 !text-[14px] lowercase"
               >
                 {tag.name}
