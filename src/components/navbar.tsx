@@ -60,12 +60,18 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   const blur = useTransform(scrollY, [0, viewportHeight * 5], [0, 12]);
-  const borderAlpha = useTransform(scrollY, [0, viewportHeight * 15], [0, 0.151]);
+  const borderAlpha = useTransform(
+    scrollY,
+    [0, viewportHeight * 15],
+    [0, 0.151],
+  );
   const borderColor = useMotionTemplate`rgba(255, 255, 255, ${borderAlpha})`;
   const backdropFilter = useMotionTemplate`blur(${blur}px)`;
 
   const targetHref =
-    hoveredHref ?? NAV_LINKS.find(({ href }) => href === pathname)?.href ?? null;
+    hoveredHref ??
+    NAV_LINKS.find(({ href }) => href === pathname)?.href ??
+    null;
 
   useEffect(() => {
     const getIndicatorPosition = (href: string) => {
@@ -89,7 +95,10 @@ export default function Navbar() {
     }
 
     const syncPosition = (animate: boolean) => {
-      if (typeof window !== "undefined" && !window.matchMedia("(min-width: 768px)").matches) {
+      if (
+        typeof window !== "undefined" &&
+        !window.matchMedia("(min-width: 768px)").matches
+      ) {
         setIndicatorReady(false);
         return;
       }
@@ -151,8 +160,8 @@ export default function Navbar() {
             src="/logo.svg"
             alt="Caenar's pretty cool logo"
             className="invert"
-            width={30}
-            height={30}
+            width={50}
+            height={50}
           />
         </Link>
 

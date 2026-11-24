@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Component, Facebook, Github, Linkedin } from "lucide-react";
 
-import Background from "@/components/background";
+import { GlyphBackground } from "@/components/ui/backgrounds-glyph";
 import CuriosityFlow from "@/components/curiosity-flow";
 import FadeIn from "@/components/fade-in";
 import FadeInLines from "@/components/fade-in-lines";
@@ -21,6 +21,7 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
     target: heroRef,
     offset: ["start start", "end end"],
   });
+  const { scrollY } = useScroll();
 
   const [viewportHeight, setViewportHeight] = useState(2000);
 
@@ -33,6 +34,8 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
 
   const headlineY = useTransform(scrollYProgress, [0, 0.4], [200, 0]);
   const terminalY = useTransform(scrollYProgress, [0, 0.4], [viewportHeight, 0]);
+  const bgY = useTransform(scrollY, [0, viewportHeight], [0, 300]);
+  const bgFade = useTransform(scrollY, [viewportHeight * 0.25, viewportHeight * 1.1], [1, 0]);
 
   const socials = [
     {
@@ -57,7 +60,15 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
 
   return (
     <>
-      <Background />
+      <motion.div
+        className="absolute inset-x-0 top-0 h-[150vh] z-[-1]"
+        style={{ y: bgY, opacity: bgFade }}
+      >
+        <GlyphBackground
+          className="absolute inset-0"
+          maskSrc="/images/bg-assets/raw.png"
+        />
+      </motion.div>
 
       <section ref={heroRef} className="relative h-[200dvh]">
         <div className="sticky top-0 h-[100dvh] flex flex-col items-center justify-center overflow-visible">
