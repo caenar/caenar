@@ -15,7 +15,7 @@ export default function ScrambleText({
   text,
   className,
   delay = 0,
-  speed = 0.065,
+  speed = 0.045,
   highlight,
 }: {
   text: string;
@@ -35,6 +35,11 @@ export default function ScrambleText({
 
   useEffect(() => {
     clearTimers();
+    let cancelled = false;
+    const track = (timer: ReturnType<typeof setTimeout>) => {
+      timersRef.current.push(timer);
+      return timer;
+    };
 
     const letters = text.split("");
     setChars(letters.map((c) => (c === " " ? " " : randomChar())));
@@ -74,9 +79,11 @@ export default function ScrambleText({
       nonSpaceIndex++;
 
       const startTimer = setTimeout(() => {
+        if (cancelled) return;
         const begunAt = performance.now();
 
         const tick = () => {
+          if (cancelled) return;
           const elapsed = performance.now() - begunAt;
           const t = Math.min(elapsed / scrambleMs, 1);
 
@@ -98,7 +105,7 @@ export default function ScrambleText({
           // Ease-out: ticks get farther apart as we approach settling
           const eased = 1 - Math.pow(1 - t, 2);
           const nextDelay = baseDelay + (maxDelay - baseDelay) * eased;
-          timersRef.current.push(setTimeout(tick, nextDelay));
+          track(setTimeout(tick, nextDelay));
         };
 
         tick();
@@ -106,6 +113,7 @@ export default function ScrambleText({
 
       // Failsafe: ensure final char is set even if timing drifts
       const settleTimer = setTimeout(() => {
+        if (cancelled) return;
         setChars((prev) => {
           const next = [...prev];
           next[i] = target;
@@ -113,55 +121,73 @@ export default function ScrambleText({
         });
       }, settleAt + 120);
 
-      timersRef.current.push(startTimer, settleTimer);
+      track(startTimer);
+      track(settleTimer);
     });
 
-    return clearTimers;
+    return () => {
+      cancelled = true;
+      clearTimers();
+    };
   }, [text, delay, speed, clearTimers]);
+
+  const words: { chars: { char: string; index: number }[]; spaceAfter: boolean }[] = [];
+  let currentWord: { char: string; index: number }[] = [];
+  text.split("").forEach((char, index) => {
+    if (char === " ") {
+      words.push({ chars: currentWord, spaceAfter: true });
+      currentWord = [];
+      return;
+    }
+    currentWord.push({ char, index });
+  });
+  if (currentWord.length > 0) words.push({ chars: currentWord, spaceAfter: false });
 
   return (
     <span className={className} aria-label={text}>
       <span aria-hidden="true">
-        {text.split("").map((finalChar, i) => {
-          // Real space -> breakable whitespace so the headline wraps naturally.
-          if (finalChar === " ") {
-            return <React.Fragment key={i}> </React.Fragment>;
-          }
+        {words.map((word, wordIndex) => (
+          <React.Fragment key={wordIndex}>
+            <span className="inline-block whitespace-nowrap">
+              {word.chars.map(({ char: finalChar, index: i }) => {
+                const isHighlighted =
+                  highlight != null && i >= highlight.from && i < highlight.to;
+                const current = chars[i] ?? finalChar;
 
-          const isHighlighted =
-            highlight != null && i >= highlight.from && i < highlight.to;
-          const current = chars[i] ?? finalChar;
+                return (
+                  <span key={i} className="relative inline-block">
+                    {/* Invisible final glyph reserves its exact width + height.
+                        This is what the layout is measured from, so it never changes. */}
+                    <span className="invisible">{finalChar}</span>
 
-          return (
-            <span key={i} className="relative inline-block">
-              {/* Invisible final glyph reserves its exact width + height.
-                  This is what the layout is measured from, so it never changes. */}
-              <span className="invisible">{finalChar}</span>
-
-              {/* Scrambling glyph is absolutely positioned, so it can be any
-                  width/height without affecting the layout. */}
-              <motion.span
-                className={`absolute left-0 top-0 w-full text-center ${
-                  isHighlighted ? "text-violet-200" : ""
-                }`}
-                initial={{
-                  opacity: 0,
-                  y: 18,
-                  rotateX: -45,
-                  filter: "blur(3px)",
-                }}
-                animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
-                transition={{
-                  delay: delay + i * 0.025,
-                  duration: 0.75,
-                  ease: [0.34, 1.56, 0.64, 1],
-                }}
-              >
-                {current}
-              </motion.span>
+                    {/* Scrambling glyph is absolutely positioned, so it can be any
+                        width/height without affecting the layout. */}
+                    <motion.span
+                      className={`absolute left-0 top-0 w-full text-center ${
+                        isHighlighted ? "text-violet-200" : ""
+                      }`}
+                      initial={{
+                        opacity: 0,
+                        y: 18,
+                        rotateX: -45,
+                        filter: "blur(3px)",
+                      }}
+                      animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
+                      transition={{
+                        delay: delay + i * 0.025,
+                        duration: 0.75,
+                        ease: [0.34, 1.56, 0.64, 1],
+                      }}
+                    >
+                      {current}
+                    </motion.span>
+                  </span>
+                );
+              })}
             </span>
-          );
-        })}
+            {word.spaceAfter ? " " : null}
+          </React.Fragment>
+        ))}
       </span>
     </span>
   );

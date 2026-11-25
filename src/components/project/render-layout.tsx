@@ -18,14 +18,16 @@ import Gallery from "./gallery-block";
 export function RenderLayout({
   images,
   layout,
+  className = "grid gap-24 mx-[25vw] pt-16",
 }: {
   images: ProjectImage[];
   layout?: ProjectLayout;
+  className?: string;
 }) {
   const safeLayout = layout ?? [];
 
   return (
-    <section className="grid gap-24 mx-[25vw] pt-16">
+    <section className={className}>
       {safeLayout.map((block, i) =>
         renderBlock(images, block, `root-${i}-`),
       )}

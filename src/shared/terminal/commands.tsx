@@ -35,48 +35,9 @@ const whoami: TerminalCommand = {
   description: "A short description about me",
   flags: [
     { alias: "", desc: "A short description about me" },
-    { alias: "-ts", desc: "Relevant technical skills" },
-    { alias: "-cs", desc: "Relevant creative skills" },
     { alias: "-m", desc: "Personal mantra" },
   ],
   run(args) {
-    if (args.includes("-ts")) {
-      return output(
-        <p>
-          <span className="text-pink-200">Frontend</span>: Next.js, Expo,
-          Flutter, TypeScript, Tailwind CSS <br />
-          <span className="text-pink-200">Backend & Data</span>: Node.js, PHP,
-          PostgreSQL, MongoDB, Prisma, REST APIs, WebSockets
-          <br />
-          <span className="text-pink-200">Engineering</span>: Domain-driven
-          design, multi-tenant systems, authorization, abstraction
-          <br />
-          <span className="text-pink-200">Tools & Infrastracture</span>: Git,
-          Docker, Linux, Neovim (btw), Supabase, Neon, Vercel
-          <br />
-          <span className="text-pink-200">AI & Development</span>: MCP,
-          AI-assisted development, debugging, and code review, context
-          engineering, coding agents
-        </p>,
-      );
-    }
-    if (args.includes("-cs")) {
-      return output(
-        <p>
-          <span className="text-pink-200">Design</span>: Figma, Canva,
-          Photoshop, Illustrator, Wix, Weebly
-          <br />
-          <span className="text-pink-200">Motion & Video</span>: After Effects,
-          Premiere Pro, DaVinci Resolve
-          <br />
-          <span className="text-pink-200">3D & Rendering</span>: Blender,
-          Cinema4D
-          <br />
-          <span className="text-pink-200">Tools</span>: Lightroom, Topaz Labs,
-          iZotope RX <br />
-        </p>,
-      );
-    }
     if (args.includes("-m")) {
       return output(
         <p>
@@ -89,15 +50,62 @@ const whoami: TerminalCommand = {
     if (args.length === 0) {
       return output(
         <p>
-          Hello! My name is Stephanie Arteta, though I go by the alias “caenar”
-          which is pronounced as “kay-nar”. I&apos;m currently 22 years old and{" "}
+          Hello! My name is{" "}
+          <span className="text-pink-200">Stephanie Arteta</span>, though I go
+          by the alias <span className="text-pink-200">“caenar”</span> which is
+          pronounced as “kay-nar”. I&apos;m currently{" "}
+          <span className="text-pink-200">22 years old</span> and{" "}
           <span className="italic">still </span>studying at Divine Word College
-          of Legazpi where I'm taking the course BSIT; majoring in Web
-          Development.
+          of Legazpi where I'm taking the course BSIT; majoring in{" "}
+          <span className="text-pink-200">Web Development.</span>
         </p>,
       );
     }
     return output(<p>Invalid flag: {args.join(" ")}</p>);
+  },
+};
+
+const skills: TerminalCommand = {
+  name: "skills",
+  description: "Technical and creative skills",
+  flags: [{ alias: "", desc: "Technical and creative skills" }],
+  run() {
+    return output(
+      <div className="grid gap-3">
+        <p className="text-white/80">
+          <span className="text-violet-100 font-semibold">Technical</span>
+          <br />
+          <span className="text-white/60">Frontend</span>: Next.js, Expo,
+          Flutter, TypeScript, Tailwind CSS <br />
+          <span className="text-white/60">Backend & Data</span>: Node.js, PHP,
+          PostgreSQL, MongoDB, Prisma, REST APIs, WebSockets
+          <br />
+          <span className="text-white/60">Engineering</span>: Domain-driven
+          design, multi-tenant systems, authorization, abstraction
+          <br />
+          <span className="text-white/60">Tools & Infrastracture</span>: Git,
+          Docker, Linux, Neovim (btw), Supabase, Neon, Vercel
+          <br />
+          <span className="text-white/60">AI & Development</span>: MCP,
+          AI-assisted development, debugging & code review, context engineering
+        </p>
+        <p className="text-white/80">
+          <span className="text-violet-100 font-semibold">Creative</span>
+          <br />
+          <span className="text-white/60">Design</span>: Figma, Canva,
+          Photoshop, Illustrator, Wix, Weebly
+          <br />
+          <span className="text-white/60">Motion & Video</span>: After Effects,
+          Premiere Pro, DaVinci Resolve
+          <br />
+          <span className="text-white/60">3D & Rendering</span>: Blender,
+          Cinema4D
+          <br />
+          <span className="text-white/60">Tools</span>: Lightroom, Topaz Labs,
+          iZotope RX
+        </p>
+      </div>,
+    );
   },
 };
 
@@ -189,9 +197,9 @@ const help: TerminalCommand = {
                     >
                       {flag.alias ? (
                         <>
-                          <span className="opacity-50 w-[80px] shrink-0 font-mono">
+                          <p className="opacity-50 w-[80px] shrink-0 font-mono">
                             {flag.alias}
-                          </span>
+                          </p>
                           <p className="break-words">{flag.desc}</p>
                         </>
                       ) : (
@@ -217,7 +225,14 @@ const help: TerminalCommand = {
   },
 };
 
-export const commandList: TerminalCommand[] = [whoami, cd, clear, help, nigga];
+export const commandList: TerminalCommand[] = [
+  whoami,
+  skills,
+  cd,
+  clear,
+  help,
+  nigga,
+];
 
 const commandMap = new Map(commandList.map((cmd) => [cmd.name, cmd]));
 

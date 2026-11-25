@@ -2,17 +2,22 @@
 
 import * as React from "react";
 import {
-  animate,
   cancelFrame,
   frame,
-  motionValue,
   MotionConfig,
   useInView,
   useReducedMotion,
-  type MotionValue,
 } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { generateLogoTargets } from "@/components/ui/glyph-formation/targets";
+import {
+  createFormation,
+  completeFormation,
+  updateFormation,
+} from "@/components/ui/glyph-formation/simulation";
+import { createFormationRenderer } from "@/components/ui/glyph-formation/renderer";
+import type { FormationState } from "@/components/ui/glyph-formation/types";
 
 function usePageVisible() {
   const [visible, setVisible] = React.useState(
@@ -28,19 +33,10 @@ function usePageVisible() {
   return visible;
 }
 
-const CHARACTERS =
-  "sendaihazuki";
-const MAX_WAVES = 12;
-const TRAIL = 12;
-const TRAIL_LIFE = 700;
-const WAVE_LIFE = 4;
-const WAVE_GAP = 0.3;
-const WAVE_SPEED = 560;
-const WAVE_SLOWDOWN = 0.66;
-const WAVE_EDGE = 10;
-const WAVE_TAIL = 30;
-const DRIFT = [-30, 12] as const;
-const ACTIVITY_DECAY = 900;
+const CHARACTERS = ".:-=+*#%/\\\\|";
+// ASCII ramp used by the logo formation (luminance ramp + contour glyphs).
+const FORMATION_CHARS = " .:-=+*#%/\\\\|";
+const FORMATION_RAMP_LENGTH = 9;
 
 const VERTEX = `
 attribute vec2 position;
@@ -59,16 +55,11 @@ uniform float count;
 uniform float time;
 uniform float rest;
 uniform float haze;
-uniform float hoverInk;
-uniform float activity;
-uniform vec2 drift;
 uniform vec3 color;
-uniform vec3 accent;
-uniform vec4 waves[${MAX_WAVES * 2}];
-uniform vec4 trail[${TRAIL}];
 uniform sampler2D logoMask;
 uniform vec4 logoMaskRect;
 uniform float hasLogoMask;
+uniform float intro;
 
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -96,90 +87,51 @@ float clouds(vec2 p) {
   return v;
 }
 
-float outline(float kind, float angle, float phase) {
-  if (kind < 0.5) return 1.0;
-  if (kind < 1.5) {
-    float s = sin(angle);
-    float c = cos(angle);
-    return (2.0 - 2.0 * s + s * sqrt(abs(c)) / (s + 1.4)) * 0.42;
-  }
-  return 1.0 + 0.14 * sin(3.0 * angle + phase) + 0.08 * sin(5.0 * angle - phase * 1.3);
-}
-
 void main() {
   vec2 pixel = vec2(gl_FragCoord.x, size.y - gl_FragCoord.y);
   vec2 index = floor(pixel / cell);
   vec2 point = (index + 0.5) * cell / dpr;
 
-  float ring = 0.0;
-  for (int i = 0; i < ${MAX_WAVES}; i++) {
-    vec4 a = waves[i * 2];
-    vec4 b = waves[i * 2 + 1];
-    if (a.w <= 0.0) continue;
-    vec2 v = point - a.xy;
-    float angle = atan(-v.y, v.x);
-    float shape = mix(1.0, outline(b.x, angle, b.z), b.y);
-    shape *= 1.0 + 0.07 * sin(3.0 * angle + b.z + b.w) + 0.05 * sin(5.0 * angle - b.z * 1.7 - b.w * 1.3) + 0.03 * sin(9.0 * angle + b.w * 2.1);
-    float d = length(v) - a.z * shape;
-    float k = d > 0.0 ? d / ${WAVE_EDGE.toFixed(1)} : d / ${WAVE_TAIL.toFixed(1)};
-    ring = max(ring, exp(-k * k) * a.w);
-  }
-
-  float hover = 0.0;
-  for (int i = 0; i < ${TRAIL}; i++) {
-    vec4 t = trail[i];
-    if (t.w <= 0.0) continue;
-    vec2 v = point - t.xy;
-    hover += t.w * exp(-dot(v, v) / (2.0 * t.z * t.z));
-  }
-  hover = min(hover, 1.0);
-
+  vec2 center = size / dpr * 0.5;
+  vec2 p = point - center;
+  float r = length(p);
+  float angle = time * 0.035 + r * 0.0008;
+  float ca = cos(angle);
+  float sa = sin(angle);
+  vec2 vortex = vec2(ca * p.x - sa * p.y, sa * p.x + ca * p.y);
   mat2 turn = mat2(0.82, 0.57, -0.57, 0.82);
-  vec2 q = turn * (point - drift);
-  float blob = smoothNoise(vec2(q.x / 140.0, q.y / 80.0) + vec2(time * 0.04, 0.0)) * 0.62
-    + smoothNoise(vec2(q.x / 62.0, q.y / 36.0) + vec2(3.7, time * 0.06)) * 0.38;
-  float grain = smoothNoise(vec2(q.x / 30.0, q.y / 14.0) + vec2(time * 0.2, 7.3));
+  vec2 q = turn * vortex;
+  float blob = smoothNoise(vec2(q.x / 140.0, q.y / 80.0) + vec2(time * 0.015, 0.0)) * 0.62
+    + smoothNoise(vec2(q.x / 62.0, q.y / 36.0) + vec2(3.7, time * 0.02)) * 0.38;
+  float grain = smoothNoise(vec2(q.x / 30.0, q.y / 14.0) + vec2(time * 0.05, 7.3));
   float cloud = blob * (0.82 + 0.24 * grain);
-  float mask = pow(smoothstep(0.47 - 0.2 * activity, 0.84, cloud), 2.6);
-  if (hasLogoMask > 0.5) {
-    vec2 luv = (pixel - logoMaskRect.xy) / logoMaskRect.zw;
-    if (luv.x >= 0.0 && luv.x <= 1.0 && luv.y >= 0.0 && luv.y <= 1.0) {
-      float logo = texture2D(logoMask, luv).a;
-      mask = logo * (0.72 + 0.28 * mask);
-    } else {
-      mask *= 0.04;
-    }
-  }
+  float mask = pow(smoothstep(0.47, 0.84, cloud), 2.6);
 
-  float seed = hash(index);
+  vec2 sLocal = fract(pixel / cell);
+  vec2 sIndex = floor(pixel / cell);
+  float seed = hash(sIndex);
   float epoch = floor(time * 0.08 * (0.4 + seed) + seed * 97.0);
-  float character = floor(hash(index + epoch * 0.137) * count);
-  vec2 local = fract(pixel / cell);
-  float ink = pow(texture2D(atlas, vec2((character + local.x) / count, local.y)).a, 1.7);
+  float character = floor(hash(sIndex + epoch * 0.137) * count);
+  float ink = pow(texture2D(atlas, vec2((character + sLocal.x) / count, sLocal.y)).a, 1.7);
 
-  float grey = ink * clamp(rest + haze * mask * (1.0 + 0.3 * activity) + hoverInk * hover * (0.6 + 0.4 * mask), 0.0, 1.0);
-  float blue = ink * ring * 0.72;
-  float alpha = grey + blue - grey * blue;
-  vec3 tint = color * grey * (1.0 - blue) + accent * blue;
-  gl_FragColor = vec4(tint, alpha);
+  float yNorm = pixel.y / size.y;
+  float scanEdge = intro * 1.25 - 0.1;
+  float reveal = 1.0 - smoothstep(scanEdge - 0.1, scanEdge, yNorm);
+  float scanBand = exp(-pow((yNorm - scanEdge) / 0.018, 2.0)) * smoothstep(0.0, 0.1, intro) * (1.0 - smoothstep(0.9, 1.0, intro));
+
+  float hazeFade = smoothstep(0.0, 1.0, time / 2.0);
+  float grey = ink * clamp(rest * intro + haze * hazeFade * mask, 0.0, 1.0);
+  grey = grey * reveal + ink * scanBand * 0.18;
+  gl_FragColor = vec4(color * grey, grey);
 }
 `;
 
-type Wave = {
-  x: number;
-  y: number;
-  kind: number;
-  phase: number;
-  strength: number;
-  age: MotionValue<number>;
-};
-
 type GlyphBackgroundProps = React.ComponentProps<"div"> & {
   glowColor?: string;
-  shapeColor?: string;
   fontSize?: number;
-  interactive?: boolean;
   maskSrc?: string;
+  /** Vignette overlay strength over the glyph field, 0 = off. */
+  vignette?: number;
 };
 
 function compile(gl: WebGLRenderingContext, type: number, source: string) {
@@ -208,8 +160,13 @@ function drawAtlas(cellWidth: number, cellHeight: number, font: string) {
   context.textAlign = "center";
   context.textBaseline = "middle";
   context.fillStyle = "#fff";
-  for (let i = 0; i < CHARACTERS.length; i++)
+  context.strokeStyle = "#fff";
+  const strokeW = Math.max(0.27, (parseInt(font, 10) || 14) * 0.027);
+  context.lineWidth = strokeW;
+  for (let i = 0; i < CHARACTERS.length; i++) {
+    context.strokeText(CHARACTERS[i]!, (i + 0.5) * cellWidth, cellHeight / 2);
     context.fillText(CHARACTERS[i]!, (i + 0.5) * cellWidth, cellHeight / 2);
+  }
   return atlas;
 }
 
@@ -219,14 +176,10 @@ type Frame = {
   dpr: number;
   cell: [number, number];
   time: number;
-  activity: number;
-  drift: [number, number];
   color: [number, number, number];
-  accent: [number, number, number];
-  waves: Float32Array;
-  trail: Float32Array;
   hasLogoMask: number;
   logoMaskRect: [number, number, number, number];
+  intro: number;
 };
 
 function createRenderer(gl: WebGLRenderingContext) {
@@ -289,23 +242,18 @@ function createRenderer(gl: WebGLRenderingContext) {
     time: at("time"),
     rest: at("rest"),
     haze: at("haze"),
-    hoverInk: at("hoverInk"),
-    activity: at("activity"),
-    drift: at("drift"),
     color: at("color"),
-    accent: at("accent"),
-    waves: at("waves"),
-    trail: at("trail"),
     logoMask: at("logoMask"),
     hasLogoMask: at("hasLogoMask"),
     logoMaskRect: at("logoMaskRect"),
+    intro: at("intro"),
   };
   gl.uniform1i(uniforms.atlas, 0);
   gl.uniform1i(uniforms.logoMask, 1);
   gl.uniform1f(uniforms.count, CHARACTERS.length);
-  gl.uniform1f(uniforms.rest, 0);
-  gl.uniform1f(uniforms.haze, 0.1);
-  gl.uniform1f(uniforms.hoverInk, 0.3);
+  gl.uniform1f(uniforms.rest, 0.03);
+  gl.uniform1f(uniforms.haze, 0.22);
+  gl.uniform1f(uniforms.intro, 0);
   gl.uniform1f(uniforms.hasLogoMask, 0);
   gl.uniform4f(uniforms.logoMaskRect, 0, 0, 1, 1);
 
@@ -336,19 +284,19 @@ function createRenderer(gl: WebGLRenderingContext) {
       gl.activeTexture(gl.TEXTURE0);
     },
     draw(frame: Frame) {
+      gl.useProgram(program);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.enableVertexAttribArray(position);
+      gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
       gl.viewport(0, 0, frame.width, frame.height);
       gl.uniform2f(uniforms.size, frame.width, frame.height);
       gl.uniform2f(uniforms.cell, ...frame.cell);
       gl.uniform1f(uniforms.dpr, frame.dpr);
       gl.uniform1f(uniforms.time, frame.time);
-      gl.uniform1f(uniforms.activity, frame.activity);
-      gl.uniform2f(uniforms.drift, ...frame.drift);
       gl.uniform3f(uniforms.color, ...frame.color);
-      gl.uniform3f(uniforms.accent, ...frame.accent);
-      gl.uniform4fv(uniforms.waves, frame.waves);
-      gl.uniform4fv(uniforms.trail, frame.trail);
       gl.uniform1f(uniforms.hasLogoMask, frame.hasLogoMask);
       gl.uniform4f(uniforms.logoMaskRect, ...frame.logoMaskRect);
+      gl.uniform1f(uniforms.intro, frame.intro);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -359,10 +307,9 @@ function createRenderer(gl: WebGLRenderingContext) {
 function GlyphBackgroundContent({
   ref,
   glowColor,
-  shapeColor,
   fontSize = 14,
-  interactive = true,
   maskSrc,
+  vignette = 0.6,
   className,
   children,
   ...props
@@ -374,51 +321,86 @@ function GlyphBackgroundContent({
   const inView = useInView(containerRef);
   const pageVisible = usePageVisible();
   const reduce = useReducedMotion() ?? false;
+  const reduceRef = React.useRef(reduce);
+  reduceRef.current = reduce;
   const playing = inView && pageVisible && !reduce;
 
-  const wavesRef = React.useRef<Wave[]>([]);
-  const trailRef = React.useRef<{ x: number; y: number; t: number }[]>([]);
   const drawRef = React.useRef<(time: number, looping?: boolean) => void>(
-    () => {},
+    () => { },
   );
   const timeRef = React.useRef(0);
-  const resizeRef = React.useRef(() => {});
-  const activityRef = React.useRef({ value: 0, at: 0 });
-  const rendererRef = React.useRef<ReturnType<typeof createRenderer> | null>(null);
+  const resizeRef = React.useRef(() => { });
+  const rendererRef = React.useRef<ReturnType<typeof createRenderer> | null>(
+    null,
+  );
   const maskImageRef = React.useRef<HTMLImageElement | null>(null);
-  const maskRectRef = React.useRef<[number, number, number, number]>([0, 0, 1, 1]);
 
-  const options = { glowColor, shapeColor, fontSize };
+  const options = { glowColor, fontSize };
   const optionsRef = React.useRef(options);
   React.useLayoutEffect(() => {
     optionsRef.current = options;
   });
 
-  const spawn = (x: number, y: number) => {
-    const kind = 1 + Math.floor(Math.random() * 2);
-    const phase = Math.random() * Math.PI * 2;
-    for (const [delay, strength] of [
-      [0, 1],
-      [WAVE_GAP, 0.55],
-    ] as const) {
-      const wave: Wave = {
-        x,
-        y,
-        kind,
-        phase,
-        strength,
-        age: motionValue(0),
-      };
-      wavesRef.current = [...wavesRef.current.slice(1 - MAX_WAVES), wave];
-      animate(wave.age, WAVE_LIFE, {
-        duration: WAVE_LIFE,
-        delay,
-        ease: "linear",
-      }).then(() => {
-        wavesRef.current = wavesRef.current.filter((w) => w !== wave);
-      });
+  const formationRef = React.useRef<FormationState | null>(null);
+  const formationRendererRef = React.useRef<ReturnType<
+    typeof createFormationRenderer
+  > | null>(null);
+  const formationKeyRef = React.useRef<string>("");
+  const introPlayedRef = React.useRef(false);
+  const formationSizeRef = React.useRef({
+    width: 0,
+    height: 0,
+    cellW: 8,
+    cellH: 13,
+  });
+  const rebuildFormationRef = React.useRef<() => void>(() => { });
+  const rebuildFormation = React.useCallback(() => {
+    const mask = maskImageRef.current;
+    const { width, height, cellW, cellH } = formationSizeRef.current;
+    if (!mask || width === 0 || height === 0 || cellW === 0 || cellH === 0) {
+      formationRef.current = null;
+      formationKeyRef.current = "";
+      return;
     }
-  };
+    const key = `${mask.src}|${width}x${height}|${cellW}x${cellH}`;
+    if (formationKeyRef.current === key && formationRef.current) return;
+    const { targets } = generateLogoTargets({
+      mask,
+      canvasWidth: width,
+      canvasHeight: height,
+      cellWidth: cellW,
+      cellHeight: cellH,
+      minDistanceCells: 0.85,
+      maxTargets: 12000,
+      seed: 1337,
+      alphaThreshold: 8,
+    });
+    const prev = formationRef.current;
+    const formation = createFormation(
+      targets,
+      width,
+      height,
+      FORMATION_CHARS.length,
+      {
+        maxGlyphs: 12000,
+        minDistanceCells: 0.85,
+        rampLength: FORMATION_RAMP_LENGTH,
+        scatterRadius: 100,
+        travelMs: 2350,
+        travelJitterMs: 1000,
+        staggerMs: 2350,
+        trailLength: 10,
+      },
+      2026,
+    );
+    if (reduce || introPlayedRef.current || prev) {
+      completeFormation(formation);
+      introPlayedRef.current = true;
+    }
+    formationRef.current = formation;
+    formationKeyRef.current = key;
+  }, [reduce]);
+  rebuildFormationRef.current = rebuildFormation;
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -430,9 +412,11 @@ function GlyphBackgroundContent({
       antialias: false,
     });
     const renderer = gl ? createRenderer(gl) : null;
-    if (!renderer) return;
+    if (!renderer || !gl) return;
     rendererRef.current = renderer;
     if (maskImageRef.current) renderer.logo(maskImageRef.current);
+    const formationRenderer = createFormationRenderer(gl);
+    formationRendererRef.current = formationRenderer;
 
     let width = 0;
     let height = 0;
@@ -441,9 +425,6 @@ function GlyphBackgroundContent({
     let frames = 0;
     let colorKey = "";
     let color: [number, number, number] = [0.9, 0.9, 0.9];
-    let accent: [number, number, number] = [0.9, 0.9, 0.9];
-    const waves = new Float32Array(MAX_WAVES * 8);
-    const trail = new Float32Array(TRAIL * 4);
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
@@ -460,60 +441,56 @@ function GlyphBackgroundContent({
       measure.font = font;
       cell = [
         Math.round(measure.measureText("0").width),
-        Math.round(fontSize * 1.25 * dpr),
+        Math.round(fontSize * 1.38 * dpr),
       ];
-      renderer.atlas(drawAtlas(cell[0], cell[1], font));
+      const atlas = drawAtlas(cell[0], cell[1], font);
+      renderer.atlas(atlas);
+      const asciiCanvas = document.createElement("canvas");
+      asciiCanvas.width = Math.ceil(cell[0] * FORMATION_CHARS.length);
+      asciiCanvas.height = Math.ceil(cell[1]);
+      const actx = asciiCanvas.getContext("2d")!;
+      actx.font = font;
+      actx.textAlign = "center";
+      actx.textBaseline = "middle";
+      actx.fillStyle = "#fff";
+      actx.strokeStyle = "#fff";
+      const asciiStroke = Math.max(0.27, (parseInt(font, 10) || 14) * 0.027);
+      actx.lineWidth = asciiStroke;
+      for (let i = 0; i < FORMATION_CHARS.length; i++) {
+        actx.strokeText(FORMATION_CHARS[i]!, (i + 0.5) * cell[0], cell[1] / 2);
+        actx.fillText(FORMATION_CHARS[i]!, (i + 0.5) * cell[0], cell[1] / 2);
+      }
+      formationRenderer?.setAtlas(asciiCanvas);
+      formationSizeRef.current = {
+        width: canvas.width,
+        height: canvas.height,
+        cellW: cell[0],
+        cellH: cell[1],
+      };
+      rebuildFormationRef.current();
     };
 
     const draw = (time: number, looping = false) => {
       if (width === 0 || height === 0) return;
-      const { glowColor, shapeColor } = optionsRef.current;
+      const { glowColor } = optionsRef.current;
       if (!looping || frames++ % 30 === 0) {
         const text = getComputedStyle(container).color || "#e5e5e5";
-        const key = `${glowColor ?? text}|${shapeColor ?? text}`;
+        const key = glowColor ?? text;
         if (key !== colorKey) {
           colorKey = key;
-          color = toRgb(glowColor ?? text);
-          accent = toRgb(shapeColor ?? text);
+          color = toRgb(key);
         }
       }
-      waves.fill(0);
-      wavesRef.current.forEach((wave, i) => {
-        const age = wave.age.get();
-        if (age <= 0) return;
-        const radius = (WAVE_SPEED * age) / (1 + WAVE_SLOWDOWN * age);
-        const fade =
-          Math.min(1, age / 0.05) *
-          Math.exp(-Math.max(0, age - 0.4) / 1.3) *
-          Math.min(1, (WAVE_LIFE - age) / 0.5);
-        waves[i * 8] = wave.x;
-        waves[i * 8 + 1] = wave.y;
-        waves[i * 8 + 2] = radius;
-        waves[i * 8 + 3] = fade * wave.strength;
-        waves[i * 8 + 4] = wave.kind;
-        waves[i * 8 + 5] = 0.12 + 0.5 * Math.min(1, age / 2.2);
-        waves[i * 8 + 6] = wave.phase;
-        waves[i * 8 + 7] = age * 3;
-      });
-      trail.fill(0);
-      trailRef.current.forEach((point, i) => {
-        const age = (time - point.t) / TRAIL_LIFE;
-        if (age < 0 || age >= 1) return;
-        trail[i * 4] = point.x;
-        trail[i * 4 + 1] = point.y;
-        trail[i * 4 + 2] = 40 + 25 * age;
-        trail[i * 4 + 3] = 0.3 * (1 - age) * (1 - age);
-      });
+
       const seconds = time / 1000;
-      const energy = activityRef.current;
-      const activity =
-        energy.value *
-        Math.exp(-Math.max(0, time - energy.at) / ACTIVITY_DECAY);
       const maskImage = maskImageRef.current;
       let hasLogoMask = 0;
       let logoMaskRect: [number, number, number, number] = [0, 0, 1, 1];
       if (maskImage) {
-        const scale = Math.max(canvas.width / maskImage.naturalWidth, canvas.height / maskImage.naturalHeight);
+        const scale = Math.max(
+          canvas.width / maskImage.naturalWidth,
+          canvas.height / maskImage.naturalHeight,
+        );
         const mw = maskImage.naturalWidth * scale;
         const mh = maskImage.naturalHeight * scale;
         const mx = (canvas.width - mw) / 2;
@@ -523,20 +500,39 @@ function GlyphBackgroundContent({
       }
 
       renderer.draw({
-        activity,
         width: canvas.width,
         height: canvas.height,
         dpr,
         cell,
         time: seconds,
-        drift: [DRIFT[0] * seconds, DRIFT[1] * seconds],
         color,
-        accent,
-        waves,
-        trail,
         hasLogoMask,
         logoMaskRect,
+        intro: reduceRef.current ? 1 : Math.min(1, timeRef.current / 1800),
       });
+
+      const formation = formationRef.current;
+      const formationRenderer = formationRendererRef.current;
+      if (formation && formationRenderer) {
+        const scrollT = Math.min(
+          1,
+          window.scrollY / Math.max(1, window.innerHeight * 0.3),
+        );
+        const revealProgress =
+          reduceRef.current || introPlayedRef.current
+            ? 1
+            : Math.min(1, formation.elapsed / 2200);
+        formationRenderer.render(formation, {
+          width: canvas.width,
+          height: canvas.height,
+          cellWidth: cell[0],
+          cellHeight: cell[1],
+          color,
+          count: FORMATION_CHARS.length,
+          opacity: 1 - scrollT * 0.85,
+          revealProgress,
+        });
+      }
     };
 
     drawRef.current = draw;
@@ -550,8 +546,10 @@ function GlyphBackgroundContent({
     observer.observe(container);
     return () => {
       observer.disconnect();
-      drawRef.current = () => {};
-      resizeRef.current = () => {};
+      drawRef.current = () => { };
+      resizeRef.current = () => { };
+      formationRendererRef.current?.dispose();
+      formationRendererRef.current = null;
     };
   }, []);
 
@@ -562,12 +560,18 @@ function GlyphBackgroundContent({
 
   React.useEffect(() => {
     drawRef.current(timeRef.current);
-  }, [glowColor, shapeColor]);
+  }, [glowColor]);
 
   React.useEffect(() => {
     if (!playing) return;
     const tick = ({ delta }: { delta: number }) => {
-      timeRef.current += Math.min(delta, 64);
+      const dt = Math.min(delta, 64);
+      timeRef.current += dt;
+      const formation = formationRef.current;
+      if (formation) {
+        updateFormation(formation, dt);
+        if (formation.phase === "complete") introPlayedRef.current = true;
+      }
       drawRef.current(timeRef.current, true);
     };
     frame.render(tick, true);
@@ -575,65 +579,10 @@ function GlyphBackgroundContent({
   }, [playing]);
 
   React.useEffect(() => {
-    if (!interactive || reduce) return;
-
-    const getPoint = (event: PointerEvent) => {
-      const container = containerRef.current;
-      if (!container) return null;
-      const rect = container.getBoundingClientRect();
-      const inside =
-        event.clientX >= rect.left &&
-        event.clientX <= rect.right &&
-        event.clientY >= rect.top &&
-        event.clientY <= rect.bottom;
-      if (!inside) return null;
-      return { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    };
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const p = getPoint(event);
-      if (!p) return;
-      const now = timeRef.current;
-      const trail = trailRef.current;
-      const last = trail[trail.length - 1];
-      const energy = activityRef.current;
-      const current =
-        energy.value * Math.exp(-Math.max(0, now - energy.at) / ACTIVITY_DECAY);
-      activityRef.current = {
-        value: Math.min(
-          1,
-          current + (last ? Math.hypot(p.x - last.x, p.y - last.y) : 0) / 600,
-        ),
-        at: now,
-      };
-      if (last && Math.hypot(p.x - last.x, p.y - last.y) < 18) return;
-      trailRef.current = [
-        ...trail.filter((pt) => now - pt.t < TRAIL_LIFE).slice(1 - TRAIL),
-        { x: p.x, y: p.y, t: now },
-      ];
-    };
-
-    const handlePointerDown = (event: PointerEvent) => {
-      const p = getPoint(event);
-      if (!p) return;
-      spawn(p.x, p.y);
-    };
-
-    window.addEventListener("pointermove", handlePointerMove, {
-      passive: true,
-    });
-    window.addEventListener("pointerdown", handlePointerDown, {
-      passive: true,
-    });
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerdown", handlePointerDown);
-    };
-  }, [interactive, reduce]);
-
-  React.useEffect(() => {
     if (!maskSrc) {
       maskImageRef.current = null;
+      formationRef.current = null;
+      formationKeyRef.current = "";
       drawRef.current(timeRef.current);
       return;
     }
@@ -645,10 +594,13 @@ function GlyphBackgroundContent({
     img.onload = () => {
       maskImageRef.current = img;
       rendererRef.current?.logo(img);
+      rebuildFormationRef.current();
       drawRef.current(timeRef.current);
     };
     img.onerror = () => {
       maskImageRef.current = null;
+      formationRef.current = null;
+      formationKeyRef.current = "";
       drawRef.current(timeRef.current);
     };
     return () => {
@@ -669,6 +621,21 @@ function GlyphBackgroundContent({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
       />
+      {/* Vignette: fades the glyph field (and the logo formation) into the
+          page background at the edges. Masked so the center stays clear. */}
+      {vignette > 0 && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-background-100"
+          style={{
+            maskImage:
+              "radial-gradient(ellipse at center, transparent 0%, transparent 40%, black 90%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at center, transparent 0%, transparent 40%, black 90%)",
+            opacity: vignette,
+          }}
+        />
+      )}
       {children}
     </div>
   );

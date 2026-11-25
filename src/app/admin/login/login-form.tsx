@@ -37,12 +37,12 @@ export default function AdminLoginForm({ nextPath }: { nextPath: string }) {
       }}
     >
       <label className="grid gap-2">
-        <span>Admin secret</span>
+        <span>Password</span>
         <Input
           type="password"
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
-          placeholder="Enter ADMIN_SECRET"
+          placeholder="Hulaan mo"
           autoComplete="current-password"
           required
         />

@@ -386,6 +386,11 @@ export async function addProject(
       content.projects.flatMap((item) => item.tags),
       formData.getAll("tags").map(String),
     );
+    const submittedLayout = parseLayout(formData.get("layout"));
+    const layout =
+      submittedLayout.length > 0
+        ? appendNewImagesToLayout(submittedLayout, images)
+        : defaultLayout(parsed.data, images);
     const project: StaticProject = {
       id: randomUUID(),
       slug,
@@ -397,7 +402,7 @@ export async function addProject(
         content.projects.length === 0
           ? 0
           : Math.max(...content.projects.map((item) => item.order ?? -1)) + 1,
-      layout: defaultLayout(parsed.data, images),
+      layout,
       project_image: images,
       tags,
     };

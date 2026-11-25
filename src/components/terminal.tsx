@@ -12,7 +12,11 @@ import { useRouter } from "next/navigation";
 import { resolveCommand } from "@/shared/terminal/commands";
 import React from "react";
 
-export default function Terminal() {
+export default function Terminal({
+  autoRunEnabled = true,
+}: {
+  autoRunEnabled?: boolean;
+} = {}) {
   const [history, setHistory] = useState<
     {
       command: string;
@@ -28,6 +32,7 @@ export default function Terminal() {
   const terminalContainer = useRef<HTMLDivElement>(null);
   const terminalInput = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const hasAutoRun = useRef(false);
 
   const focusTerminal = () => {
     if (terminalInput.current) terminalInput.current.focus();
@@ -39,65 +44,72 @@ export default function Terminal() {
     setCaretIndex(input.selectionStart ?? input.value.length);
   };
 
-  const handleCommand = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
+  const executeCommand = (rawValue: string) => {
+    const value = rawValue;
+    const args = value.trim().split(/\s+/);
+    const command = args.shift()?.toLowerCase();
+    if (!command) return;
 
-      const value = event.currentTarget.value;
-      const args = value.trim().split(/\s+/);
-      const command = args.shift()?.toLowerCase();
-      if (!command) return;
+    const matched = resolveCommand(command);
 
-      const matched = resolveCommand(command);
-
-      if (!matched) {
-        setHistory((prev) => [
-          ...prev,
-          {
-            command: value,
-            output: <p className="text-pink-500">Command not found: {value}</p>,
-            isError: true,
-            index: prev.length,
-          },
-        ]);
-        event.currentTarget.value = "";
-        setCaretIndex(0);
-        setKeyIndex(0);
-        return;
-      }
-
-      const result = matched.run(args, { navigate: (href) => router.push(href) }) ?? {
-        type: "none" as const,
-      };
-
-      if (result.type === "clear") {
-        setHistory([]);
-        event.currentTarget.value = "";
-        setCaretIndex(0);
-        setKeyIndex(0);
-        return;
-      }
-
-      if (result.type === "none") {
-        event.currentTarget.value = "";
-        setCaretIndex(0);
-        setKeyIndex(0);
-        return;
-      }
-
+    if (!matched) {
       setHistory((prev) => [
         ...prev,
         {
           command: value,
-          output: result.node ?? null,
-          isError: false,
+          output: <p className="text-pink-500">Command not found: {value}</p>,
+          isError: true,
           index: prev.length,
         },
       ]);
-
-      event.currentTarget.value = "";
+      if (terminalInput.current) terminalInput.current.value = "";
       setCaretIndex(0);
       setKeyIndex(0);
+      return;
+    }
+
+    const result = matched.run(args, {
+      navigate: (href) => router.push(href),
+    }) ?? {
+      type: "none" as const,
+    };
+
+    if (result.type === "clear") {
+      setHistory([]);
+      if (terminalInput.current) terminalInput.current.value = "";
+      setCaretIndex(0);
+      setKeyIndex(0);
+      return;
+    }
+
+    if (result.type === "none") {
+      if (terminalInput.current) terminalInput.current.value = "";
+      setCaretIndex(0);
+      setKeyIndex(0);
+      return;
+    }
+
+    setHistory((prev) => [
+      ...prev,
+      {
+        command: value,
+        output: result.node ?? null,
+        isError: false,
+        index: prev.length,
+      },
+    ]);
+
+    if (terminalInput.current) terminalInput.current.value = "";
+    setCaretIndex(0);
+    setKeyIndex(0);
+  };
+  const executeCommandRef = useRef(executeCommand);
+  executeCommandRef.current = executeCommand;
+
+  const handleCommand = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      executeCommand(event.currentTarget.value);
 
       // Handle Arrow Up (Older history)
     } else if (event.key === "ArrowUp") {
@@ -174,23 +186,88 @@ export default function Terminal() {
     return () => element.removeEventListener("wheel", handleWheel);
   }, []);
 
+  const autoRunEnabledRef = useRef(autoRunEnabled);
+  autoRunEnabledRef.current = autoRunEnabled;
+  const terminalVisibleRef = useRef(false);
+
+  useEffect(() => {
+    const el = terminalContainer.current;
+    if (!el) return;
+
+    const tryRun = () => {
+      if (!terminalVisibleRef.current || !autoRunEnabledRef.current) return;
+      if (hasAutoRun.current) return;
+      if (terminalInput.current?.value) return;
+      hasAutoRun.current = true;
+
+      const commands = ["whoami"];
+      let cmdIndex = 0;
+
+      const runNextCommand = () => {
+        if (cmdIndex >= commands.length) return;
+        const command = commands[cmdIndex];
+        let i = 0;
+
+        const typeNext = () => {
+          const input = terminalInput.current;
+          if (!input) return;
+          if (
+            document.activeElement === input &&
+            input.value !== command.slice(0, i)
+          )
+            return;
+          i += 1;
+          input.value = command.slice(0, i);
+          setCaretIndex(i);
+          if (i < command.length) {
+            setTimeout(typeNext, 70 + Math.random() * 50);
+          } else {
+            setTimeout(() => {
+              executeCommandRef.current(command);
+              cmdIndex += 1;
+              if (cmdIndex < commands.length) {
+                setTimeout(runNextCommand, 700);
+              }
+            }, 300);
+          }
+        };
+
+        typeNext();
+      };
+
+      setTimeout(runNextCommand, 450);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        terminalVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) tryRun();
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    tryRun();
+    return () => observer.disconnect();
+  }, [autoRunEnabled]);
+
   return (
     <div
-      className={`terminal-scroll font-mono text-sm [&_p]:text-sm [&_input]:text-sm bg-background-100/60 backdrop-blur-3xl w-[calc(100vw-2rem)] md:w-[55vw] max-w-full h-[40vh] overflow-y-auto overflow-x-hidden ${
-        isInputFocused ? "overscroll-y-contain" : "overscroll-auto"
-      } card p-4 cursor-pointer`}
+      className={`terminal-scroll font-mono text-sm bg-background-100/60 backdrop-blur-3xl w-[95vw] sm:w-[70vw] md:w-[55vw] max-w-full h-[40vh] overflow-y-auto overflow-x-hidden ${isInputFocused ? "overscroll-y-contain" : "overscroll-auto"
+        } card p-4 cursor-pointer`}
       onClick={focusTerminal}
       ref={terminalContainer}
     >
       {history.map((entry, index) => (
         <React.Fragment key={index}>
           <div className="mb-3">
-            <p>
+            <p className="whitespace-nowrap">
               ╭─<span className="text-violet-100">[</span>~
-              <span className="text-violet-100">]</span>─
-              <span className="text-violet-100">[</span>caenar@fsociety
-              <span className="text-violet-100">]</span>─
-              <span className="text-violet-100">[</span>
+              <span className="text-violet-100">]</span>
+              <span className="hidden sm:inline">
+                ─<span className="text-violet-100">[</span>caenar@fsociety
+                <span className="text-violet-100">]</span>
+              </span>
+              ─<span className="text-violet-100">[</span>
               {entry.index}
               <span className="text-violet-200">]</span>
             </p>
@@ -199,7 +276,7 @@ export default function Terminal() {
               <span className="text-violet-600">
                 [
                 <motion.span
-                  className={`inline-block ${entry.isError ? "text-pink-500" : "text-green-500"}`}
+                  className={`inline-block ${entry.isError ? "text-pink-500" : "text-violet-400"}`}
                   initial={{ opacity: 0, filter: "blur(4px)" }}
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.15, ease: "easeOut" }}
@@ -212,7 +289,7 @@ export default function Terminal() {
             </p>
           </div>
           <motion.div
-            className="flex flex-col gap-2 ml-4 mb-3"
+            className="flex flex-col gap-2 ml-2 mb-6 [&_p]:leading-[1.45rem]"
             initial={{ opacity: 0, filter: "blur(4px)" }}
             animate={{ opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 0.15, ease: "easeOut" }}
@@ -223,12 +300,14 @@ export default function Terminal() {
       ))}
 
       <div>
-        <p>
+        <p className="whitespace-nowrap">
           ╭─<span className="text-violet-100">[</span>~
-          <span className="text-violet-100">]</span>─
-          <span className="text-violet-100">[</span>caenar@fsociety
-          <span className="text-violet-100">]</span>─
-          <span className="text-violet-100">[</span>
+          <span className="text-violet-100">]</span>
+          <span className="hidden sm:inline">
+            ─<span className="text-violet-100">[</span>caenar@fsociety
+            <span className="text-violet-100">]</span>
+          </span>
+          ─<span className="text-violet-100">[</span>
           <span className="inline-flex overflow-hidden align-bottom">
             <motion.span
               key={history.length}
@@ -244,7 +323,7 @@ export default function Terminal() {
         <p>
           ╰─
           <span className="text-violet-600">[</span>
-          <span>:)</span>
+          <span className="text-violet-400">:)</span>
           <span className="text-violet-600">]</span> %{" "}
           <span className="relative inline-block w-[90%] align-baseline">
             {isInputFocused && (

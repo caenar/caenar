@@ -1,7 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 
 type NodeId =
   | "origin"
@@ -24,6 +31,8 @@ type Connection = {
   from: NodeId | NodeId[];
   to: NodeId;
   kind: "forward" | "bidirectional";
+  /** Draw order group; lower draws earlier. Same step draws together. */
+  step: number;
 };
 
 const NODES: JourneyNode[] = [
@@ -145,21 +154,27 @@ function buildPath(
   const lLeft: Point = { x: anchor.left(linux).x, y: midYBand3 };
 
   switch (id) {
-    case "origin-split":
-      // origin down, split left to creative and right to web
+    case "origin-down":
+      return { d: line(o, { x: o.x, y: splitY }), points: [o] };
+    case "origin-split-h":
       return {
-        d: `M ${o.x} ${o.y} L ${o.x} ${splitY} L ${cTop.x} ${splitY} L ${cTop.x} ${cTop.y} M ${o.x} ${splitY} L ${wTop.x} ${splitY} L ${wTop.x} ${wTop.y}`,
-        points: [o, cTop, wTop],
+        d: line({ x: cTop.x, y: splitY }, { x: wTop.x, y: splitY }),
+        points: [],
       };
+    case "origin-to-creative":
+      return { d: line({ x: cTop.x, y: splitY }, cTop), points: [cTop] };
+    case "origin-to-web":
+      return { d: line({ x: wTop.x, y: splitY }, wTop), points: [wTop] };
     case "creative-programming":
       return { d: line(cBot, pTop), points: [cBot, pTop] };
     case "web-linux":
       return { d: line(wBot, lTop), points: [wBot, lTop] };
-    case "programming-linux":
-      // T-junction: peer horizontal with a stem dropping from its center into engineering
+    case "programming-linux-h":
+      return { d: line(pRight, lLeft), points: [pRight, lLeft] };
+    case "programming-linux-v":
       return {
-        d: `M ${pRight.x} ${pRight.y} L ${lLeft.x} ${lLeft.y} M ${eTop.x} ${midYBand3} L ${eTop.x} ${eTop.y}`,
-        points: [pRight, lLeft, eTop],
+        d: line({ x: eTop.x, y: midYBand3 }, eTop),
+        points: [eTop],
       };
     case "engineering-present":
       return { d: line(eBot, prTop), points: [eBot, prTop] };
@@ -169,26 +184,15 @@ function buildPath(
 }
 
 const ALL_CONNECTIONS: Connection[] = [
-  { id: "origin-split", from: "origin", to: "creative", kind: "forward" },
-  {
-    id: "creative-programming",
-    from: "creative",
-    to: "programming",
-    kind: "forward",
-  },
-  { id: "web-linux", from: "web", to: "linux", kind: "forward" },
-  {
-    id: "programming-linux",
-    from: "programming",
-    to: "linux",
-    kind: "bidirectional",
-  },
-  {
-    id: "engineering-present",
-    from: "engineering",
-    to: "present",
-    kind: "forward",
-  },
+  { id: "origin-down", from: "origin", to: "creative", kind: "forward", step: 0 },
+  { id: "origin-split-h", from: "origin", to: "web", kind: "forward", step: 1 },
+  { id: "origin-to-creative", from: "origin", to: "creative", kind: "forward", step: 2 },
+  { id: "origin-to-web", from: "origin", to: "web", kind: "forward", step: 2 },
+  { id: "creative-programming", from: "creative", to: "programming", kind: "forward", step: 3 },
+  { id: "web-linux", from: "web", to: "linux", kind: "forward", step: 3 },
+  { id: "programming-linux-h", from: "programming", to: "linux", kind: "bidirectional", step: 4 },
+  { id: "programming-linux-v", from: "programming", to: "engineering", kind: "forward", step: 5 },
+  { id: "engineering-present", from: "engineering", to: "present", kind: "forward", step: 6 },
 ];
 
 function NodeCard({
@@ -196,27 +200,58 @@ function NodeCard({
   index,
   registerRef,
   centered,
+  progress,
+  revealStep,
+  totalSteps,
 }: {
   node: JourneyNode;
   index: number;
   registerRef: (id: NodeId, el: HTMLDivElement | null) => void;
   centered?: boolean;
+  progress?: MotionValue<number>;
+  revealStep?: number;
+  totalSteps?: number;
 }) {
+  const fallback = useMotionValue(1);
+  const p = progress ?? fallback;
+  const start = revealStep !== undefined && totalSteps ? revealStep / totalSteps : 0;
+  const end = start + (totalSteps ? 0.8 / totalSteps : 0.1);
+  const scrollOpacity = useTransform(p, [start, end], [0, 1]);
+  const scrollY = useTransform(p, [start, end], [12, 0]);
+  const scrollBlur = useTransform(p, [start, end], [3, 0]);
+  const scrollFilter = useTransform(scrollBlur, (v) => `blur(${v}px)`);
+  const scrollDriven = !!progress && !useReducedMotion();
+
   return (
     <div
       ref={(el) => registerRef(node.id, el)}
-      className={`h-[170px] w-full max-w-[385px] ${centered ? "mx-auto" : ""}`}
+      className={`h-[170px] w-full md:w-[290px] lg:w-[320px] xl:w-[385px] ${centered ? "mx-auto" : ""}`}
     >
       <motion.div
-        className="card flex h-full justify-center flex-col overflow-hidden p-4 md:p-5 backdrop-blur-xl"
-        initial={{ opacity: 0, y: 8, filter: "blur(3px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true, margin: "-150px" }}
-        transition={{
-          duration: 0.5,
-          delay: index * 0.04,
-          ease: [0.22, 1, 0.36, 1],
-        }}
+        className="card flex h-full justify-center flex-col overflow-hidden p-4 md:p-5 "
+        initial={
+          scrollDriven ? undefined : { opacity: 0, y: 8, filter: "blur(3px)" }
+        }
+        whileInView={
+          scrollDriven
+            ? undefined
+            : { opacity: 1, y: 0, filter: "blur(0px)" }
+        }
+        viewport={scrollDriven ? undefined : { once: true, margin: "-150px" }}
+        transition={
+          scrollDriven
+            ? undefined
+            : {
+                duration: 0.5,
+                delay: index * 0.04,
+                ease: [0.22, 1, 0.36, 1],
+              }
+        }
+        style={
+          scrollDriven
+            ? { opacity: scrollOpacity, y: scrollY, filter: scrollFilter }
+            : undefined
+        }
       >
         <p className="font-mono text-xs uppercase tracking-wider w-fit px-1.5 py-0.5 bg-foreground-300/5 text-violet-100 mb-2">
           {node.label}
@@ -232,6 +267,54 @@ function NodeCard({
   );
 }
 
+function ScrollConnector({
+  path,
+  totalSteps,
+  progress,
+  reduceMotion,
+}: {
+  path: Connection & { d: string; points: Point[] };
+  totalSteps: number;
+  progress: MotionValue<number>;
+  reduceMotion: boolean;
+}) {
+  const start = path.step / totalSteps;
+  const end = (path.step + 1) / totalSteps;
+  const pathLength = useTransform(progress, [start, end], [0, 1]);
+  const opacity = useTransform(progress, [start, start + 0.02], [0, 1]);
+  const dotOpacity = useTransform(progress, [end - 0.05, end], [0, 1]);
+
+  return (
+    <g>
+      <motion.path
+        d={path.d}
+        fill="none"
+        stroke="rgba(136, 74, 255, 0.5)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        style={
+          reduceMotion
+            ? undefined
+            : { pathLength, opacity }
+        }
+        initial={reduceMotion ? { pathLength: 1, opacity: 1 } : undefined}
+      />
+      {(path.points ?? []).map((p, j) => (
+        <motion.rect
+          key={`${path.id}-${j}`}
+          x={p.x - 3}
+          y={p.y - 3}
+          width={6}
+          height={6}
+          fill="#7e45cd"
+          style={reduceMotion ? undefined : { opacity: dotOpacity }}
+          initial={reduceMotion ? { opacity: 1 } : undefined}
+        />
+      ))}
+    </g>
+  );
+}
+
 export default function CuriosityFlow() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const nodeRefs = useRef<Partial<Record<NodeId, HTMLDivElement | null>>>({});
@@ -240,6 +323,10 @@ export default function CuriosityFlow() {
   >([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 0.7", "end 0.6"],
+  });
 
   const registerRef = useCallback((id: NodeId, el: HTMLDivElement | null) => {
     nodeRefs.current[id] = el;
@@ -284,34 +371,12 @@ export default function CuriosityFlow() {
   }, []);
 
   const byId = (id: NodeId) => NODES.find((n) => n.id === id)!;
+  const totalSteps = Math.max(7, ...paths.map((p) => p.step + 1));
 
   return (
     <section className="relative overflow-hidden py-36">
       <div aria-hidden className="pointer-events-none absolute inset-0" />
-      {/* Vibrant Background Orbs */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        {/* Top Left Glowing Orb */}
-        <div className="absolute -left-20 -translate-x-72 top-[15%] h-[500px] w-[500px] rounded-full bg-violet-200/80 blur-[150px]" />
-        <div className="absolute -left-20 -translate-x-46 top-[10%] h-[750px] w-[750px] rounded-full bg-violet-200/10 blur-[150px]" />
-        {/* Bottom Right Glowing Orb */}
-        <div className="absolute -right-20 translate-x-72 bottom-[15%] h-[500px] w-[500px] rounded-full bg-violet-200/80 blur-[150px]" />
-        <div className="absolute -right-20 translate-x-46 bottom-[10%] h-[750px] w-[750px] rounded-full bg-violet-200/10 blur-[150px]" />
-
-        <div
-          className="absolute -inset-5 bg-[url('/images/section-halftone.png')] bg-contain bg-center mix-blend-multiply opacity-50"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 10%, black 40%, black 80%, transparent 90%)",
-            maskImage:
-              "linear-gradient(to bottom, transparent 10%, black 40%, black 80%, transparent 90%)",
-          }}
-        />
-      </div>
-
-      <div className="relative mx-auto w-full max-w-[1180px] px-6 md:px-10">
+      <div className="relative w-full px-4 sm:px-6 md:px-[8vw] lg:px-[15vw]">
         <motion.div
           className="grid gap-2 mb-14 md:mb-20 items-center justify-items-center text-center"
           initial={{ opacity: 0, y: 8, filter: "blur(3px)" }}
@@ -324,7 +389,7 @@ export default function CuriosityFlow() {
           </p>
           <h2>A Journey of Spontaneity</h2>
           <p className="max-w-[46ch] text-background-200">
-            The shift from Minecraft and tomfoolery in Windows, eventually led
+            The shift from Minecraft and tomfoolery in Windows eventually led
             to Linux and software development.
           </p>
         </motion.div>
@@ -337,46 +402,14 @@ export default function CuriosityFlow() {
             height={size.h}
             aria-hidden
           >
-            {paths.map((c, i) => (
-              <g key={c.id}>
-                <motion.path
-                  d={c.d}
-                  fill="none"
-                  stroke="rgba(136, 74, 255, 0.5)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
-                  whileInView={
-                    reduceMotion
-                      ? { pathLength: 1, opacity: 1 }
-                      : { pathLength: 1, opacity: 1 }
-                  }
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{
-                    duration: 0.8,
-                    delay: 0.15 + i * 0.05,
-                    ease: "easeOut",
-                  }}
-                />
-                {(c.points ?? []).map((p, j) => (
-                  <motion.rect
-                    key={`${c.id}-${j}`}
-                    x={p.x - 3}
-                    y={p.y - 3}
-                    width={6}
-                    height={6}
-                    fill="#7e45cd"
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{
-                      duration: 0.3,
-                      delay: 0.5 + i * 0.05,
-                      ease: "easeOut",
-                    }}
-                  />
-                ))}
-              </g>
+            {paths.map((c) => (
+              <ScrollConnector
+                key={c.id}
+                path={c}
+                totalSteps={totalSteps}
+                progress={scrollYProgress}
+                reduceMotion={!!reduceMotion}
+              />
             ))}
           </svg>
 
@@ -387,32 +420,47 @@ export default function CuriosityFlow() {
                 index={0}
                 registerRef={registerRef}
                 centered
+                progress={scrollYProgress}
+                revealStep={0}
+                totalSteps={totalSteps}
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-8 lg:gap-16 items-start justify-items-center">
+            <div className="grid grid-cols-2 gap-12 lg:gap-16 items-start justify-items-center">
               <NodeCard
                 node={byId("creative")}
                 index={1}
                 registerRef={registerRef}
+                progress={scrollYProgress}
+                revealStep={2}
+                totalSteps={totalSteps}
               />
               <NodeCard
                 node={byId("web")}
                 index={2}
                 registerRef={registerRef}
+                progress={scrollYProgress}
+                revealStep={2}
+                totalSteps={totalSteps}
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-8 lg:gap-16 items-start justify-items-center">
+            <div className="grid grid-cols-2 gap-12 lg:gap-16 items-start justify-items-center">
               <NodeCard
                 node={byId("programming")}
                 index={3}
                 registerRef={registerRef}
+                progress={scrollYProgress}
+                revealStep={3}
+                totalSteps={totalSteps}
               />
               <NodeCard
                 node={byId("linux")}
                 index={4}
                 registerRef={registerRef}
+                progress={scrollYProgress}
+                revealStep={3}
+                totalSteps={totalSteps}
               />
             </div>
 
@@ -422,6 +470,9 @@ export default function CuriosityFlow() {
                 index={5}
                 registerRef={registerRef}
                 centered
+                progress={scrollYProgress}
+                revealStep={5}
+                totalSteps={totalSteps}
               />
             </div>
 
@@ -431,6 +482,9 @@ export default function CuriosityFlow() {
                 index={6}
                 registerRef={registerRef}
                 centered
+                progress={scrollYProgress}
+                revealStep={6}
+                totalSteps={totalSteps}
               />
             </div>
           </div>

@@ -34,6 +34,7 @@ export default function Navbar() {
 
   const [viewportHeight, setViewportHeight] = useState(1);
   const { scrollY } = useScroll();
+  const isHome = pathname === "/";
   const indicatorControls = useAnimationControls();
   const hasPositionedRef = useRef(false);
   const prevTargetRef = useRef<string | null>(null);
@@ -59,14 +60,113 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
-  const blur = useTransform(scrollY, [0, viewportHeight * 5], [0, 12]);
+  const bgAlpha = useTransform(scrollY, [0, viewportHeight * 1.1], [0, 1]);
+  const backgroundColor = useMotionTemplate`rgba(20, 20, 20, ${bgAlpha})`;
   const borderAlpha = useTransform(
     scrollY,
     [0, viewportHeight * 15],
-    [0, 0.151],
+    [0, 0.4],
   );
   const borderColor = useMotionTemplate`rgba(255, 255, 255, ${borderAlpha})`;
-  const backdropFilter = useMotionTemplate`blur(${blur}px)`;
+
+  // Home-only: reveal nav when scrolling reaches the terminal section.
+  const [revealed, setRevealed] = useState(!isHome);
+  const logoControls = useAnimationControls();
+  const wrapperControls = useAnimationControls();
+  const contentControls = useAnimationControls();
+  const lastAnimatedRef = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    if (!isHome) {
+      lastAnimatedRef.current = true;
+      setRevealed(true);
+      logoControls.set({ y: "0%" });
+      wrapperControls.set({ left: "100%", x: "-100%", y: "-50%" });
+      contentControls.set({ y: "0%" });
+      return;
+    }
+
+    const isPastThreshold = window.scrollY > window.innerHeight * 0.92;
+    lastAnimatedRef.current = isPastThreshold;
+    setRevealed(isPastThreshold);
+    if (isPastThreshold) {
+      logoControls.set({ y: "0%" });
+      wrapperControls.set({ left: "100%", x: "-100%", y: "-50%" });
+      contentControls.set({ y: "0%" });
+    } else {
+      logoControls.set({ y: "120%" });
+      wrapperControls.set({ left: "50%", x: "-50%", y: "-50%" });
+      contentControls.set({ y: "0%" });
+    }
+
+    const onScroll = () => {
+      const next = window.scrollY > window.innerHeight * 0.92;
+      setRevealed((prev) => (prev === next ? prev : next));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome, logoControls, wrapperControls, contentControls]);
+
+  useEffect(() => {
+    if (!isHome) return;
+    if (lastAnimatedRef.current === revealed) return;
+    lastAnimatedRef.current = revealed;
+
+    const easeOut = [0.16, 1, 0.3, 1] as const;
+    const spring = { type: "spring" as const, stiffness: 280, damping: 28, mass: 0.8 };
+
+    const run = async () => {
+      if (revealed) {
+        await contentControls.start({
+          y: "-120%",
+          transition: { duration: 0.22, ease: easeOut },
+        });
+        if (lastAnimatedRef.current !== true) return;
+        contentControls.set({ y: "120%" });
+        await wrapperControls.start({
+          left: "100%",
+          x: "-100%",
+          y: "-50%",
+          transition: spring,
+        });
+        if (lastAnimatedRef.current !== true) return;
+        void logoControls.start({
+          y: "0%",
+          transition: { duration: 0.35, ease: easeOut },
+        });
+        await contentControls.start({
+          y: "0%",
+          transition: { duration: 0.3, ease: easeOut },
+        });
+        window.dispatchEvent(new Event("resize"));
+      } else {
+        void logoControls.start({
+          y: "120%",
+          transition: { duration: 0.2, ease: [0.4, 0, 1, 1] },
+        });
+        await contentControls.start({
+          y: "120%",
+          transition: { duration: 0.2, ease: [0.4, 0, 1, 1] },
+        });
+        if (lastAnimatedRef.current !== false) return;
+        contentControls.set({ y: "-120%" });
+        await wrapperControls.start({
+          left: "50%",
+          x: "-50%",
+          y: "-50%",
+          transition: spring,
+        });
+        if (lastAnimatedRef.current !== false) return;
+        await contentControls.start({
+          y: "0%",
+          transition: { duration: 0.3, ease: easeOut },
+        });
+        window.dispatchEvent(new Event("resize"));
+      }
+    };
+
+    void run();
+  }, [revealed, isHome, logoControls, wrapperControls, contentControls]);
 
   const targetHref =
     hoveredHref ??
@@ -151,25 +251,45 @@ export default function Navbar() {
   return (
     <motion.nav
       className="z-40 fixed w-full px-4 sm:px-6 md:px-[15vw] py-4 border-b"
-      style={{ borderColor, backdropFilter }}
+      style={{ borderColor, backgroundColor }}
     >
-      <div className="flex items-center justify-between">
-        <Link href="/" onClick={() => setMobileOpen(false)}>
-          <Image
-            priority
-            src="/logo.svg"
-            alt="Caenar's pretty cool logo"
-            className="invert"
-            width={50}
-            height={50}
-          />
-        </Link>
+      <div className="relative h-4">
+        {/* Logo: absolute, no flex slot — reveals with clip mask on scroll */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 overflow-hidden">
+          <motion.div
+            animate={logoControls}
+            initial={isHome ? { y: "120%" } : { y: "0%" }}
+          >
+            <Link href="/" onClick={() => setMobileOpen(false)}>
+              <Image
+                priority
+                src="/logo.svg"
+                alt="Caenar's pretty cool logo"
+                className="invert"
+                width={40}
+                height={40}
+              />
+            </Link>
+          </motion.div>
+        </div>
 
-        <ul
-          ref={listRef}
-          className="relative hidden md:flex gap-10"
-          onMouseLeave={() => setHoveredHref(null)}
+        {/* Nav links: clipped container slides up, repositions, slides down */}
+        <motion.div
+          animate={wrapperControls}
+          initial={
+            isHome
+              ? { left: "50%", x: "-50%", y: "-50%" }
+              : { left: "100%", x: "-100%", y: "-50%" }
+          }
+          className="absolute top-1/2 -translate-y-1/2 overflow-hidden hidden md:block"
         >
+          <motion.ul
+            ref={listRef}
+            animate={contentControls}
+            initial={{ y: "0%" }}
+            className="relative flex items-center gap-10"
+            onMouseLeave={() => setHoveredHref(null)}
+          >
           {indicatorReady && (
             <motion.div
               className="pointer-events-none absolute left-0 top-0 size-1.5 bg-violet-200"
@@ -200,11 +320,12 @@ export default function Navbar() {
               </li>
             );
           })}
-        </ul>
+        </motion.ul>
+        </motion.div>
 
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-md border border-foreground-100/20 p-2 text-foreground-100"
+          className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-md border border-foreground-100/20 p-2 text-foreground-100"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav-menu"

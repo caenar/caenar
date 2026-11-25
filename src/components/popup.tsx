@@ -84,7 +84,7 @@ export default function Popup() {
               duration: 0.2,
               ease: [0, 0.71, 0.2, 1.01],
             }}
-            className="w-[calc(100vw-2rem)] sm:w-auto sm:min-w-[450px] max-w-[1000px] max-h-[calc(100vh-2rem)] overflow-y-auto bg-background-100 border border-background-400 p-4 rounded-lg"
+            className="w-[min(96vw,1800px)] max-w-[96vw] max-h-[calc(100vh-2rem)] overflow-y-auto bg-background-100 border border-background-400 p-4 rounded-lg"
           >
             <h2 className="text-2xl font-semibold">{title}</h2>
             <div className="mt-4">{content}</div>

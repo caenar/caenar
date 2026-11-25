@@ -47,23 +47,23 @@ h6 {
 }
 
 button {
-  @apply border border-foreground-100/20 transition-all duration-200 ease-in-out hover:brightness-[0.9] active:scale-[0.98];
+  @apply text-sm border border-foreground-100/20 transition-all duration-200 ease-in-out hover:brightness-[0.9] active:scale-[0.98];
 }
 
 .primary-button {
-  @apply bg-violet-200 px-3 py-1.5 rounded-md;
+  @apply bg-violet-200 px-3 py-1.5;
 }
 
 .secondary-button {
-  @apply bg-background-400 text-white px-3 py-1.5 rounded-md;
+  @apply bg-background-400 text-white px-3 py-1.5;
 }
 
 .danger-button {
-  @apply bg-[#b83e3e] px-3 py-1.5 rounded-md;
+  @apply bg-[#b83e3e] px-3 py-1.5;
 }
 
 .filter-button {
-  @apply px-4 py-2 border border-background-400 rounded-2xl hover:bg-white hover:text-background-400 hover:border-transparent transition;
+  @apply px-4 py-2 border border-background-400 hover:bg-white hover:text-background-400 hover:border-transparent transition;
 }
 
 .button-container {
@@ -71,7 +71,7 @@ button {
 }
 
 .card {
-  @apply rounded-lg border border-background-400/70;
+  @apply border border-background-400/70;
 }
 
 @keyframes terminal-caret-blink {
@@ -85,7 +85,7 @@ button {
 }
 
 .badge {
-  @apply border px-3 py-[6px] rounded-xl;
+  @apply border px-3 py-[6px];
 }
 
 .line {
@@ -123,7 +123,7 @@ button {
 }
 
 .image-upload {
-  @apply flex flex-col justify-center items-center gap-1.5 border border-background-400 rounded-lg p-5 cursor-pointer;
+  @apply flex flex-col justify-center items-center gap-1.5 border border-background-400 p-5 cursor-pointer;
 }
 
 .uploads-container {

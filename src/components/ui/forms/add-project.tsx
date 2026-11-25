@@ -1,15 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Image from "next/image";
-import { TbFileUpload, TbPlus, TbX } from "react-icons/tb";
+import { toast } from "sonner";
 
 import { addProjectSchema } from "@/lib/schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleResult } from "@/lib/utils/handle-result";
-import { toast } from "sonner";
 import { addProject } from "@/app/admin/action";
 import {
   Form,
@@ -23,51 +21,22 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../textarea";
 import { z } from "zod";
 import Loader from "../loader";
+import LayoutEditor from "./layout-editor";
+import type { ProjectLayout } from "@/lib/types/project-layout";
+import { ProjectLayoutSchema } from "@/lib/schemas/project-layout.schema";
 
 export default function AddProjectForm({
   closeAction,
 }: {
   closeAction: () => void;
 }) {
-  const fileInput = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
   const [tagInput, setTagInput] = useState("");
-
-  const addFile = () => {
-    fileInput.current?.click();
-  };
+  const [layout, setLayout] = useState<ProjectLayout>([]);
+  const [layoutError, setLayoutError] = useState<string | null>(null);
 
   const removeFile = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const ImageContainer = ({
-    name,
-    src,
-    onRemove,
-  }: {
-    name: string;
-    src: string;
-    onRemove: () => void;
-  }) => {
-    return (
-      <div className="flex gap-2 w-full items-center">
-        <Image
-          src={src}
-          alt="Picture"
-          width={0}
-          height={0}
-          style={{ width: "40px", height: "40px", objectFit: "cover" }}
-          className="rounded-lg border border-background-400"
-        />
-        <div className="flex justify-between items-center w-full gap-4">
-          <h5 className="truncate max-w-[20rem]">{name}</h5>
-          <button type="button" onClick={onRemove}>
-            <TbX className="text-pink-100" size={20} />
-          </button>
-        </div>
-      </div>
-    );
   };
 
   const form = useForm<z.infer<typeof addProjectSchema>>({
@@ -75,7 +44,80 @@ export default function AddProjectForm({
     defaultValues: { title: "", desc: "" },
   });
 
+  const [imagePreviews, setImagePreviews] = useState<
+    { id: string; url: string; order: number; label: string }[]
+  >([]);
+
+  useEffect(() => {
+    const next = images.map((file, i) => ({
+      id: `new-${i}-${file.name}-${file.size}`,
+      url: URL.createObjectURL(file),
+      order: i,
+      label: file.name,
+    }));
+    setImagePreviews(next);
+    return () => {
+      next.forEach((item) => URL.revokeObjectURL(item.url));
+    };
+  }, [images]);
+
+  const editorImages = useMemo(
+    () =>
+      imagePreviews.map((img) => ({
+        id: img.id,
+        image_url: img.url,
+        order: img.order,
+        alt: null,
+        label: img.label,
+      })),
+    [imagePreviews],
+  );
+
+  const handleUploadFiles = (files: File[]) => {
+    setImages((prev) => [...prev, ...files]);
+  };
+
+  const handleRemoveEditorImage = (id: string) => {
+    const idx = imagePreviews.findIndex((p) => p.id === id);
+    if (idx !== -1) removeFile(idx);
+  };
+
+  const handleSetCover = (id: string) => {
+    const idx = imagePreviews.findIndex((p) => p.id === id);
+    if (idx > 0) {
+      setImages((prev) => {
+        const next = [...prev];
+        const [picked] = next.splice(idx, 1);
+        next.unshift(picked);
+        return next;
+      });
+    }
+  };
+
+  const generateDefaultLayout = () => {
+    const desc = form.getValues("desc") || "Project description";
+    const title = form.getValues("title") || "Project";
+    const galleryItems = imagePreviews.map((img) => ({
+      index: img.order,
+      alt: `${title} project image`,
+    }));
+    const next: ProjectLayout = [{ type: "text", content: desc }];
+    if (galleryItems.length > 0) {
+      next.push({ type: "gallery", style: "default", items: galleryItems });
+    }
+    setLayout(next);
+    setLayoutError(null);
+  };
+
   async function onSubmit(values: z.infer<typeof addProjectSchema>) {
+    const layoutResult = ProjectLayoutSchema.safeParse(layout);
+    if (!layoutResult.success) {
+      setLayoutError(layoutResult.error.issues[0]?.message ?? "Invalid layout");
+      toast.warning("Layout is invalid. Check the layout editor.");
+      return;
+    }
+    setLayoutError(null);
+
     const finalTags = tagInput
       .split(",")
       .map((tag) => tag.trim())
@@ -84,6 +126,9 @@ export default function AddProjectForm({
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("desc", values.desc);
+    if (layoutResult.data.length > 0) {
+      formData.append("layout", JSON.stringify(layoutResult.data));
+    }
     finalTags.forEach((tag) => formData.append("tags", tag));
     images.forEach((file) => formData.append("images", file));
 
@@ -109,108 +154,77 @@ export default function AddProjectForm({
         className="grid gap-5"
         encType="multipart/form-data"
       >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Title of the project"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid gap-5">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Title of the project"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="desc"
-          render={({ field }) => (
+            <FormField
+              control={form.control}
+              name="desc"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={3}
+                      placeholder="Keep it short and concise"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Tags (separated by comma)</FormLabel>
               <FormControl>
                 <Textarea
-                  rows={3}
-                  placeholder="Keep it short and concise"
-                  {...field}
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  placeholder="e.g. react, ui, web"
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
-          )}
-        />
+          </div>
 
-        <FormItem>
-          <FormLabel>Tags (separated by comma)</FormLabel>
-          <FormControl>
-            <Textarea
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              placeholder="e.g. react, ui, web"
-            />
-          </FormControl>
-        </FormItem>
+        </div>
 
-        <div className="form-input">
-          <label>Images</label>
-          {images.length !== 0 && (
-            <div className="uploads-container">
-              {images.map((image, index) => (
-                <ImageContainer
-                  key={index}
-                  name={image.name}
-                  src={URL.createObjectURL(image)}
-                  onRemove={() => removeFile(index)}
-                />
-              ))}
+        <div className="grid gap-2">
+          <div className="flex items-center justify-between gap-3">
+            <label className="text-sm font-medium">Layout & Images</label>
+            <div className="flex items-center gap-3">
+              <span className="text-xs opacity-50">Optional — default layout is used if empty</span>
+              <button type="button" className="secondary-button text-xs !py-1 !px-2" onClick={generateDefaultLayout}>
+                Generate default
+              </button>
             </div>
-          )}
-          {images.length !== 0 ? (
-            <div
-              className="w-full secondary-button icon-label !gap-1 text-[14px]"
-              onClick={addFile}
-            >
-              <TbPlus size={16} />
-              Add more
-            </div>
-          ) : (
-            <div className="image-upload" onClick={addFile}>
-              <div className="border border-background-400 rounded-full p-3">
-                <TbFileUpload size={20} />
-              </div>
-              <span className="!text-center">
-                Drag and drop images
-                <br />
-                or click this container
-              </span>
-            </div>
-          )}
-          <input
-            ref={fileInput}
-            type="file"
-            hidden
-            accept="image/*"
-            multiple
-            onChange={(e) => {
-              if (!e.target.files) return;
-              const newFiles = Array.from(e.target.files);
-              setImages((prev) => {
-                const all = [...prev, ...newFiles];
-                const unique = all.filter(
-                  (f, i, arr) =>
-                    arr.findIndex(
-                      (x) => x.name === f.name && x.size === f.size,
-                    ) === i,
-                );
-                return unique;
-              });
-            }}
+          </div>
+          <LayoutEditor
+            value={layout}
+            onChange={setLayout}
+            images={editorImages}
+            onUploadFiles={handleUploadFiles}
+            onRemoveImage={handleRemoveEditorImage}
+            onSetCover={handleSetCover}
           />
+          {layoutError && <p className="text-xs text-pink-100">{layoutError}</p>}
         </div>
 
         <div className="flex justify-end gap-4 mt-5">

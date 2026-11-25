@@ -15,7 +15,7 @@ export default async function AdminLoginPage({
   if (authed) redirect(nextPath);
 
   return (
-    <section className="pt-28 md:pt-[10rem] pb-16 md:py-36 px-4 sm:px-6 md:px-[10vw] max-w-xl mx-auto">
+    <section className="pt-28 md:pt-[10rem] pb-16 md:py-36 px-4 sm:px-6 md:px-[10vw] min-w-sm mx-auto">
       <h2 className="mb-2">Admin login</h2>
       <p className="opacity-60 mb-8">
         {isAdminAuthConfigured()
