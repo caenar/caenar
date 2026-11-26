@@ -89,8 +89,8 @@ export function createFormation(
         glow: 0,
         size: t.size ?? 1,
         trail: [],
-        idleElapsedMs: -(1000 + rand() * 6000),
-        idleDurationMs: 1800 + rand() * 1400,
+        idleElapsedMs: -(1500 + rand() * 7000),
+        idleDurationMs: 3200 + rand() * 2400,
         idleRank: 0,
       };
     });
@@ -140,8 +140,8 @@ export function completeFormation(state: FormationState): FormationState {
     g.alpha = 1;
     g.glow = 0.35;
     g.trail.length = 0;
-    g.idleElapsedMs = -(1000 + Math.random() * 6000);
-    g.idleDurationMs = 1800 + Math.random() * 1400;
+    g.idleElapsedMs = -(1500 + Math.random() * 7000);
+    g.idleDurationMs = 3200 + Math.random() * 2400;
   }
   state.phase = "complete";
   state.idleActiveCount = 0;
@@ -155,8 +155,8 @@ function tickIdleGlyph(g: GlyphParticle, deltaMs: number) {
   g.idleElapsedMs += deltaMs;
   if (g.idleElapsedMs >= g.idleDurationMs) {
     // Scramble finished: rest on the real char before the next burst.
-    g.idleElapsedMs = -(2500 + Math.random() * 5000);
-    g.idleDurationMs = 1800 + Math.random() * 1400;
+    g.idleElapsedMs = -(4000 + Math.random() * 8000);
+    g.idleDurationMs = 3200 + Math.random() * 2400;
   }
 }
 

@@ -146,6 +146,33 @@ const cd: TerminalCommand = {
   },
 };
 
+const ls: TerminalCommand = {
+  name: "ls",
+  description: "List directory contents",
+  flags: [
+    { alias: "", desc: "List available sections" },
+    { alias: "work", desc: "List featured projects" },
+  ],
+  run(args) {
+    const target = args[0]?.toLowerCase();
+    if (!target) {
+      return output(
+        <p className="text-white/80">
+          <span className="text-violet-100">work/</span>  about/  contact/
+        </p>,
+      );
+    }
+    if (target === "work") {
+      return output(
+        <p className="text-white/60">
+          Open the work section to browse projects, or run <span className="text-violet-100">cd work</span>.
+        </p>,
+      );
+    }
+    return output(<p className="text-pink-500">ls: cannot access '{target}': No such file or directory</p>);
+  },
+};
+
 const nigga: TerminalCommand = {
   name: "nigga",
   description: "",
@@ -229,6 +256,7 @@ export const commandList: TerminalCommand[] = [
   whoami,
   skills,
   cd,
+  ls,
   clear,
   help,
   nigga,

@@ -1,22 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { Component, Facebook, Github, Linkedin } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { Facebook, Github, Linkedin } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { GlyphBackground } from "@/components/ui/backgrounds-glyph";
 import CuriosityFlow from "@/components/curiosity-flow";
 import FadeIn from "@/components/fade-in";
 import FadeInLines from "@/components/fade-in-lines";
-import ProjectCard from "@/components/project-card";
 import ScrambleText from "@/components/scramble-text";
-import Terminal from "@/components/terminal";
+import Terminal, { type TerminalHandle } from "@/components/terminal";
+import WorkTerminalSection from "@/components/work-terminal-section";
+import { WorkSplitPane } from "@/components/work-split-pane";
 import { IconSizes } from "@/lib/constants";
 import type { Project } from "@/lib/types/project";
+import type { TerminalCommand } from "@/shared/terminal/commands";
 
 export default function HomeClient({ projects }: { projects: Project[] }) {
+  const router = useRouter();
   const heroRef = useRef<HTMLElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const heroTerminalSlotRef = useRef<HTMLDivElement>(null);
+  const workDockRef = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<TerminalHandle>(null);
+  const hasPlayedWorkRef = useRef(false);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end end"],
@@ -24,6 +47,20 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
   const { scrollY } = useScroll();
 
   const [viewportHeight, setViewportHeight] = useState(2000);
+  const [layout, setLayout] = useState({
+    heroTop: 0,
+    heroLeft: 0,
+    heroHeight: 360,
+    heroWidth: 0,
+    heroViewportTop: 0,
+    heroViewportLeft: 0,
+    workTop: 0,
+    workLeft: 0,
+    workHeight: 600,
+    workWidth: 0,
+  });
+  const [docked, setDocked] = useState(false);
+  const [measured, setMeasured] = useState(false);
 
   useLayoutEffect(() => {
     const update = () => setViewportHeight(window.innerHeight);
@@ -31,6 +68,67 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  const measure = useCallback(() => {
+    const wrapper = wrapperRef.current;
+    const heroSlot = heroTerminalSlotRef.current;
+    const workDock = workDockRef.current;
+    if (!wrapper || !heroSlot || !workDock) return;
+
+    const offsetIn = (el: HTMLElement, ancestor: HTMLElement) => {
+      let top = 0;
+      let left = 0;
+      let node: HTMLElement | null = el;
+      while (node && node !== ancestor) {
+        const style = window.getComputedStyle(node);
+        if (style.position === "sticky") {
+          const prev = node.style.position;
+          node.style.position = "relative";
+          top += node.offsetTop;
+          left += node.offsetLeft;
+          node.style.position = prev;
+        } else {
+          top += node.offsetTop;
+          left += node.offsetLeft;
+        }
+        node = node.offsetParent as HTMLElement | null;
+      }
+      return { top, left };
+    };
+
+    const hero = offsetIn(heroSlot, wrapper);
+    const work = offsetIn(workDock, wrapper);
+    const wrapperDocTop = wrapper.getBoundingClientRect().top + window.scrollY;
+    const wrapperDocLeft =
+      wrapper.getBoundingClientRect().left + window.scrollX;
+    const next = {
+      heroTop: hero.top,
+      heroLeft: hero.left,
+      heroHeight: heroSlot.offsetHeight,
+      heroWidth: heroSlot.offsetWidth,
+      heroViewportTop: hero.top + wrapperDocTop,
+      heroViewportLeft: hero.left + wrapperDocLeft,
+      workTop: work.top,
+      workLeft: work.left,
+      workHeight: workDock.offsetHeight,
+      workWidth: workDock.offsetWidth,
+    };
+    setLayout(next);
+    setMeasured(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    measure();
+    const ro = new ResizeObserver(() => measure());
+    if (wrapperRef.current) ro.observe(wrapperRef.current);
+    if (heroTerminalSlotRef.current) ro.observe(heroTerminalSlotRef.current);
+    if (workDockRef.current) ro.observe(workDockRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [measure]);
 
   const headlineY = useTransform(scrollYProgress, [0, 0.4], [200, 0]);
   const terminalY = useTransform(
@@ -45,6 +143,49 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
     [1, 0],
   );
   const glowFade = useTransform(scrollY, [0, viewportHeight * 0.4], [1, 0]);
+
+  // Docking: keep terminal fixed; after dock it scrolls away naturally
+  const dockStart = Math.max(0, viewportHeight * 1);
+  const workDockViewportY = Math.max(0, (viewportHeight - (layout.workHeight || viewportHeight * 0.74)) / 2);
+  const dockEnd = Math.max(dockStart + 1.2, layout.workTop - workDockViewportY);
+
+  const fixedY = useTransform(scrollY, (v) => {
+    if (v <= dockStart) return layout.heroViewportTop;
+    if (v >= dockEnd) return workDockViewportY - (v - dockEnd);
+    const t = (v - dockStart) / (dockEnd - dockStart);
+    return (
+      layout.heroViewportTop + (workDockViewportY - layout.heroViewportTop) * t
+    );
+  });
+  const fixedX = useTransform(scrollY, (v) => {
+    if (v <= dockStart) return layout.heroViewportLeft;
+    if (v >= dockEnd) return layout.workLeft;
+    const t = (v - dockStart) / (dockEnd - dockStart);
+    return (
+      layout.heroViewportLeft + (layout.workLeft - layout.heroViewportLeft) * t
+    );
+  });
+  const terminalHeight = useTransform(scrollY, (v) => {
+    if (v <= dockStart) return layout.heroHeight;
+    if (v >= dockEnd) return layout.workHeight;
+    const t = (v - dockStart) / (dockEnd - dockStart);
+    return layout.heroHeight + (layout.workHeight - layout.heroHeight) * t;
+  });
+  const terminalWidth = useTransform(scrollY, (v) => {
+    if (v <= dockStart) return layout.heroWidth;
+    if (v >= dockEnd) return layout.workWidth;
+    const t = (v - dockStart) / (dockEnd - dockStart);
+    return layout.heroWidth + (layout.workWidth - layout.heroWidth) * t;
+  });
+  const terminalFixedY = useTransform(
+    [fixedY, terminalY],
+    ([d, e]: number[]) => d + e,
+  );
+
+  useMotionValueEvent(scrollY, "change", (v) => {
+    const isDocked = v >= dockStart + (dockEnd - dockStart) * 0.6;
+    if (isDocked !== docked) setDocked(isDocked);
+  });
 
   const socials = [
     {
@@ -70,9 +211,9 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
 
   const BOOT_S = 1.8;
   const headlineDelay = reduceMotion ? 0 : BOOT_S;
-  const headlineDone = headlineDelay + 1.5;
+  const headlineDone = headlineDelay + 1.4;
   const subtitleDelay = reduceMotion ? 0 : headlineDone + 0.1;
-  const actionsDelay = reduceMotion ? 0 : subtitleDelay + 0.55;
+  const actionsDelay = reduceMotion ? 0 : subtitleDelay + 0.3;
 
   useEffect(() => {
     if (reduceMotion) {
@@ -80,7 +221,6 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
       setTerminalReady(true);
       return;
     }
-
     const terminalDelayMs = (actionsDelay + 0.7) * 1000;
     const timers = [
       setTimeout(() => setBootDone(true), 1400),
@@ -89,8 +229,69 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
     return () => timers.forEach(clearTimeout);
   }, [reduceMotion, actionsDelay]);
 
+  const featured = useMemo(() => projects.slice(0, 4), [projects]);
+  const openProject = useCallback(
+    (slug: string) => router.push(`/work/${slug}`),
+    [router],
+  );
+
+  const extraCommands = useMemo<TerminalCommand[]>(
+    () => [
+      {
+        name: "ls",
+        description: "List featured projects",
+        flags: [
+          { alias: "", desc: "List available sections" },
+          { alias: "work", desc: "List featured projects" },
+        ],
+        run(args) {
+          const target = args[0]?.toLowerCase();
+          if (!target) {
+            return {
+              type: "output",
+              node: (
+                <p className="text-white/80">
+                  <span className="text-violet-100">work/</span> about/ contact/
+                </p>
+              ),
+            };
+          }
+          if (target === "work") {
+            return {
+              type: "output",
+              node: <WorkSplitPane projects={featured} onOpen={openProject} />,
+            };
+          }
+          return {
+            type: "output",
+            node: (
+              <p className="text-pink-500">
+                ls: cannot access '{target}': No such file or directory
+              </p>
+            ),
+          };
+        },
+      },
+    ],
+    [featured, openProject],
+  );
+
+  useEffect(() => {
+    if (!docked || hasPlayedWorkRef.current) return;
+    hasPlayedWorkRef.current = true;
+    if (reduceMotion) {
+      terminalRef.current?.run("ls work");
+      return;
+    }
+    const t = setTimeout(() => {
+      if (terminalRef.current?.hasUserInteracted()) return;
+      void terminalRef.current?.typeAndRun("ls work");
+    }, 500);
+    return () => clearTimeout(t);
+  }, [docked, reduceMotion]);
+
   return (
-    <>
+    <div ref={wrapperRef} className="relative">
       <motion.div
         className="absolute inset-x-0 top-0 h-[150vh] z-[-1]"
         style={{ y: bgY, opacity: bgFade }}
@@ -108,7 +309,6 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
         <motion.div className="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-background-100 via-background-100/80 to-transparent" />
       </motion.div>
 
-      {/* backdrop gradient lives inside the hero, on top of the background glyphs */}
       <section ref={heroRef} className="relative h-[200dvh]">
         <div className="sticky top-0 h-[100dvh] flex flex-col items-center justify-center overflow-visible px-4 sm:px-6">
           <div className="flex flex-col items-center gap-[3rem] z-10">
@@ -128,29 +328,38 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
                     initial={false}
                     animate={{
                       opacity: bootDone ? 0 : 1,
-                      filter: bootDone ? "blur(6px)" : "blur(0px)",
+                      filter: bootDone ? "blur(3px)" : "blur(0px)",
                     }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   >
-                    <div className="font-mono text-sm text-white/70 space-y-1">
+                    <div className="font-mono text-center text-sm text-white/70 space-y-2">
                       <motion.p
-                        initial={{ opacity: 0, y: 4 }}
+                        initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.18, ease: "easeOut" }}
                       >
-                        <span className="text-violet-200">&gt;</span> loading portfolio...
+                        <span className="text-violet-200">&gt;</span> loading
                       </motion.p>
                       <motion.p
-                        initial={{ opacity: 0, y: 4 }}
+                        initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }}
+                        transition={{
+                          duration: 0.2,
+                          delay: 0.4,
+                          ease: "easeOut",
+                        }}
                       >
-                        <span className="text-violet-200">&gt;</span> cooking up the screen...
+                        <span className="text-violet-200">&gt;</span> cooking up
+                        the screen
                       </motion.p>
                       <motion.p
-                        initial={{ opacity: 0, y: 4 }}
+                        initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2, delay: 0.8, ease: "easeOut" }}
+                        transition={{
+                          duration: 0.2,
+                          delay: 0.8,
+                          ease: "easeOut",
+                        }}
                       >
                         <span className="text-violet-200">&gt;</span> ready
                       </motion.p>
@@ -207,39 +416,38 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
               </FadeIn>
             </motion.div>
 
-            <motion.div className="z-10" style={{ y: terminalY }}>
-              <Terminal autoRunEnabled={terminalReady} />
-            </motion.div>
+            <div
+              ref={heroTerminalSlotRef}
+              className="z-10 w-[95vw] sm:w-[70vw] md:w-[55vw] max-w-full h-[45vh]"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </section>
+
+      <WorkTerminalSection dockRef={workDockRef} />
 
       <CuriosityFlow />
 
-      <section className="content grid gap-10">
-        <div className="grid gap-2">
-          <div className="icon-label">
-            <Component size={IconSizes.XL} />
-            <h2>Projects</h2>
-          </div>
-          <p className="max-w-[30ch] text-background-200">
-            Take a look at some of highlight projects that I&apos;ve done
-            before.
-          </p>
-        </div>
-        <div className="grid gap-4">
-          {projects.slice(0, 3).map((project) => (
-            <Link key={project.id} href={`/work/${project.slug}`}>
-              <ProjectCard
-                title={project.title}
-                desc={project.desc}
-                tags={project.tags}
-                images={project.project_image}
-              />
-            </Link>
-          ))}
-        </div>
-      </section>
-    </>
+      <motion.div
+        className="z-20"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: fixedX,
+          y: terminalFixedY,
+          width: terminalWidth,
+          height: terminalHeight,
+          opacity: measured ? 1 : 0,
+        }}
+      >
+        <Terminal
+          ref={terminalRef}
+          autoRunEnabled={terminalReady}
+          extraCommands={extraCommands}
+          className="w-full h-full max-w-full sm:w-full md:w-full"
+        />
+      </motion.div>
+    </div>
   );
 }

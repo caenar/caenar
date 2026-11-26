@@ -1,22 +1,43 @@
 "use client";
 
 import {
+  forwardRef,
   type KeyboardEvent,
   type ReactNode,
+  useCallback,
   useEffect,
+  useImperativeHandle,
   useRef,
   useState,
 } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { resolveCommand } from "@/shared/terminal/commands";
+import {
+  resolveCommand,
+  type TerminalCommand,
+} from "@/shared/terminal/commands";
+import { cn } from "@/lib/utils";
 import React from "react";
 
-export default function Terminal({
-  autoRunEnabled = true,
-}: {
+export type TerminalHandle = {
+  typeAndRun: (command: string) => Promise<void>;
+  run: (command: string) => void;
+  clear: () => void;
+  focus: () => void;
+  hasUserInteracted: () => boolean;
+};
+
+type TerminalProps = {
   autoRunEnabled?: boolean;
-} = {}) {
+  extraCommands?: TerminalCommand[];
+  className?: string;
+  onUserInteract?: () => void;
+};
+
+const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Terminal(
+  { autoRunEnabled = true, extraCommands, className, onUserInteract }: TerminalProps = {},
+  ref,
+) {
   const [history, setHistory] = useState<
     {
       command: string;
@@ -33,6 +54,12 @@ export default function Terminal({
   const terminalInput = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const hasAutoRun = useRef(false);
+  const userInteractedRef = useRef(false);
+  const programmaticRef = useRef(false);
+  const extraCommandsRef = useRef(extraCommands);
+  extraCommandsRef.current = extraCommands;
+  const onUserInteractRef = useRef(onUserInteract);
+  onUserInteractRef.current = onUserInteract;
 
   const focusTerminal = () => {
     if (terminalInput.current) terminalInput.current.focus();
@@ -50,7 +77,8 @@ export default function Terminal({
     const command = args.shift()?.toLowerCase();
     if (!command) return;
 
-    const matched = resolveCommand(command);
+    const extra = extraCommandsRef.current?.find((c) => c.name === command);
+    const matched = extra ?? resolveCommand(command);
 
     if (!matched) {
       setHistory((prev) => [
@@ -107,6 +135,10 @@ export default function Terminal({
   executeCommandRef.current = executeCommand;
 
   const handleCommand = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (!programmaticRef.current) {
+      userInteractedRef.current = true;
+      onUserInteractRef.current?.();
+    }
     if (event.key === "Enter") {
       event.preventDefault();
       executeCommand(event.currentTarget.value);
@@ -250,16 +282,139 @@ export default function Terminal({
     return () => observer.disconnect();
   }, [autoRunEnabled]);
 
+  const typeAndRun = useCallback((command: string) => {
+    return new Promise<void>((resolve) => {
+      if (userInteractedRef.current) {
+        resolve();
+        return;
+      }
+      let i = 0;
+      programmaticRef.current = true;
+      const typeNext = () => {
+        if (userInteractedRef.current) {
+          programmaticRef.current = false;
+          resolve();
+          return;
+        }
+        const input = terminalInput.current;
+        if (!input) {
+          programmaticRef.current = false;
+          resolve();
+          return;
+        }
+        i += 1;
+        input.value = command.slice(0, i);
+        setCaretIndex(i);
+        if (i < command.length) {
+          setTimeout(typeNext, 55 + Math.random() * 40);
+        } else {
+          setTimeout(() => {
+            executeCommandRef.current(command);
+            programmaticRef.current = false;
+            resolve();
+          }, 220);
+        }
+      };
+      setTimeout(typeNext, 150);
+    });
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    typeAndRun,
+    run: (command: string) => executeCommandRef.current(command),
+    clear: () => setHistory([]),
+    focus: focusTerminal,
+    hasUserInteracted: () => userInteractedRef.current,
+  }), [typeAndRun]);
+
   return (
     <div
-      className={`terminal-scroll font-mono text-sm bg-background-100/60 backdrop-blur-3xl w-[95vw] sm:w-[70vw] md:w-[55vw] max-w-full h-[40vh] overflow-y-auto overflow-x-hidden ${isInputFocused ? "overscroll-y-contain" : "overscroll-auto"
-        } card p-4 cursor-pointer`}
-      onClick={focusTerminal}
+      className={cn(
+        "terminal-scroll font-mono text-sm bg-background-100/60 backdrop-blur-3xl w-[95vw] sm:w-[70vw] md:w-[55vw] max-w-full h-[45vh] overflow-y-auto overflow-x-hidden card p-4",
+        isInputFocused ? "overscroll-y-contain" : "overscroll-auto",
+        className,
+      )}
       ref={terminalContainer}
     >
+      <pre className="mb-6 whitespace-pre leading-[1.35] overflow-x-hidden text-white/80">
+        {`                         `}
+        <span className="text-violet-200 font-semibold">caenar@fsociety</span>
+        {`
+`}
+        <span className="text-cyan-300">{`      /\\           `}</span>
+        <span className="text-white/25">{`─────────────`}</span>
+        <span className="text-violet-300">●</span>
+        <span className="text-white/25">{`──────────────`}</span>
+        {`
+`}
+        <span className="text-cyan-300">{`     /  \\         `}</span>
+        <span className="text-cyan-300">OS</span>
+        {`  `}
+        <span className="text-white/45">-&gt;</span>
+        {` `}
+        <span className="text-white/80">Linux 7.3.4-arch1-2</span>
+        {`
+`}
+        <span className="text-cyan-300">{`    /    \\        `}</span>
+        <span className="text-cyan-300">WM</span>
+        {`  `}
+        <span className="text-white/45">-&gt;</span>
+        {` `}
+        <span className="text-white/80">Hyprland 0.57.2 (Wayland)</span>
+        {`
+`}
+        <span className="text-cyan-300">{`   /      \\       `}</span>
+        <span className="text-cyan-300">SH</span>
+        {`  `}
+        <span className="text-white/45">-&gt;</span>
+        {` `}
+        <span className="text-white/80">zsh 5.9.2</span>
+        {`
+`}
+        <span className="text-cyan-300">{`  /   ,,   \\      `}</span>
+        <span className="text-cyan-300">TM</span>
+        {`  `}
+        <span className="text-white/45">-&gt;</span>
+        {` `}
+        <span className="text-white/80">alacritty 0.17.0</span>
+        {`
+`}
+        <span className="text-cyan-300">{` /   |  |   \\     `}</span>
+        <span className="text-cyan-300">ED</span>
+        {`  `}
+        <span className="text-white/45">-&gt;</span>
+        {` `}
+        <span className="text-white/80">Neovim</span>
+        {`
+`}
+        <span className="text-cyan-300">{`/_-''    ''-_\\    `}</span>
+        <span className="text-white/25">{`──────────────`}</span>
+        <span className="text-violet-300">●</span>
+        <span className="text-white/25">{`──────────────`}</span>
+        {`
+`}
+        {`                     `}
+        <span className="text-violet-300">●</span>
+        {`  `}
+        <span className="text-cyan-300">●</span>
+        {`  `}
+        <span className="text-violet-300">●</span>
+        {`  `}
+        <span className="text-cyan-300">●</span>
+        {`  `}
+        <span className="text-violet-300">●</span>
+        {`  `}
+        <span className="text-cyan-300">●</span>
+        {`  `}
+        <span className="text-violet-300">●</span>
+        {`  `}
+        <span className="text-cyan-300">●</span>
+        {`
+`}
+      </pre>
       {history.map((entry, index) => (
         <React.Fragment key={index}>
-          <div className="mb-3">
+          <div className="mb-3 text-sm">
             <p className="whitespace-nowrap">
               ╭─<span className="text-violet-100">[</span>~
               <span className="text-violet-100">]</span>
@@ -289,7 +444,7 @@ export default function Terminal({
             </p>
           </div>
           <motion.div
-            className="flex flex-col gap-2 ml-2 mb-6 [&_p]:leading-[1.45rem]"
+            className="flex flex-col gap-2 ml-2 mb-6 text-sm [&_p]:leading-[1.45rem]"
             initial={{ opacity: 0, filter: "blur(4px)" }}
             animate={{ opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 0.15, ease: "easeOut" }}
@@ -299,7 +454,7 @@ export default function Terminal({
         </React.Fragment>
       ))}
 
-      <div>
+      <div className="text-sm cursor-text" onClick={focusTerminal}>
         <p className="whitespace-nowrap">
           ╭─<span className="text-violet-100">[</span>~
           <span className="text-violet-100">]</span>
@@ -354,4 +509,6 @@ export default function Terminal({
       </div>
     </div>
   );
-}
+});
+
+export default Terminal;

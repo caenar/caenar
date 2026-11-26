@@ -10,10 +10,6 @@ label {
   @apply text-sm;
 }
 
-p {
-  @apply text-[16px];
-}
-
 h1, h2, h3, h4, h5, h6 {
   @apply font-display;
 }
@@ -85,7 +81,7 @@ button {
 }
 
 .badge {
-  @apply border px-3 py-[6px];
+  @apply border px-3 py-[4px];
 }
 
 .line {
