@@ -1,5 +1,6 @@
 import { Buffer } from "node:buffer";
 
+import { isRemoteAssetUrl } from "./asset-url";
 import {
   PROJECT_ASSET_REPOSITORY_ROOT,
   PROJECT_CONTENT_DIRECTORY,
@@ -305,6 +306,7 @@ export async function publishProjectContent({
           422,
         );
       }
+      if (isRemoteAssetUrl(image.image_url)) continue;
       if (!finalPaths.has(repositoryPath)) {
         throw new ProjectPublishError(
           `Published content references a missing asset: ${image.path}. Push the asset before publishing the catalog.`,

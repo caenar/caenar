@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ProjectLayoutSchema } from "@/lib/schemas/project-layout.schema";
+import { isRemoteAssetUrl } from "./asset-url";
 
 export const PROJECT_CONTENT_SCHEMA_VERSION = 1 as const;
 export const PROJECT_CONTENT_DIRECTORY = "public/projects/v1" as const;
@@ -23,16 +24,23 @@ export const StaticProjectImageSchema = z
           path.split("/").every((segment) => segment && segment !== "." && segment !== ".."),
         "Asset path must not contain traversal segments",
       ),
-    image_url: z.string().min(1).startsWith(`${PROJECT_ASSET_PUBLIC_ROOT}/`),
+    image_url: z
+      .string()
+      .min(1)
+      .refine(
+        (value) =>
+          value.startsWith(`${PROJECT_ASSET_PUBLIC_ROOT}/`) || isRemoteAssetUrl(value),
+        "Image URL must be a versioned asset path or an absolute URL",
+      ),
     alt: z.string().nullable(),
     role: ProjectImageRoleSchema,
     order: z.number().int().nonnegative(),
   })
   .strict()
-  .refine(
-    (image) => image.image_url === `${PROJECT_CONTENT_PUBLIC_ROOT}/${image.path}`,
-    "Image URL must match the versioned asset path",
-  );
+  .refine((image) => {
+    if (isRemoteAssetUrl(image.image_url)) return true;
+    return image.image_url === `${PROJECT_CONTENT_PUBLIC_ROOT}/${image.path}`;
+  }, "Image URL must match the versioned asset path");
 
 export const StaticTagSchema = z
   .object({

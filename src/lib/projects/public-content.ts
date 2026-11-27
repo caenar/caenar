@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 import rawProjectContent from "../../../public/projects/v1/projects.json";
+import { isRemoteAssetUrl } from "./asset-url";
 import {
   PROJECT_CONTENT_DIRECTORY,
   ProjectContentSchema,
@@ -14,6 +15,8 @@ const parsedProjectContent = ProjectContentSchema.parse(rawProjectContent);
 function validateBundledAssets(content: ProjectContent) {
   for (const project of content.projects) {
     for (const image of project.project_image) {
+      if (isRemoteAssetUrl(image.image_url)) continue;
+
       const assetPath = join(
         process.cwd(),
         PROJECT_CONTENT_DIRECTORY,

@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { isR2Configured, isRemoteAssetUrl } from "@/lib/projects/asset-url";
 import {
   ProjectContentSchema,
   type ProjectContent,
@@ -18,6 +19,7 @@ import {
   publishProjectContent,
   triggerVercelDeploy,
 } from "@/lib/projects/github-publisher";
+import { deleteAssetFromR2, uploadAssetToR2 } from "@/lib/projects/r2-storage";
 import { addProjectSchema, editProjectSchema } from "@/lib/schemas/project.schema";
 import type { ErrorType, LayoutBlock, ProjectLayout } from "@/lib/types";
 import { fail, ok, type Result } from "@/lib/utils/result";
@@ -243,13 +245,32 @@ async function createAsset(
   order: number,
 ): Promise<{
   image: StaticProjectImage;
-  assetPath: string;
-  content: Uint8Array;
+  gitAsset?: { path: string; content: Uint8Array };
 }> {
   const filename = `${Date.now()}-${randomUUID().slice(0, 8)}-${safeFileName(
     file.name,
   )}`;
   const relativePath = `assets/${projectSlug}/${filename}`;
+  const content = new Uint8Array(await file.arrayBuffer());
+
+  if (isR2Configured()) {
+    const imageUrl = await uploadAssetToR2(
+      relativePath,
+      content,
+      file.type || "application/octet-stream",
+    );
+
+    return {
+      image: {
+        id: randomUUID(),
+        path: relativePath,
+        image_url: imageUrl,
+        alt: null,
+        role: order === 0 ? "cover" : "gallery",
+        order,
+      },
+    };
+  }
 
   return {
     image: {
@@ -260,8 +281,10 @@ async function createAsset(
       role: order === 0 ? "cover" : "gallery",
       order,
     },
-    assetPath: `public/projects/v1/${relativePath}`,
-    content: new Uint8Array(await file.arrayBuffer()),
+    gitAsset: {
+      path: `public/projects/v1/${relativePath}`,
+      content,
+    },
   };
 }
 
@@ -414,10 +437,7 @@ export async function addProject(
 
     const result = await publish(
       nextContent,
-      uploaded.map((asset) => ({
-        path: asset.assetPath,
-        content: asset.content,
-      })),
+      uploaded.flatMap((asset) => (asset.gitAsset ? [asset.gitAsset] : [])),
       [],
       `content: add project ${slug}`,
       snapshot.commitSha,
@@ -527,13 +547,18 @@ export async function editProject(
       projects: nextProjects,
     });
 
+    for (const image of removedImages) {
+      if (isRemoteAssetUrl(image.image_url)) {
+        await deleteAssetFromR2(image.path);
+      }
+    }
+
     const result = await publish(
       nextContent,
-      uploaded.map((asset) => ({
-        path: asset.assetPath,
-        content: asset.content,
-      })),
-      removedImages.map((image) => `public/projects/v1/${image.path}`),
+      uploaded.flatMap((asset) => (asset.gitAsset ? [asset.gitAsset] : [])),
+      removedImages
+        .filter((image) => !isRemoteAssetUrl(image.image_url))
+        .map((image) => `public/projects/v1/${image.path}`),
       `content: update project ${currentProject.slug}`,
       snapshot.commitSha,
     );
@@ -569,8 +594,18 @@ export async function deleteProject(
         .filter((item) => item.id !== projectId)
         .flatMap((item) => item.project_image.map((image) => image.path)),
     );
-    const deletedAssetPaths = project.project_image
-      .filter((image) => !referencedPaths.has(image.path))
+    const removedImages = project.project_image.filter(
+      (image) => !referencedPaths.has(image.path),
+    );
+
+    for (const image of removedImages) {
+      if (isRemoteAssetUrl(image.image_url)) {
+        await deleteAssetFromR2(image.path);
+      }
+    }
+
+    const deletedAssetPaths = removedImages
+      .filter((image) => !isRemoteAssetUrl(image.image_url))
       .map((image) => `public/projects/v1/${image.path}`);
 
     const nextContent = withUpdatedTimestamp({
