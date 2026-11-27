@@ -11,7 +11,7 @@ export default function WorkTerminalSection({
     <section className="content">
       <div
         ref={dockRef}
-        className="w-full h-[70vh] md:h-[90vh]"
+        className="w-full h-[70vh] md:h-[85vh]"
         aria-hidden="true"
       />
     </section>

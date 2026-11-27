@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 
 import { GlyphBackground } from "@/components/ui/backgrounds-glyph";
 import CuriosityFlow from "@/components/curiosity-flow";
+import HomeCTA from "@/components/home-cta";
 import FadeIn from "@/components/fade-in";
 import FadeInLines from "@/components/fade-in-lines";
 import ScrambleText from "@/components/scramble-text";
@@ -145,13 +146,19 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
   const glowFade = useTransform(scrollY, [0, viewportHeight * 0.4], [1, 0]);
 
   // Docking: keep terminal fixed; after dock it scrolls away naturally
-  const dockStart = Math.max(0, viewportHeight * 1);
-  const workDockViewportY = Math.max(0, (viewportHeight - (layout.workHeight || viewportHeight * 0.74)) / 2);
-  const dockEnd = Math.max(dockStart + 1.2, layout.workTop - workDockViewportY);
+  const NAV_OFFSET = 72;
+  const workDockViewportY = Math.max(
+    0,
+    (viewportHeight - (layout.workHeight || viewportHeight * 0.74)) / 2 + NAV_OFFSET / 4,
+  );
+  const dockEnd = Math.max(1.2, layout.workTop - workDockViewportY);
+  const dockStart = Math.max(0, dockEnd - viewportHeight * 0.55);
+  const dockRelease = dockEnd + viewportHeight * 0.15;
 
   const fixedY = useTransform(scrollY, (v) => {
     if (v <= dockStart) return layout.heroViewportTop;
-    if (v >= dockEnd) return workDockViewportY - (v - dockEnd);
+    if (v >= dockEnd && v <= dockRelease) return workDockViewportY;
+    if (v > dockRelease) return workDockViewportY - (v - dockRelease);
     const t = (v - dockStart) / (dockEnd - dockStart);
     return (
       layout.heroViewportTop + (workDockViewportY - layout.heroViewportTop) * t
@@ -428,6 +435,7 @@ export default function HomeClient({ projects }: { projects: Project[] }) {
       <WorkTerminalSection dockRef={workDockRef} />
 
       <CuriosityFlow />
+      <HomeCTA />
 
       <motion.div
         className="z-20"

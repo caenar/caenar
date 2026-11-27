@@ -602,14 +602,14 @@ export default function CuriosityFlow() {
   const totalSteps = Math.max(12, ...paths.map((p) => p.step + 1));
 
   return (
-    <section className="relative overflow-hidden pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-28 md:pt-24 lg:pb-36 lg:pt-28">
+    <section className="relative overflow-hidden pb-20 pt-20 sm:pb-28 sm:pt-28 md:pb-36 md:pt-32 lg:pb-44 lg:pt-36">
       <div aria-hidden className="pointer-events-none absolute inset-0" />
       <div className="relative w-full px-4 sm:px-6 md:px-[8vw] lg:px-[15vw]">
         <motion.div
           className="grid gap-2 mb-14 md:mb-20 items-center justify-items-center text-center"
           initial={{ opacity: 0, y: 8, filter: "blur(3px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, amount: 0.8 }}
+          viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-mono text-sm uppercase tracking-wider text-violet-100">

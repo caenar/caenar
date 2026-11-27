@@ -16,8 +16,8 @@ function ProjectPreview({ project }: { project: Project }) {
     "/placeholder.svg";
 
   return (
-    <div className="flex h-full flex-col gap-4 p-4 md:p-5">
-      <div className="relative w-full overflow-hidden border border-background-400 bg-background-200/30 aspect-[16/9]">
+    <div className="flex flex-col gap-3 p-3 md:p-4 h-full">
+      <div className="relative bg-background-200/30 border border-background-400 w-full h-[140px] sm:h-[245px] md:h-[345px] overflow-hidden shrink-0">
         <Image
           src={cover}
           alt={`Preview of ${project.title}`}
@@ -26,36 +26,36 @@ function ProjectPreview({ project }: { project: Project }) {
           sizes="(min-width: 768px) 45vw, 90vw"
         />
       </div>
-      <div className="grid gap-2 min-w-0">
+      <div className="gap-1.5 grid min-w-0">
         <div className="flex items-end gap-3">
-          <h3 className="text-lg md:text-xl font-semibold leading-tight truncate">
+          <h3 className="font-semibold text-base md:text-lg truncate leading-tight">
             {project.title}
           </h3>
-          <p className="font-mono text-xs uppercase tracking-wider text-violet-100">
+          <p className="font-mono text-violet-100 text-xs uppercase tracking-wider">
             {project.year ? `/ ${project.year}` : ""}
           </p>
         </div>
-        <p className="font-text text-sm text-background-200 leading-relaxed line-clamp-3">
+        <p className="font-text text-background-200 text-sm line-clamp-2 leading-relaxed">
           {project.desc}
         </p>
       </div>
-      <div className="flex items-center justify-between">
-        <div className="mt-auto flex flex-wrap gap-2">
-          {(project.tags ?? []).slice(0, 4).map((tag) => (
+      <div className="flex justify-between items-center gap-3 mt-auto">
+        <div className="flex flex-wrap gap-1.5">
+          {(project.tags ?? []).slice(0, 3).map((tag) => (
             <span
               key={tag.id}
-              className="badge border-background-400 !text-[12px] lowercase"
+              className="!px-2 !py-[2px] border-background-400 !text-[11px] lowercase badge"
             >
               {tag.name}
             </span>
           ))}
         </div>
-        <div className="flex flex-wrap gap-3 font-mono text-xs">
+        <div className="flex flex-wrap gap-3 font-mono text-xs shrink-0">
           <Link
             href={`/work/${project.slug}`}
             className="text-violet-100 hover:text-pink-200 transition-colors"
           >
-            &gt; open project
+            &gt; view project
           </Link>
           {project.live_link && (
             <a
@@ -65,16 +65,6 @@ function ProjectPreview({ project }: { project: Project }) {
               className="text-white/50 hover:text-white/80 transition-colors"
             >
               live ↗
-            </a>
-          )}
-          {project.code_link && (
-            <a
-              href={project.code_link}
-              target="_blank"
-              rel="noreferrer"
-              className="text-white/50 hover:text-white/80 transition-colors"
-            >
-              code ↗
             </a>
           )}
         </div>
@@ -126,19 +116,19 @@ export function WorkSplitPane({
     <div
       ref={containerRef}
       tabIndex={0}
-      className="outline-none border border-background-400/60 overflow-hidden bg-background-100/30"
+      className="bg-background-100/30 border border-background-400/60 outline-none overflow-hidden"
     >
-      <div className="flex items-center justify-between border-b border-background-400/60 px-3 py-2 font-mono text-xs text-white/45">
+      <div className="flex justify-between items-center px-3 py-2 border-background-400/60 border-b font-mono text-white/45 text-xs">
         <span>~/work</span>
         <span className="hidden sm:inline">j/k navigate · enter open</span>
       </div>
 
-      <div className="grid md:grid-cols-[minmax(0,0.4fr)_minmax(0,1.1fr)] min-h-[340px] md:min-h-[420px]">
-        <div className="border-b md:border-b-0 md:border-r border-background-400/60 p-2 md:p-3 overflow-y-auto">
-          <p className="px-2 py-1 text-xs font-mono uppercase tracking-wider text-white/35 mb-1">
+      <div className="grid md:grid-cols-[minmax(0,0.4fr)_minmax(0,1.1fr)] min-h-[240px] md:min-h-[280px]">
+        <div className="p-2 md:p-3 border-background-400/60 md:border-r border-b md:border-b-0 overflow-y-auto">
+          <p className="mb-1 px-2 py-1 font-mono text-white/35 text-xs uppercase tracking-wider">
             featured/
           </p>
-          <ul className="grid gap-0.5">
+          <ul className="gap-0.5 grid">
             {projects.map((project, i) => {
               const isActive = i === selected;
               return (
@@ -148,7 +138,7 @@ export function WorkSplitPane({
                     onClick={() => setSelected(i)}
                     onDoubleClick={() => onOpen(project.slug)}
                     className={cn(
-                      "flex justify-between items-center w-full px-3 py-1.5 border font-mono text-sm",
+                      "flex justify-between items-center px-3 py-1.5 border w-full font-mono text-sm",
                       isActive
                         ? "bg-violet-950/50 border-transparent text-white"
                         : "border-transparent text-white/70 hover:bg-white/[0.03] hover:text-white/90",
@@ -180,9 +170,9 @@ export function WorkSplitPane({
           </ul>
           <Link
             href="/work"
-            className="block px-3 py-2 font-mono text-xs text-white/45 hover:text-violet-100 transition-colors"
+            className="block mt-3 px-3 py-2 font-mono text-white/45 hover:text-violet-100 text-xs transition-colors"
           >
-            cd /work — view all projects →
+            cd /work — view all projects
           </Link>
         </div>
 
@@ -198,14 +188,14 @@ export function WorkSplitPane({
               <ProjectPreview project={active} />
             </motion.div>
           ) : (
-            <div className="p-4 text-sm text-white/40 font-mono">
+            <div className="p-4 font-mono text-white/40 text-sm">
               no projects
             </div>
           )}
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-background-400/60 px-3 py-2 font-mono text-xs text-white/45">
+      <div className="flex justify-between items-center px-3 py-2 border-background-400/60 border-t font-mono text-white/45 text-xs">
         <div className="flex items-center gap-3">
           <span className="text-violet-100">0:home</span>
           <span className="text-white/70">1:work*</span>

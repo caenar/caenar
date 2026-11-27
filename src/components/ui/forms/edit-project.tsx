@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ConfirmData, Project, ProjectImage } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { deleteProject, editProject } from "@/app/admin/action";

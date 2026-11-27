@@ -1,27 +1,38 @@
 import type { LayoutBlock, ProjectLayout } from "@/lib/types/project-layout";
 import type { BlockPath, EditorBlock } from "./types";
 
+type GroupEditorBlock = EditorBlock & { items: EditorBlock[] };
+
+function asGroup(block: EditorBlock): GroupEditorBlock | null {
+  if (Array.isArray((block as unknown as { items?: unknown }).items)) {
+    return block as GroupEditorBlock;
+  }
+  return null;
+}
+
 export function uid() {
   return Math.random().toString(36).slice(2, 10);
 }
 
 export function withIds(blocks: ProjectLayout): EditorBlock[] {
   return blocks.map((block) => {
-    const anyBlock = block as LayoutBlock & { items?: LayoutBlock[] };
-    if (anyBlock.items && Array.isArray(anyBlock.items)) {
-      return { ...(block as any), __id: uid(), items: withIds(anyBlock.items) } as EditorBlock;
+    const items = (block as unknown as { items?: LayoutBlock[] }).items;
+    if (Array.isArray(items)) {
+      return { ...block, __id: uid(), items: withIds(items) } as EditorBlock;
     }
-    return { ...(block as any), __id: uid() } as EditorBlock;
+    return { ...block, __id: uid() } as EditorBlock;
   });
 }
 
 export function stripIds(blocks: EditorBlock[]): ProjectLayout {
   return blocks.map((block) => {
-    const { __id, ...rest } = block as any;
-    if (rest.items && Array.isArray(rest.items)) {
-      rest.items = stripIds(rest.items as EditorBlock[]);
+    const { __id: _id, ...rest } = block;
+    void _id;
+    const items = (rest as unknown as { items?: EditorBlock[] }).items;
+    if (Array.isArray(items)) {
+      (rest as unknown as { items: ProjectLayout }).items = stripIds(items);
     }
-    return rest as LayoutBlock;
+    return rest as unknown as LayoutBlock;
   });
 }
 
@@ -30,12 +41,14 @@ export function cloneBlocks(blocks: EditorBlock[]): EditorBlock[] {
 }
 
 export function getAtPath(blocks: EditorBlock[], path: BlockPath): EditorBlock | null {
-  let cur: any = { items: blocks };
+  let items: EditorBlock[] | undefined = blocks;
+  let cur: EditorBlock | null = null;
   for (const idx of path) {
-    if (!cur.items || !cur.items[idx]) return null;
-    cur = cur.items[idx];
+    if (!items || !items[idx]) return null;
+    cur = items[idx];
+    items = (cur as unknown as { items?: EditorBlock[] }).items;
   }
-  return cur as EditorBlock;
+  return cur;
 }
 
 export function updateAtPath(
@@ -48,9 +61,9 @@ export function updateAtPath(
   return blocks.map((b, i) => {
     if (i !== head) return b;
     if (rest.length === 0) return updater(b);
-    const anyB = b as any;
-    if (!Array.isArray(anyB.items)) return b;
-    return { ...anyB, items: updateAtPath(anyB.items as EditorBlock[], rest, updater) } as EditorBlock;
+    const group = asGroup(b);
+    if (!group) return b;
+    return { ...group, items: updateAtPath(group.items, rest, updater) } as EditorBlock;
   });
 }
 
@@ -60,9 +73,9 @@ export function removeAtPath(blocks: EditorBlock[], path: BlockPath): EditorBloc
   if (rest.length === 0) return blocks.filter((_, i) => i !== head);
   return blocks.map((b, i) => {
     if (i !== head) return b;
-    const anyB = b as any;
-    if (!Array.isArray(anyB.items)) return b;
-    return { ...anyB, items: removeAtPath(anyB.items as EditorBlock[], rest) } as EditorBlock;
+    const group = asGroup(b);
+    if (!group) return b;
+    return { ...group, items: removeAtPath(group.items, rest) } as EditorBlock;
   });
 }
 
@@ -80,11 +93,11 @@ export function insertAtPath(
   const [head, ...rest] = parentPath;
   return blocks.map((b, i) => {
     if (i !== head) return b;
-    const anyB = b as any;
-    if (!Array.isArray(anyB.items)) return b;
+    const group = asGroup(b);
+    if (!group) return b;
     return {
-      ...anyB,
-      items: insertAtPath(anyB.items as EditorBlock[], rest, index, block),
+      ...group,
+      items: insertAtPath(group.items, rest, index, block),
     } as EditorBlock;
   });
 }
@@ -93,7 +106,8 @@ export function moveAtPath(blocks: EditorBlock[], path: BlockPath, dir: -1 | 1):
   if (path.length === 0) return blocks;
   const parentPath = path.slice(0, -1);
   const idx = path[path.length - 1];
-  const parentItems = parentPath.length === 0 ? blocks : ((getAtPath(blocks, parentPath) as any)?.items as EditorBlock[] | undefined);
+  const parent = parentPath.length === 0 ? null : getAtPath(blocks, parentPath);
+  const parentItems = parentPath.length === 0 ? blocks : asGroup(parent as EditorBlock)?.items;
   if (!parentItems) return blocks;
   const nextIdx = idx + dir;
   if (nextIdx < 0 || nextIdx >= parentItems.length) return blocks;
@@ -108,12 +122,14 @@ export function pathEq(a: BlockPath | null, b: BlockPath | null) {
   return a.every((v, i) => v === b[i]);
 }
 
-export function isGroup(block: EditorBlock | LayoutBlock): block is LayoutBlock & { items: LayoutBlock[]; type: "section" | "grid" | "stack" } {
+export function isGroup(
+  block: EditorBlock | LayoutBlock,
+): block is (LayoutBlock & { items: LayoutBlock[]; type: "section" | "grid" | "stack" }) | (EditorBlock & { items: EditorBlock[]; type: "section" | "grid" | "stack" }) {
   return block.type === "section" || block.type === "grid" || block.type === "stack";
 }
 
 export function defaultBlock(type: LayoutBlock["type"]): EditorBlock {
-  const base = { __id: uid() } as any;
+  const base = { __id: uid() };
   switch (type) {
     case "heading":
       return { ...base, type: "heading", level: 2, content: "Heading" };
@@ -161,7 +177,7 @@ export function blockLabel(block: EditorBlock) {
     case "section":
     case "grid":
     case "stack":
-      return `${block.type[0].toUpperCase() + block.type.slice(1)} (${(block as any).items?.length ?? 0})`;
+      return `${block.type[0].toUpperCase() + block.type.slice(1)} (${(block as unknown as { items?: unknown[] }).items?.length ?? 0})`;
   }
 }
 
@@ -171,7 +187,7 @@ export function findPathById(blocks: EditorBlock[], id: string, path: BlockPath 
     const p = [...path, i];
     if (b.__id === id) return p;
     if (isGroup(b)) {
-      const found = findPathById((b as any).items as EditorBlock[], id, p);
+      const found = findPathById((b as unknown as GroupEditorBlock).items, id, p);
       if (found) return found;
     }
   }
@@ -183,5 +199,5 @@ export function containsId(blocks: EditorBlock[], parentId: string, childId: str
   if (!parentPath) return false;
   const parent = getAtPath(blocks, parentPath);
   if (!parent || !isGroup(parent)) return false;
-  return !!findPathById((parent as any).items as EditorBlock[], childId);
+  return !!findPathById((parent as unknown as GroupEditorBlock).items, childId);
 }

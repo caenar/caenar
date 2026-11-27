@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
@@ -76,7 +77,7 @@ function isDescendantId(blocks: EditorBlock[], ancestorId: string, targetId: str
   return !!findPathById((ancestor as any).items as EditorBlock[], targetId);
 }
 
-export default function LayoutEditor({ value, onChange, images, onUploadFiles, onRemoveImage, onSetCover }: LayoutEditorProps) {
+export default function LayoutEditor({ value, onChange, images, onUploadFiles }: LayoutEditorProps) {
   const [blocks, setBlocks] = useState<EditorBlock[]>(() => withIds(value ?? []));
   const [selected, setSelected] = useState<BlockPath | null>(null);
   const [advancedOpen, setAdvancedOpen] = useState(false);
